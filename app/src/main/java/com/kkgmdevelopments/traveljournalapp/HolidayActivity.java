@@ -1,10 +1,13 @@
 package com.kkgmdevelopments.traveljournalapp;
 
-public class HolidayActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
-    public HolidayActivity(){
+import android.os.Bundle;
 
+public class HolidayActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
-
-
 }

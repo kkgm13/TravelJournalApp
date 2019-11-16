@@ -34,7 +34,7 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="@string/holiday_start_date_text"
-        android:inputType="date"
+        android:inputType="datetime"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/holiday_end_date"
         app:layout_constraintStart_toStartOf="parent"

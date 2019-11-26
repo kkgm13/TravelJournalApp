@@ -6,4 +6,6 @@
     <string name="holiday_start_date_text">Starting Date</string>
     <string name="holiday_end_date_text">End Date</string>
     <string name="holiday_notes_text">Notes</string>
+    <string name="create_holiday">Create Holiday</string>
+    <string name="empty_not_saved">Holiday Not Saved</string>
 </resources>

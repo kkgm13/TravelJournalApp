@@ -16,6 +16,11 @@ public class HolidayRepository {
     private HolidayDAO mHolidayDao; // DB Holiday Model
     private LiveData<List<Holiday>> mAllHolidays; // DB Data of all holidays
 
+    /**
+     * Holiday Repository Constructor
+     *
+     * @param application
+     */
     HolidayRepository(Application application){
         HolidayRoomDatabase db = HolidayRoomDatabase.getDatabase(application);
         mHolidayDao = db.holidayDAO();
@@ -41,13 +46,26 @@ public class HolidayRepository {
         new insertAsyncTask(mHolidayDao).execute(holiday);
     }
 
+    /**
+     * Allow to insert an Asynchronous Task
+     */
     private static class insertAsyncTask extends AsyncTask<Holiday, Void, Void>{
         private HolidayDAO mAsyncTaskDao;
 
+        /**
+         * Insert an Asynchronous Task
+         * @param mHolidayDao
+         */
         public insertAsyncTask(HolidayDAO mHolidayDao) {
             mAsyncTaskDao = mHolidayDao;
         }
 
+        /**
+         * Background Data
+         *
+         * @param params Holiday Parameters
+         * @return null
+         */
         @Override
         protected Void doInBackground(final Holiday... params) {
             mAsyncTaskDao.insert(params[0]);

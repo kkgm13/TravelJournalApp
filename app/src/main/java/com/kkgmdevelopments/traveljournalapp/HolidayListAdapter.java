@@ -13,10 +13,12 @@ import java.util.List;
 
 public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.HolidayViewHolder> {
 
+    /**
+     * Holiday View Holder
+     */
     class HolidayViewHolder extends RecyclerView.ViewHolder{
 
-        // Item View of Holiday
-        private final TextView holidayItemView;
+        private final TextView holidayItemView; // Item View of Holiday
 
         public HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -43,11 +45,20 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         holder.holidayItemView.setText(current.getMHolidayName());
     }
 
+    /**
+     * Set the Holidays
+     *
+     * @param holidays Holiday List
+     */
     void setHolidays(List<Holiday> holidays){
         mHolidays = holidays;
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // Allow to notify the Database Manipulations
     }
 
+    /**
+     * Get the Holiday Item Size
+     * @return Holiday Size
+     */
     @Override
     public int getItemCount() {
         if (mHolidays != null){

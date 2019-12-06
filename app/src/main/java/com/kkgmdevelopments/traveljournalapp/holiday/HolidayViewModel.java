@@ -7,13 +7,13 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class HolidayViewModal extends AndroidViewModel {
+public class HolidayViewModel extends AndroidViewModel {
 
     private HolidayRepository mRepository;
 
     private LiveData<List<Holiday>> mAllHolidays;
 
-    public HolidayViewModal(Application application) {
+    public HolidayViewModel(Application application) {
         super(application);
         mRepository = new HolidayRepository(application);
         mAllHolidays = mRepository.getAllHolidays();

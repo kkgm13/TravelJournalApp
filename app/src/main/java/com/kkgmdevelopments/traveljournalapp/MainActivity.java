@@ -6,7 +6,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
-import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModal;
+import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HolidayViewModal mHolidayViewModal;
+    private HolidayViewModel mHolidayViewModel;
     public static final int NEW_HOLIDAY_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
@@ -44,21 +44,24 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Create View Modal
-        mHolidayViewModal = ViewModelProviders.of(this).get(HolidayViewModal.class);
+        mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
 
         //Get all the holidays and update each
-        mHolidayViewModal.getAllHolidays().observe(this, new Observer<List<Holiday>>() {
+        mHolidayViewModel.getAllHolidays().observe(this, new Observer<List<Holiday>>() {
             @Override
             public void onChanged(@Nullable List<Holiday> holidays) {
+                // Update cached copy in the adapter
                 adapter.setHolidays(holidays);
             }
         });
 
+        // Floating Action Button
         FloatingActionButton fab = findViewById(R.id.fab);
+        // On Click Action Listener
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Proceed to Holiday Creation
+                // Proceed to Holiday Create Page
                 Intent intent = new Intent(MainActivity.this, HolidayActivity.class);
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
@@ -87,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Provide information from Create Page's Status
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,9 +104,11 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
 //            Add a new Holiday
             Holiday holiday = new Holiday(data.getStringExtra(HolidayActivity.EXTRA_REPLY));
-            mHolidayViewModal.insert(holiday);
+            mHolidayViewModel.insert(holiday);
+//            Confirm new holiday Made
             Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();
         } else {
+//            State holiday NOT Made
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved,Toast.LENGTH_LONG).show();
         }
     }

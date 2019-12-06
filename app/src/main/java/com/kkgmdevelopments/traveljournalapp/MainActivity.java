@@ -3,7 +3,10 @@ package com.kkgmdevelopments.traveljournalapp;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+import com.kkgmdevelopments.traveljournalapp.holiday.HolidayActivity;
+import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
+import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModal;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -88,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // If the request code is
+        // If the request code is Good
         if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+//            Add a new Holiday
             Holiday holiday = new Holiday(data.getStringExtra(HolidayActivity.EXTRA_REPLY));
             mHolidayViewModal.insert(holiday);
             Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();

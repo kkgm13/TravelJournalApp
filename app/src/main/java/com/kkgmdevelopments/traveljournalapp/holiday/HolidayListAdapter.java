@@ -1,4 +1,4 @@
-package com.kkgmdevelopments.traveljournalapp;
+package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.kkgmdevelopments.traveljournalapp.R;
 
 import java.util.List;
 
@@ -22,14 +24,14 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
 
         public HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
-            holidayItemView = itemView.findViewById(R.id.holiday);
+            holidayItemView = itemView.findViewById(R.id.holidayName);
         }
     }
 
     private final LayoutInflater mInflater;
     private List<Holiday> mHolidays; // Cached Copy of Holidays
 
-    HolidayListAdapter(Context context) {
+    public HolidayListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -50,7 +52,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
      *
      * @param holidays Holiday List
      */
-    void setHolidays(List<Holiday> holidays){
+    public void setHolidays(List<Holiday> holidays){
         mHolidays = holidays;
         notifyDataSetChanged(); // Allow to notify the Database Manipulations
     }

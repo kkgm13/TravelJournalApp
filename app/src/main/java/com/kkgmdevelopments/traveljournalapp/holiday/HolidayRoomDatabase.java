@@ -1,18 +1,21 @@
-package com.kkgmdevelopments.traveljournalapp;
+package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.List;
+
 /**
  *
  */
-@Database(entities = {Holiday.class}, version = 2, exportSchema = false)
+@Database(entities = {Holiday.class}, version = 3, exportSchema = false)
 public abstract class HolidayRoomDatabase extends RoomDatabase {
 
     // Singleton instance of the Database
@@ -80,7 +83,9 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... voids) {
+            // First Time use and cleaning
 //            hDao.deleteALL();
+            hDao.getAllHolidays();
 
             for(int i = 0; i < holidays.length; i++){
                 Holiday holiday = new Holiday(holidays[i]);
@@ -88,6 +93,11 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
             }
             return null;
         }
+    }
+
+    public static Holiday addHoliday(final HolidayRoomDatabase hDB, Holiday holiday){
+        hDB.holidayDAO().insert(holiday);
+        return holiday;
     }
 
 }

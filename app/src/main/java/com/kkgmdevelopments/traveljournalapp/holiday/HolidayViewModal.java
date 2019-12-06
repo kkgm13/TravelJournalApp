@@ -1,8 +1,7 @@
-package com.kkgmdevelopments.traveljournalapp;
+package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 

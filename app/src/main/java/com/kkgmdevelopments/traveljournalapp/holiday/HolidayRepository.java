@@ -1,4 +1,4 @@
-package com.kkgmdevelopments.traveljournalapp;
+package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import android.app.Application;
 import android.os.AsyncTask;

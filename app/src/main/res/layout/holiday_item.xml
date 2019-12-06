@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:layout_margin="8dp">
 
-    <TextView
-        android:id="@+id/holiday"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/text_view_style"
-        tools:text="Placeholder Text"/>
+        android:padding="8dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/holidayName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/text_view_style"
+            tools:text="Placeholder Text"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/holidayUpdated"
+            android:layout_below="@id/holidayName"
+            android:text="Last Updated: dd/mm/yyyy"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/holidayDescription"
+            android:layout_below="@id/holidayUpdated"
+            android:text="This is sample text"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

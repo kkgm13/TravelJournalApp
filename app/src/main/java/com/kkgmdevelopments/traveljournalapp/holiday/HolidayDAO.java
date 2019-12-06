@@ -1,4 +1,4 @@
-package com.kkgmdevelopments.traveljournalapp;
+package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

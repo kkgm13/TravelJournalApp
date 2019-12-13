@@ -3,7 +3,10 @@ package com.kkgmdevelopments.traveljournalapp.holiday;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
 
 //import java.util.Date;
 
@@ -12,7 +15,7 @@ import androidx.room.PrimaryKey;
  * Bitmap = Images???
  */
 @Entity(tableName = "holiday_table")
-public class Holiday {
+public class Holiday implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -21,7 +24,6 @@ public class Holiday {
     @NonNull
     @ColumnInfo(name = "holidayName")
     private String mHolidayName;
-
 
     @NonNull
     @ColumnInfo(name = "holidayStart")
@@ -34,17 +36,17 @@ public class Holiday {
     @ColumnInfo(name = "holidayNotes")
     private String mHolidayNotes;
 
+    @Ignore
     public Holiday(){
 
     }
 
-//int mStartDate, int mEndDate, String mHolidayNotes
-    public Holiday(String mHolidayName){
-//        this.mHolidayID = 0;
+//int mStartDate, int mEndDate,
+    public Holiday(String mHolidayName, String mHolidayNotes){
         this.mHolidayName = mHolidayName;
 //        this.mStartDate = mStartDate;
 //        this.mEndDate = mEndDate;
-//        this.mHolidayNotes = mHolidayNotes;
+        this.mHolidayNotes = mHolidayNotes;
     }
 
     public int getMHolidayID() {

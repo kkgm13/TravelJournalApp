@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Proceed to Holiday Create Page
-                Intent intent = new Intent(MainActivity.this, HolidayActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HolidayActivity.class);
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
         // If the request code is Good
         if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
 //            Add a new Holiday
-            Holiday holiday = new Holiday(data.getStringExtra(HolidayActivity.EXTRA_REPLY));
+//            Holiday holiday = new Holiday(data.getStringExtra("name"));
+            Holiday holiday = (Holiday) data.getSerializableExtra("EXTRAS"); // saved as EXTRAS
             mHolidayViewModel.insert(holiday);
 //            Confirm new holiday Made
             Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();

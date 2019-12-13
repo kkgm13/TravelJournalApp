@@ -21,7 +21,7 @@ public class HolidayRepository {
      *
      * @param application
      */
-    HolidayRepository(Application application){
+    public HolidayRepository(Application application){
         HolidayRoomDatabase db = HolidayRoomDatabase.getDatabase(application);
         mHolidayDao = db.holidayDAO();
         mAllHolidays = mHolidayDao.getAllHolidays();

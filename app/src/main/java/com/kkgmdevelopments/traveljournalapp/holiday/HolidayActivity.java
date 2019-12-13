@@ -100,12 +100,17 @@ public class HolidayActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mCreateHolidayName.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String holiday = mCreateHolidayName.getText().toString();
-                    Holiday holidayData = new Holiday();
-                    holidayData.setMHolidayName(mCreateHolidayName.getText().toString());
+                    Holiday holiday = new Holiday(
+                            mCreateHolidayName.getText().toString(),
+                            mCreateHolidayNotes.getText().toString()
+                    );
+//                    holiday.setMHolidayName(mCreateHolidayName.getText().toString());
+//                    Holiday holidayData = new Holiday();
+//                    holidayData.setMHolidayName(mCreateHolidayName.getText().toString());
 //                    holidayData.setMStartDate(mHolidayStartDate);
 //                    holidayData.setMEndDate(mHolidayEndDate);
-                    holidayData.setMHolidayNotes(mCreateHolidayNotes.getText().toString());
+//                    holiday.setMHolidayNotes(mCreateHolidayNotes.getText().toString());
+//                    replyIntent.putExtra(EXTRA_REPLY, holiday);
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
 //                    replyIntent.putExtra(EXTRA_REPLY, holiday.getMHolidayName());
                     setResult(RESULT_OK, replyIntent);

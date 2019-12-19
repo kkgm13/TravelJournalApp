@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/holidayDescription"
+            android:id="@+id/holidayNotes"
             android:layout_below="@id/holidayUpdated"
             android:text="This is sample text"/>
 

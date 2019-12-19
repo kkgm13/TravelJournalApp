@@ -8,4 +8,5 @@
     <string name="holiday_notes_text">Notes</string>
     <string name="create_holiday">Create Holiday</string>
     <string name="empty_not_saved">Holiday Not Saved</string>
+    <string name="no_notes">No additional information.</string>
 </resources>

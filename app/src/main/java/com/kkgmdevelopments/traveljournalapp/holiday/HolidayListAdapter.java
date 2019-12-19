@@ -20,11 +20,13 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
      */
     class HolidayViewHolder extends RecyclerView.ViewHolder{
 
-        private final TextView holidayItemView; // Item View of Holiday
+        private final TextView holidayItemNameView; // Item View of Holiday
+        private final TextView holidayItemNoteView; // Item View of Holiday
 
         public HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
-            holidayItemView = itemView.findViewById(R.id.holidayName);
+            holidayItemNameView = itemView.findViewById(R.id.holidayName);
+            holidayItemNoteView = itemView.findViewById(R.id.holidayNotes);
         }
     }
 
@@ -35,16 +37,35 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         mInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * Create a new View
+     *
+     * @param parent
+     * @param viewType
+     * @return HolidayViewHolder The Holiday View Holder Class instance
+     */
     @Override
     public HolidayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.holiday_item, parent, false);
         return new HolidayViewHolder(itemView);
     }
 
+    /**
+     * Bind the Database Data to View UI items
+     *
+     * This shows the actual data to the users
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(HolidayViewHolder holder, int position) {
         Holiday current = mHolidays.get(position);
-        holder.holidayItemView.setText(current.getMHolidayName());
+        holder.holidayItemNameView.setText(current.getMHolidayName());
+        if(current.getMHolidayNotes() != null || current.getMHolidayNotes() == ""){
+            holder.holidayItemNoteView.setText(current.getMHolidayNotes());
+        } else{
+            holder.holidayItemNoteView.setText(R.string.no_notes);
+        }
     }
 
     /**

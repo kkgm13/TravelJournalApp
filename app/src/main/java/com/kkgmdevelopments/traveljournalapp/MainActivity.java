@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // If the request code is Good
         if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
 //            Add a new Holiday
-//            Holiday holiday = new Holiday(data.getStringExtra("name"));
-            Holiday holiday = (Holiday) data.getSerializableExtra("EXTRAS"); // saved as EXTRAS
+            Holiday holiday = (Holiday) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY"); // saved as EXTRAS
             mHolidayViewModel.insert(holiday);
 //            Confirm new holiday Made
             Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();

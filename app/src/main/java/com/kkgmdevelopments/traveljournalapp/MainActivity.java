@@ -3,6 +3,7 @@ package com.kkgmdevelopments.traveljournalapp;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 import android.view.Menu;
@@ -23,11 +25,21 @@ import android.widget.Toast;
 
 import java.util.List;
 
+/**
+ * Main Activity Class
+ */
 public class MainActivity extends AppCompatActivity {
 
+    // Holiday View Model Instance
     private HolidayViewModel mHolidayViewModel;
+    // Request Code
     public static final int NEW_HOLIDAY_ACTIVITY_REQUEST_CODE = 1;
 
+    /**
+     * Activity Creation
+     *
+     * @param savedInstanceState Instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,21 +49,34 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Present Data to RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.holiday_list);
-        final HolidayListAdapter adapter = new HolidayListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Create View Modal
-        mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
-
-        //Get all the holidays and update each
-        mHolidayViewModel.getAllHolidays().observe(this, new Observer<List<Holiday>>() {
+        // New Tab Layout
+        TabLayout tabLayout = findViewById(R.id.tab_list);
+        // Add tab texts
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.holiday_tab_text)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.explore_tab_text)));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        // Set View Pager
+        final ViewPager viewPager = findViewById(R.id.root_pager);
+        // Set the Page Adapter for Tab information
+        final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        // Add Page Change Listeners
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        // Add Selected Listener
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onChanged(@Nullable List<Holiday> holidays) {
-                // Update cached copy in the adapter
-                adapter.setHolidays(holidays);
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
@@ -59,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         // On Click Action Listener
         fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Clickable Action
+             *
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 // Proceed to Holiday Create Page

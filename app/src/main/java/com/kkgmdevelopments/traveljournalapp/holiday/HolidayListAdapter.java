@@ -17,12 +17,18 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
 
     /**
      * Holiday View Holder
+     *  This is the Holder information system for the Holiday View
      */
     class HolidayViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView holidayItemNameView; // Item View of Holiday
         private final TextView holidayItemNoteView; // Item View of Holiday
 
+        /**
+         * Constructor
+         *
+         * @param itemView Relation to the view
+         */
         public HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
             holidayItemNameView = itemView.findViewById(R.id.holidayName);
@@ -79,7 +85,8 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
     }
 
     /**
-     * Get the Holiday Item Size
+     * Get the Holiday Database Size
+     *
      * @return Holiday Size
      */
     @Override

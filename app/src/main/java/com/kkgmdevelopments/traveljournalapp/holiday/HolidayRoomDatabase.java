@@ -15,7 +15,7 @@ import java.util.List;
 /**
  *
  */
-@Database(entities = {Holiday.class}, version = 3, exportSchema = false)
+@Database(entities = {Holiday.class}, version = 4, exportSchema = false)
 public abstract class HolidayRoomDatabase extends RoomDatabase {
 
     // Singleton instance of the Database

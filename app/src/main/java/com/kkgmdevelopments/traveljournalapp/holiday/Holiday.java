@@ -6,9 +6,9 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+// Provides a way to interact with Holiday Objects via Intents
 import java.io.Serializable;
-
-//import java.util.Date;
+import java.sql.Date;
 
 /**
  * Holiday Model
@@ -24,30 +24,39 @@ public class Holiday implements Serializable {
     @NonNull
     @ColumnInfo(name = "holidayName")
     private String mHolidayName;
+//
+//    @NonNull
+//    @ColumnInfo(name = "holidayStart")
+//    private Date mStartDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 
-    @NonNull
-    @ColumnInfo(name = "holidayStart")
-    private int mStartDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
-
-    @NonNull
-    @ColumnInfo(name = "holidayEnd")
-    private int mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
+//    @NonNull
+//    @ColumnInfo(name = "holidayEnd")
+//    private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 
     @ColumnInfo(name = "holidayNotes")
     private String mHolidayNotes;
+
+//    @ColumnInfo(name = "created_at")
+//    private long mHolidayCreatedAt;
+//
+//    @ColumnInfo(name = "updated_at")
+//    private long mHolidayUpdatedAt;
 
     @Ignore
     public Holiday(){
 
     }
 
-//int mStartDate, int mEndDate,
+
+    // Constructor
     public Holiday(String mHolidayName, String mHolidayNotes){
         this.mHolidayName = mHolidayName;
 //        this.mStartDate = mStartDate;
 //        this.mEndDate = mEndDate;
         this.mHolidayNotes = mHolidayNotes;
     }
+
+    // Encapsulation Methods //
 
     public int getMHolidayID() {
         return mHolidayID;
@@ -66,21 +75,21 @@ public class Holiday implements Serializable {
         this.mHolidayName = mHolidayName;
     }
 
-    public int getMStartDate() {
-        return mStartDate;
-    }
+//    public Date getMStartDate() {
+//        return mStartDate;
+//    }
 
-    public void setMStartDate(int mStartDate) {
-        this.mStartDate = mStartDate;
-    }
-
-    public int getMEndDate() {
-        return mEndDate;
-    }
-
-    public void setMEndDate(int mEndDate) {
-        this.mEndDate = mEndDate;
-    }
+//    public void setMStartDate(Date mStartDate) {
+//        this.mStartDate = mStartDate;
+//    }
+//
+//    public Date getMEndDate() {
+//        return mEndDate;
+//    }
+//
+//    public void setMEndDate(Date mEndDate) {
+//        this.mEndDate = mEndDate;
+//    }
 
     public String getMHolidayNotes() {
         return mHolidayNotes;

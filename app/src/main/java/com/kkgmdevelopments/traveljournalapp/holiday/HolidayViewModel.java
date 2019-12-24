@@ -10,7 +10,6 @@ import java.util.List;
 public class HolidayViewModel extends AndroidViewModel {
 
     private HolidayRepository mRepository;
-
     private LiveData<List<Holiday>> mAllHolidays;
 
     public HolidayViewModel(Application application) {

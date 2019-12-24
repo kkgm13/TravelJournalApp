@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
-    int numOfTabs;
+    int numOfTabs; // Number of Pager Tabs
 
     /**
      * Constructor
@@ -27,7 +27,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new TabHolidayFragment();
+            case 0: return null;
             case 1: return new TabExploreFragment();
             default: return null;
         }

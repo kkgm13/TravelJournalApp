@@ -37,10 +37,10 @@ public class Holiday implements Serializable {
     private String mHolidayNotes;
 
 //    @ColumnInfo(name = "created_at")
-//    private long mHolidayCreatedAt;
+//    private Calendar mHolidayCreatedAt = Calendar.getInstance();
 //
-//    @ColumnInfo(name = "updated_at")
-//    private long mHolidayUpdatedAt;
+//    @ColumnInfo(name = "modified_at")
+//    private Calendar mHolidayModifiedAt = Calendar.getInstance();
 
     @Ignore
     public Holiday(){

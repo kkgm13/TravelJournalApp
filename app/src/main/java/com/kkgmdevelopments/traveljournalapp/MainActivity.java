@@ -9,11 +9,13 @@ import com.kkgmdevelopments.traveljournalapp.holiday.HolidayActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -44,41 +46,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Toolbar mechanism
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // New Tab Layout
-        TabLayout tabLayout = findViewById(R.id.tab_list);
-        // Add tab texts
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.holiday_tab_text)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.explore_tab_text)));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        // Set View Pager
-        final ViewPager viewPager = findViewById(R.id.root_pager);
-        // Set the Page Adapter for Tab information
-        final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
-        // Add Page Change Listeners
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        // Add Selected Listener
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        // Present Data to RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.holiday_list);
+        final HolidayListAdapter adapter = new HolidayListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        // Create View Modal
+        mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
+        //Get all the holidays and observe changes
+        mHolidayViewModel.getAllHolidays().observe(this, new Observer<List<Holiday>>() {
+            /**
+             * On Changed Method
+             *  If a change is known, update it
+             * @param holidays
+             */
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
+            public void onChanged(@Nullable List<Holiday> holidays) {
+                // Update cached copy in the adapter
+                adapter.setHolidays(holidays);
+            }
+        });
+        // Create Touch helper
+        final ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             }
         });
+
 
         // Floating Action Button
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -132,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
         // If the request code is Good
         if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-//            Add a new Holiday
-            Holiday holiday = (Holiday) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY"); // saved as EXTRAS
+//            Add a new Holiday via EXTRA REPLY CODE
+            Holiday holiday = (Holiday) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY");
             mHolidayViewModel.insert(holiday);
 //            Confirm new holiday Made
             Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();
@@ -142,4 +147,37 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved,Toast.LENGTH_LONG).show();
         }
     }
+
+
+
+//        // New Tab Layout (Move to Visited Places Section)
+//        TabLayout tabLayout = findViewById(R.id.tab_list);
+//        // Add tab texts
+//        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.holiday_tab_text)));
+//        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.explore_tab_text)));
+//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+//        // Set View Pager
+//        final ViewPager viewPager = findViewById(R.id.root_pager);
+//        // Set the Page Adapter for Tab information
+//        final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+//        viewPager.setAdapter(pagerAdapter);
+//        // Add Page Change Listeners
+//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        // Add Selected Listener
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 }

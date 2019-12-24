@@ -20,7 +20,6 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
 
     // Singleton instance of the Database
     private static HolidayRoomDatabase INSTANCE;
-
     // Abstract DAO getter
     public abstract HolidayDAO holidayDAO();
 
@@ -44,7 +43,7 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
                     )
                             .fallbackToDestructiveMigration()   // Wipes & rebuilds if no migration object
                             .addCallback(sRoomDataCallback)     // Provide a Callback to the Room Database
-                            .build();
+                            .build();                           // Build the Database
                 }
             }
         }

@@ -16,7 +16,7 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/holidayName"
+            android:id="@+id/cardItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/text_view_style"
@@ -24,15 +24,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/holidayUpdated"
-            android:layout_below="@id/holidayName"
+            android:id="@+id/cardItemLastUpdated"
+            android:layout_below="@id/cardItemName"
             android:text="@string/card_last_update_placeholder"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/holidayNotes"
-            android:layout_below="@id/holidayUpdated"
-            android:text="@string/card_notes_placeholder"/>
+            android:id="@+id/cardItemNotes"
+            android:layout_below="@id/cardItemLastUpdated"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

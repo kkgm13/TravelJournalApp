@@ -26,30 +26,31 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeNotes")
     private String mPlaceNotes;
 //    private final int mPlacePhotos;
+//    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
 
 
-    public int getmPlaceID() {
+    public int getPlaceID() {
         return mPlaceID;
     }
 
-    public void setmPlaceID(int mPlaceID) {
+    public void setPlaceID(int mPlaceID) {
         this.mPlaceID = mPlaceID;
     }
 
-    public String getmPlaceName() {
+    public String getPlaceName() {
         return mPlaceName;
     }
 
-    public void setmPlaceName(String mPlaceName) {
+    public void setPlaceName(String mPlaceName) {
         this.mPlaceName = mPlaceName;
     }
 
-    public String getmPlaceNotes() {
+    public String getPlaceNotes() {
         return mPlaceNotes;
     }
 
-    public void setmPlaceNotes(String mPlaceNotes) {
+    public void setPlaceNotes(String mPlaceNotes) {
         this.mPlaceNotes = mPlaceNotes;
     }
 }

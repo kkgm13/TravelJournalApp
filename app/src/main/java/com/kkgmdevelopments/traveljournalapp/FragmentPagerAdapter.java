@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     int numOfTabs; // Number of Pager Tabs
 
@@ -13,7 +13,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
      * @param fm
      * @param numOfTabs
      */
-    public PagerAdapter(FragmentManager fm, int numOfTabs) {
+    public FragmentPagerAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs = numOfTabs;
     }
@@ -27,8 +27,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new TabExploreFragment();
-//            case 1: return new TabExploreFragment();
+            case 0: return new TabPlacesFragment();
+            case 1: return new TabExploreFragment();
             default: return null;
         }
     }

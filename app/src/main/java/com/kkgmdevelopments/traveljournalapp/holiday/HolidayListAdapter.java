@@ -20,6 +20,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
     private final LayoutInflater mInflater; // Layout Inflater
     private List<Holiday> mHolidays;        // Cached Copy of Holidays
     private Context mContext;               // Context
+    public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
 
     public HolidayListAdapter(Context context) {
         this.mContext = context;
@@ -93,9 +94,9 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
          */
         public HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
-            holidayItemNameView = itemView.findViewById(R.id.holidayName);
-            holidayItemNoteView = itemView.findViewById(R.id.holidayNotes);
-            holidayItemLastUpdated = itemView.findViewById(R.id.holidayUpdated);
+            holidayItemNameView = itemView.findViewById(R.id.cardItemName);
+            holidayItemNoteView = itemView.findViewById(R.id.cardItemNotes);
+            holidayItemLastUpdated = itemView.findViewById(R.id.cardItemLastUpdated);
             itemView.setOnClickListener(this);
         }
 
@@ -108,6 +109,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
             Holiday selectedHoliday = mHolidays.get(getAdapterPosition());
             Intent detailedIntent = new Intent(mContext, PlaceActivity.class);
             detailedIntent.putExtra("holiday", selectedHoliday);
+            detailedIntent.putExtra(EXTRA_REPLY, selectedHoliday.getMHolidayName());
             mContext.startActivity(detailedIntent);
         }
 

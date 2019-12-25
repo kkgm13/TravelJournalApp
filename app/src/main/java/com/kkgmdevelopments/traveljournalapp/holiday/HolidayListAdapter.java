@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
@@ -36,7 +35,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
      */
     @Override
     public HolidayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.holiday_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.card_item, parent, false);
         return new HolidayViewHolder(itemView);
     }
 

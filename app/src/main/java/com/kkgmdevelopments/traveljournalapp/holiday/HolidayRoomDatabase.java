@@ -13,6 +13,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 
 /**
+ * Holiday Database
+ * This creates the database for Android Room to recognise.
  *
  */
 @Database(entities = {Holiday.class}, version = 4, exportSchema = false)

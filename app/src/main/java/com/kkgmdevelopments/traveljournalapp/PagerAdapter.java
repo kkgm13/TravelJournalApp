@@ -27,8 +27,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return null;
-            case 1: return new TabExploreFragment();
+            case 0: return new TabExploreFragment();
+//            case 1: return new TabExploreFragment();
             default: return null;
         }
     }

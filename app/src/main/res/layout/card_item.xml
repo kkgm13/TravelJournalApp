@@ -20,19 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/text_view_style"
-            tools:text="@string/holiday_name_placeholder"/>
+            tools:text="@string/card_name_placeholder"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/holidayUpdated"
             android:layout_below="@id/holidayName"
-            android:text="@string/holiday_last_update_placeholder"/>
+            android:text="@string/card_last_update_placeholder"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/holidayNotes"
             android:layout_below="@id/holidayUpdated"
-            android:text="@string/holiday_notes_placeholder"/>
+            android:text="@string/card_notes_placeholder"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

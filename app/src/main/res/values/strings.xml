@@ -22,4 +22,7 @@
 
     <!-- Fragmented Information -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="holiday_name_placeholder">Placeholder Text</string>
+    <string name="holiday_last_update_placeholder">Last Updated: dd/mm/yyyy</string>
+    <string name="holiday_notes_placeholder">This is sample text</string>
 </resources>

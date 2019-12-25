@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
@@ -16,41 +17,6 @@ import com.kkgmdevelopments.traveljournalapp.places.PlaceActivity;
 import java.util.List;
 
 public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.HolidayViewHolder> {
-
-    /**
-     * Holiday View Holder
-     *  This is the Holder information system for the Holiday View
-     */
-    class HolidayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        private final TextView holidayItemNameView; // Name Item View of Holiday
-        private final TextView holidayItemNoteView; // Notes Item View of Holiday
-        private final TextView holidayItemStartDateView; // Notes Item View of Holiday
-
-        /**
-         * Constructor
-         *
-         * @param itemView Relation to the view
-         */
-        public HolidayViewHolder(@NonNull View itemView) {
-            super(itemView);
-            holidayItemNameView = itemView.findViewById(R.id.holidayName);
-            holidayItemNoteView = itemView.findViewById(R.id.holidayNotes);
-            holidayItemStartDateView = itemView.findViewById(R.id.holiday_start_date);
-        }
-
-        /**
-         * Click listener action
-         * @param v
-         */
-        @Override
-        public void onClick(View v) {
-            Holiday selectedHoliday = mHolidays.get(getAdapterPosition());
-            Intent detailedIntent = new Intent(mContext, PlaceActivity.class);
-            detailedIntent.putExtra("holiday", selectedHoliday);
-            mContext.startActivity(detailedIntent);
-        }
-    }
 
     private final LayoutInflater mInflater; // Layout Inflater
     private List<Holiday> mHolidays;        // Cached Copy of Holidays
@@ -82,14 +48,9 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
      * @param position
      */
     @Override
-    public void onBindViewHolder(HolidayViewHolder holder, int position) {
-        Holiday current = mHolidays.get(position);
-        holder.holidayItemNameView.setText(current.getMHolidayName());
-        if(current.getMHolidayNotes() != null || current.getMHolidayNotes() != ""){
-            holder.holidayItemNoteView.setText(current.getMHolidayNotes());
-        } else{
-            holder.holidayItemNoteView.setText(R.string.no_notes);
-        }
+    public void onBindViewHolder(HolidayListAdapter.HolidayViewHolder holder, int position) {
+        Holiday holiday = mHolidays.get(position);
+        holder.bindTo(holiday);
     }
 
     /**
@@ -114,5 +75,56 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Holiday View Holder
+     *  This is the Holder information system for the Holiday View
+     */
+    class HolidayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private final TextView holidayItemNameView;         // Name Item View of Holiday
+        private final TextView holidayItemNoteView;         // Notes Item View of Holiday
+        private final TextView holidayItemLastUpdated;      // Last Updated Item View of Holiday
+
+        /**
+         * Constructor
+         *
+         * @param itemView Relation to the view
+         */
+        public HolidayViewHolder(@NonNull View itemView) {
+            super(itemView);
+            holidayItemNameView = itemView.findViewById(R.id.holidayName);
+            holidayItemNoteView = itemView.findViewById(R.id.holidayNotes);
+            holidayItemLastUpdated = itemView.findViewById(R.id.holidayUpdated);
+            itemView.setOnClickListener(this);
+        }
+
+        /**
+         * Click listener action
+         * @param v
+         */
+        @Override
+        public void onClick(View v) {
+            Holiday selectedHoliday = mHolidays.get(getAdapterPosition());
+            Intent detailedIntent = new Intent(mContext, PlaceActivity.class);
+            detailedIntent.putExtra("holiday", selectedHoliday);
+            mContext.startActivity(detailedIntent);
+        }
+
+        /**
+         * Bind Data to the View Entities
+         * @param holiday
+         */
+        void bindTo(Holiday holiday){
+            holidayItemNameView.setText(holiday.getMHolidayName());
+//            holidayItemLastUpdated
+            if(holiday.getMHolidayNotes() != null || holiday.getMHolidayNotes() != ""){
+                holidayItemNoteView.setText(holiday.getMHolidayNotes());
+            } else{
+                holidayItemNoteView.setText(R.string.no_notes);
+            }
+        }
+
     }
 }

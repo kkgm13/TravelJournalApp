@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!-- Template layout for the  -->
+
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,19 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/text_view_style"
-            tools:text="Placeholder Text"/>
+            tools:text="@string/holiday_name_placeholder"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/holidayUpdated"
             android:layout_below="@id/holidayName"
-            android:text="Last Updated: dd/mm/yyyy"/>
+            android:text="@string/holiday_last_update_placeholder"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/holidayNotes"
             android:layout_below="@id/holidayUpdated"
-            android:text="This is sample text"/>
+            android:text="@string/holiday_notes_placeholder"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -11,6 +11,7 @@ import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Holiday View Model Instance
     private HolidayViewModel mHolidayViewModel;
+    // Recycler View
+    private RecyclerView holidayRecycler;
     // Request Code
     public static final int NEW_HOLIDAY_ACTIVITY_REQUEST_CODE = 1;
 
@@ -50,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Present Data to RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.holiday_list);
+        holidayRecycler = findViewById(R.id.holiday_list);
         final HolidayListAdapter adapter = new HolidayListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        holidayRecycler.setAdapter(adapter);
+        holidayRecycler.setLayoutManager(new LinearLayoutManager(this));
 //        // Create View Modal
         mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
         //Get all the holidays and observe changes
@@ -80,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
+                Toast.makeText(getApplicationContext(),"In Development",Toast.LENGTH_LONG).show();
             }
         });
 
+        helper.attachToRecyclerView(holidayRecycler);
 
         // Floating Action Button
         FloatingActionButton fab = findViewById(R.id.fab);

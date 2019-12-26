@@ -1,37 +1,35 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
-import com.kkgmdevelopments.traveljournalapp.MainActivity;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 
-public class PlaceActivity extends AppCompatActivity {
+import java.util.List;
+
+public class VisitedPlaceActivity extends AppCompatActivity {
 
     private RecyclerView placeRecycler;
+    private VisitedPlaceViewModel mPlaceViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-        Intent intent = getIntent();
 
-        // Toolbar mechanism
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-        String message = intent.getStringExtra(HolidayListAdapter.EXTRA_REPLY);
-//        toolbar.se(message);
-
-
-//        getActionBar().setTitle(message);
+        // Toolbar Override set
+        String message = getIntent().getStringExtra(HolidayListAdapter.EXTRA_REPLY);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Back button enabled but not returning to home
+        getSupportActionBar().setTitle("Holiday on: " + message); // Override Action Bar title
 
         // Tabs Creation
         TabLayout tabLayout = findViewById(R.id.tab_list);
@@ -67,5 +65,14 @@ public class PlaceActivity extends AppCompatActivity {
 //        Issue with RecyclerView Access
 //        placeRecycler.setAdapter(placeAdapter);
 //        placeRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        // View Model Initialize
+        mPlaceViewModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
+        mPlaceViewModel.getAllPlaces().observe(this, new Observer<List<VisitedPlace>>() {
+            @Override
+            public void onChanged(List<VisitedPlace> visitedPlaces) {
+                placeAdapter.setPlaces(visitedPlaces);
+            }
+        });
     }
 }

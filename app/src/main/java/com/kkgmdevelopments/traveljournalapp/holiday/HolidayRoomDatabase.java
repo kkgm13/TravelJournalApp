@@ -68,33 +68,32 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
         }
     };
 
-
-    /**
-     * Populate Dummy Data to the DB
-     */
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
-        private final HolidayDAO hDao;
-//        String [] holidays = { "London", "Birmingham", "Brighton"};
-//        private LiveData<List<Holiday>> holidays;
-
-        PopulateDbAsync(HolidayRoomDatabase db) {
-            hDao = db.holidayDAO();
-//            holidays = hDao.getAllHolidays();
-        }
-
-        @Override
-        protected Void doInBackground(final Void... voids) {
-            // First Time use and cleaning
-//            hDao.deleteALL();
-            hDao.getAllHolidays();
-
-//            for(int i = 0; i < holidays.length; i++){
-//                Holiday holiday = new Holiday(holidays[i]);
-//                hDao.insert(holiday);
-//            }
-            return null;
-        }
-    }
+//    /**
+//     * Populate Dummy Data to the DB
+//     */
+//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
+//        private final HolidayDAO hDao;
+////        String [] holidays = { "London", "Birmingham", "Brighton"};
+////        private LiveData<List<Holiday>> holidays;
+//
+//        PopulateDbAsync(HolidayRoomDatabase db) {
+//            hDao = db.holidayDAO();
+////            holidays = hDao.getAllHolidays();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(final Void... voids) {
+//            // First Time use and cleaning
+////            hDao.deleteALL();
+//            hDao.getAllHolidays();
+//
+////            for(int i = 0; i < holidays.length; i++){
+////                Holiday holiday = new Holiday(holidays[i]);
+////                hDao.insert(holiday);
+////            }
+//            return null;
+//        }
+//    }
 
     public static Holiday addHoliday(final HolidayRoomDatabase hDB, Holiday holiday){
         hDB.holidayDAO().insert(holiday);

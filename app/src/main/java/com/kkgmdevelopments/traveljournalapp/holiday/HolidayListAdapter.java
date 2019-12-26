@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
-import com.kkgmdevelopments.traveljournalapp.places.PlaceActivity;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceActivity;
 
 import java.util.List;
 
@@ -107,7 +107,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         @Override
         public void onClick(View v) {
             Holiday selectedHoliday = mHolidays.get(getAdapterPosition());
-            Intent detailedIntent = new Intent(mContext, PlaceActivity.class);
+            Intent detailedIntent = new Intent(mContext, VisitedPlaceActivity.class);
             detailedIntent.putExtra("holiday", selectedHoliday);
             detailedIntent.putExtra(EXTRA_REPLY, selectedHoliday.getMHolidayName());
             mContext.startActivity(detailedIntent);

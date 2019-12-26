@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
-import com.kkgmdevelopments.traveljournalapp.holiday.HolidayActivity;
+import com.kkgmdevelopments.traveljournalapp.holiday.NewHolidayActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
 
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         });
         // Create Touch helper
         final ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(getApplicationContext(),"In Development",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "In Development", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Proceed to Holiday Create Page
-                Intent intent = new Intent(getApplicationContext(), HolidayActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewHolidayActivity.class);
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Provide information from Create Page's Status
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -137,48 +138,15 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // If the request code is Good
-        if(requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 //            Add a new Holiday via EXTRA REPLY CODE
             Holiday holiday = (Holiday) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY");
             mHolidayViewModel.insert(holiday);
 //            Confirm new holiday Made
-            Toast.makeText(getApplicationContext(),holiday.getMHolidayName()+" Holiday has been created.",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), holiday.getMHolidayName() + " Holiday has been created.", Toast.LENGTH_LONG).show();
         } else {
 //            State holiday NOT Made
-            Toast.makeText(getApplicationContext(),R.string.empty_not_saved,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.empty_holiday_not_saved, Toast.LENGTH_LONG).show();
         }
     }
-
-
-
-//        // New Tab Layout (Move to Visited Places Section)
-//        TabLayout tabLayout = findViewById(R.id.tab_list);
-//        // Add tab texts
-//        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.holiday_tab_text)));
-//        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.explore_tab_text)));
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-//        // Set View Pager
-//        final ViewPager viewPager = findViewById(R.id.root_pager);
-//        // Set the Page Adapter for Tab information
-//        final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-//        viewPager.setAdapter(pagerAdapter);
-//        // Add Page Change Listeners
-//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-//        // Add Selected Listener
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
 }

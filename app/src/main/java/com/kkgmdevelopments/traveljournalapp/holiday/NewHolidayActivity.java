@@ -19,7 +19,7 @@ import com.kkgmdevelopments.traveljournalapp.R;
 
 import java.util.Calendar;
 
-public class HolidayActivity extends AppCompatActivity {
+public class NewHolidayActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY";
@@ -43,6 +43,7 @@ public class HolidayActivity extends AppCompatActivity {
         // Set Layout View
         setContentView(R.layout.holiday_create);
 
+        getSupportActionBar().setTitle(R.string.holiday_create_title); // Override Action Bar title
         // Set Info based from UI ids
         mCreateHolidayName = findViewById(R.id.holiday_create_name);
         mCreateHolidayStartDate = findViewById(R.id.holiday_start_date);
@@ -58,7 +59,7 @@ public class HolidayActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                startDialog = new DatePickerDialog(HolidayActivity.this, R.style.DialogTheme, mHolidayStartDate ,year, month, day);
+                startDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mHolidayStartDate ,year, month, day);
                 startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 startDialog.show();
             }
@@ -83,7 +84,7 @@ public class HolidayActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                endDialog = new DatePickerDialog(HolidayActivity.this, R.style.DialogTheme, mHolidayEndDate ,year, month, day);
+                endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mHolidayEndDate ,year, month, day);
                 endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 //                endDialog.getDatePicker().setMinDate(startDialog.getDatePicker().);
                 endDialog.show();

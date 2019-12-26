@@ -9,8 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".places.PlaceActivity"></activity>
-        <activity android:name=".holiday.HolidayActivity" />
+        <activity android:name=".places.NewVisitedPlaceActivity"></activity>
+        <activity android:name=".places.VisitedPlaceActivity" />
+        <activity android:name=".holiday.NewHolidayActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

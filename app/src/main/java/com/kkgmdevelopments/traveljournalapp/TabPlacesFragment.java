@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceAdapter;
 
 
 /**
@@ -24,8 +26,8 @@ public class TabPlacesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Holiday holiday;
+//    private String mParam2;
 
     private TabPlacesFragment.OnFragmentInteractionListener mListener;
 
@@ -54,8 +56,8 @@ public class TabPlacesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -65,7 +67,14 @@ public class TabPlacesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tab_places, container, false);
+
+        // Get Data somehow???
+
+        // Visited Places RecyclerView
         RecyclerView placeRecycler = v.findViewById(R.id.places_list);
+        final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(getActivity());
+        placeRecycler.setAdapter(placeAdapter);
+        placeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         return v;
     }
 

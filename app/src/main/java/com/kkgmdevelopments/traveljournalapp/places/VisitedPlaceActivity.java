@@ -19,6 +19,7 @@ import java.util.List;
 
 public class VisitedPlaceActivity extends AppCompatActivity {
 
+//    private RecyclerView placeRecycler;
 //    private VisitedPlaceViewModel mPlaceViewModel;
 
     @Override
@@ -61,6 +62,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
         // Replace here
 
         // Visited Places RecyclerView
+//        placeRecycler = findViewById(R.id.places_list);
 //        Log.i("AJB", "place recycler is " + placeRecycler);
 //        final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(this);
 //        Issue with RecyclerView Access

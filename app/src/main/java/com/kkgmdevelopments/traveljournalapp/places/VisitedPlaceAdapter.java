@@ -18,20 +18,22 @@ public class VisitedPlaceAdapter extends RecyclerView.Adapter<VisitedPlaceAdapte
     private final LayoutInflater mInflater;
     private List<VisitedPlace> mPlaces;
     private Context mContext;
+    public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
 
     public VisitedPlaceAdapter(Context context){
-        this.mContext = context;
+//        this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
     /**
      * Create a new View
+     *
      * @param parent
      * @param viewType
      * @return
      */
     @Override
-    public VisitedPlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VisitedPlaceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.card_item, parent, false);
         return new VisitedPlaceViewHolder(itemView);
     }
@@ -92,7 +94,7 @@ public class VisitedPlaceAdapter extends RecyclerView.Adapter<VisitedPlaceAdapte
             if(place.getPlaceNotes() != null || place.getPlaceNotes() != ""){
                 placesItemNote.setText(place.getPlaceNotes());
             } else {
-                placesItemNote.setText("No additional information added");
+                placesItemNote.setText(R.string.no_notes);
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
@@ -18,8 +19,7 @@ import java.util.List;
 
 public class VisitedPlaceActivity extends AppCompatActivity {
 
-    private RecyclerView placeRecycler;
-    private VisitedPlaceViewModel mPlaceViewModel;
+//    private VisitedPlaceViewModel mPlaceViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Toolbar Override set
         String message = getIntent().getStringExtra(HolidayListAdapter.EXTRA_REPLY);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Back button enabled but not returning to home
-        getSupportActionBar().setTitle("Holiday on: " + message); // Override Action Bar title
+        getSupportActionBar().setTitle(message + " Holiday"); // Override Action Bar title
 
         // Tabs Creation
         TabLayout tabLayout = findViewById(R.id.tab_list);
@@ -59,20 +58,22 @@ public class VisitedPlaceActivity extends AppCompatActivity {
             }
         });
 
+        // Replace here
+
         // Visited Places RecyclerView
-        placeRecycler = findViewById(R.id.places_list);
-        final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(this);
+//        Log.i("AJB", "place recycler is " + placeRecycler);
+//        final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(this);
 //        Issue with RecyclerView Access
 //        placeRecycler.setAdapter(placeAdapter);
 //        placeRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         // View Model Initialize
-        mPlaceViewModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
-        mPlaceViewModel.getAllPlaces().observe(this, new Observer<List<VisitedPlace>>() {
-            @Override
-            public void onChanged(List<VisitedPlace> visitedPlaces) {
-                placeAdapter.setPlaces(visitedPlaces);
-            }
-        });
+//        mPlaceViewModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
+//        mPlaceViewModel.getAllPlaces().observe(this, new Observer<List<VisitedPlace>>() {
+//            @Override
+//            public void onChanged(List<VisitedPlace> visitedPlaces) {
+//                placeAdapter.setPlaces(visitedPlaces);
+//            }
+//        });
     }
 }

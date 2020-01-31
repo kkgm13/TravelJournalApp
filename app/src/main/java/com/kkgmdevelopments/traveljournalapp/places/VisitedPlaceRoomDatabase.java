@@ -1,12 +1,16 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import java.util.List;
 
 /**
  * Holiday Database
@@ -41,7 +45,35 @@ public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
+            new PopulateDBAsync(INSTANCE).execute();
         }
     };
 
+    /**
+     * Populate Dummy Data to the DB
+     */
+    private static class PopulateDBAsync extends AsyncTask<Void, Void, Void>{
+
+        private final VisitedPlaceDAO vpDao;
+        String[] visitedPlaces = { "Place 1", "Place 2", "Place 3"};
+//        private LiveData<List<VisitedPlace>> visitedPlaces;
+
+        PopulateDBAsync(VisitedPlaceRoomDatabase db){
+            vpDao = db.placeDAO();
+//            visitedPlaces = vpDao.getAllPlaces();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            vpDao.deleteAll();
+//            vpDao.getAllPlaces();
+
+            for(int i = 0; i < visitedPlaces.length; i++){
+                VisitedPlace vp = new VisitedPlace(visitedPlaces[i]);
+                vpDao.insert(vp);
+            }
+
+            return null;
+        }
+    }
 }

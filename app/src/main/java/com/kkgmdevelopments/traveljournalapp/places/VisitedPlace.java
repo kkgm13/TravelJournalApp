@@ -3,6 +3,7 @@ package com.kkgmdevelopments.traveljournalapp.places;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -28,7 +29,19 @@ public class VisitedPlace implements Serializable {
 //    private final int mPlacePhotos;
 //    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
+    @Ignore
+    public VisitedPlace(){
 
+    }
+
+
+    // Constructor
+    public VisitedPlace(String mPlaceName){
+        this.mPlaceName = mPlaceName;
+//        this.mStartDate = mStartDate;
+//        this.mEndDate = mEndDate;
+//        this.mHolidayNotes = mHolidayNotes;
+    }
 
     public int getPlaceID() {
         return mPlaceID;

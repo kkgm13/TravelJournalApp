@@ -119,7 +119,6 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
          */
         void bindTo(Holiday holiday){
             holidayItemNameView.setText(holiday.getMHolidayName());
-//            holidayItemLastUpdated
             if(holiday.getMHolidayNotes() != null || holiday.getMHolidayNotes() != ""){
                 holidayItemNoteView.setText(holiday.getMHolidayNotes());
             } else{

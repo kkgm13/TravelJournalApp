@@ -46,14 +46,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Toolbar mechanism
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Present Data to RecyclerView
         holidayRecycler = findViewById(R.id.holiday_list);
         final HolidayListAdapter adapter = new HolidayListAdapter(this);
         holidayRecycler.setAdapter(adapter);
         holidayRecycler.setLayoutManager(new LinearLayoutManager(this));
+
 //        // Create View Modal
         mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
         //Get all the holidays and observe changes

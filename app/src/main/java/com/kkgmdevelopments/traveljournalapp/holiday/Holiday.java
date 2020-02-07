@@ -18,7 +18,7 @@ import java.sql.Date;
 public class Holiday implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "hID")
     private int mHolidayID;
 
     @NonNull

@@ -70,6 +70,21 @@
         app:layout_constraintTop_toBottomOf="@+id/place_create_date"
         tools:orientation="vertical" />
 
+    <AutoCompleteTextView
+        android:id="@+id/place_holiday_mapper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="Associated Holiday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/place_create_location"
+        tools:orientation="vertical" />
+
     <EditText
         android:id="@+id/place_create_notes"
         android:layout_width="0dp"
@@ -85,7 +100,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_create_location" />
+        app:layout_constraintTop_toBottomOf="@+id/place_holiday_mapper" />
 
     <ImageButton
         android:id="@+id/imageButton"

@@ -2,6 +2,7 @@ package com.kkgmdevelopments.traveljournalapp;
 
 import androidx.room.TypeConverter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Converter {
@@ -13,5 +14,17 @@ public class Converter {
     @TypeConverter
     public static Long dateToTimestamp(Date date) {
         return date == null ? null : date.getTime();
+    }
+
+    @TypeConverter
+    public static Calendar toCalendar(Long l) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(l);
+        return c;
+    }
+
+    @TypeConverter
+    public static Long fromCalendar(Calendar c){
+        return c == null ? null : c.getTime().getTime();
     }
 }

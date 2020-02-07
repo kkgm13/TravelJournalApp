@@ -1,21 +1,32 @@
 package com.kkgmdevelopments.traveljournalapp;
 
+import android.content.Context;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
+    Context context;
     int numOfTabs; // Number of Pager Tabs
+    Holiday holiday;
 
     /**
      * Constructor
      * @param fm
      * @param numOfTabs
      */
-    public FragmentPagerAdapter(FragmentManager fm, int numOfTabs) {
+    public FragmentPagerAdapter(FragmentManager fm, Context context, int numOfTabs
+//                                ,@Nullable Holiday holiday
+    ) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        this.context = context;
+        this.holiday = holiday;
     }
 
     /**
@@ -27,7 +38,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return new TabPlacesFragment().newInstance(get); //.new Instance ()object
+            case 0: return TabPlacesFragment.newInstance(holiday); //.new Instance ()object
             case 1: return new TabExploreFragment();
             default: return null;
         }

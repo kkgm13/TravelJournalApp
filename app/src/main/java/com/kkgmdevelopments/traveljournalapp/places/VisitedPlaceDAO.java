@@ -2,9 +2,11 @@ package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
+
+import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
 
 import java.util.List;
 
@@ -26,4 +28,10 @@ public interface VisitedPlaceDAO {
 
     @Query("SELECT * FROM places_table ORDER BY placeName ASC")
     LiveData<List<VisitedPlace>> getAllPlaces();
+
+//    @Transaction
+//    @Query("SELECT * FROM holiday_table")
+//    List<HolidayPlace> getHolidaywithPlaces();
+    // error: There is a problem with the query: [SQLITE_ERROR] SQL error or missing database (no such table: holiday_table)
+
 }

@@ -25,11 +25,14 @@ public class NewHolidayActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY";
 
     private EditText mCreateHolidayName;        // Text Input Holiday Name
+
     private TextView mCreateHolidayStartDate;   // Text Holiday Start Date
     private DatePickerDialog.OnDateSetListener mHolidayStartDate;   // Date Picker Dialog Listener Start Date
+
     private DatePickerDialog startDialog;       // Date Picker Dialog Starting
     private TextView mCreateHolidayEndDate;     // Text Holiday End Date
     private DatePickerDialog.OnDateSetListener mHolidayEndDate;     // Date Picker Dialog Listener End Date
+
     private DatePickerDialog endDialog;         // Date Picker Dialog Ending
     private EditText mCreateHolidayNotes;       // Text Input Holiday Notes
 

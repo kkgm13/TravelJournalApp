@@ -20,16 +20,13 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class TabPlacesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private Holiday holiday;
-//    private String mParam2;
 
-    private TabPlacesFragment.OnFragmentInteractionListener mListener;
+//    private TabPlacesFragment.OnFragmentInteractionListener mListener;
 
     public TabPlacesFragment() {
         // Required empty public constructor
@@ -42,12 +39,10 @@ public class TabPlacesFragment extends Fragment {
      * @param holiday Holiday Instance
      * @return A new instance of fragment TestBlankFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TabPlacesFragment newInstance(Holiday holiday) {
         TabPlacesFragment fragment = new TabPlacesFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, holiday);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,8 +51,7 @@ public class TabPlacesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
+            holiday = (Holiday) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -66,12 +60,14 @@ public class TabPlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_tab_places, container, false);
+        View v = inflater.inflate(R.layout.fragment_tab_places, container, false);
 
         // Get Data somehow???
+        
+        // places
 
         // Visited Places RecyclerView
-        RecyclerView placeRecycler = v.findViewById(R.id.places_list);
+        RecyclerView placeRecycler = (RecyclerView) v.findViewById(R.id.places_list);
         final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(getActivity());
         placeRecycler.setAdapter(placeAdapter);
         placeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -89,7 +85,6 @@ public class TabPlacesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

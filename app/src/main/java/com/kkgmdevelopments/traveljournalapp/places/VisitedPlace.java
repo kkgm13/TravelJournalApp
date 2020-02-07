@@ -12,13 +12,16 @@ import java.io.Serializable;
  * Visited Place Model
  *
  * All associated with Places visited in the Holiday
- * TODO: Create relationship with Holiday and VisitedPlace
  */
 @Entity(tableName = "places_table")
 public class VisitedPlace implements Serializable {
     @NonNull
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "pID")
     private int mPlaceID;
+    @NonNull
+    @ColumnInfo(name = "associatedHolidayID")
+    public long associatedHolidayID;
     @NonNull
     @ColumnInfo(name = "placeName")
     private String mPlaceName;
@@ -40,7 +43,7 @@ public class VisitedPlace implements Serializable {
         this.mPlaceName = mPlaceName;
 //        this.mStartDate = mStartDate;
 //        this.mEndDate = mEndDate;
-//        this.mHolidayNotes = mHolidayNotes;
+//        this.mPlaceNotes = mPlaceNotes;
     }
 
     public int getPlaceID() {

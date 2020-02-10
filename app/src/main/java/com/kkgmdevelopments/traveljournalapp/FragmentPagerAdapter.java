@@ -21,7 +21,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
      * @param numOfTabs
      */
     public FragmentPagerAdapter(FragmentManager fm, Context context, int numOfTabs
-//                                ,@Nullable Holiday holiday
+                                , Holiday holiday
     ) {
         super(fm);
         this.numOfTabs = numOfTabs;

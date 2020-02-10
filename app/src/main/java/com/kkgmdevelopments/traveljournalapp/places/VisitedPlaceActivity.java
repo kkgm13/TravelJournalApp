@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
+import com.kkgmdevelopments.traveljournalapp.holiday.NewHolidayActivity;
 
 
 public class VisitedPlaceActivity extends AppCompatActivity {
@@ -37,7 +41,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Pager Adapters Initialize
         final ViewPager viewPager = findViewById(R.id.places_pager);
-        final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), context, tabLayout.getTabCount());
+        final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), context, tabLayout.getTabCount(), holiday);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

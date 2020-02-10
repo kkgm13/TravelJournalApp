@@ -1,6 +1,7 @@
 package com.kkgmdevelopments.traveljournalapp;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+import com.kkgmdevelopments.traveljournalapp.places.NewVisitedPlaceActivity;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceAdapter;
 
 
@@ -22,7 +25,6 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceAdapter;
 public class TabPlacesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private Holiday holiday;
 
@@ -63,14 +65,31 @@ public class TabPlacesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tab_places, container, false);
 
         // Get Data somehow???
-        
+
         // places
 
         // Visited Places RecyclerView
-        RecyclerView placeRecycler = (RecyclerView) v.findViewById(R.id.places_list);
+        RecyclerView placeRecycler = v.findViewById(R.id.places_list);
         final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(getActivity());
         placeRecycler.setAdapter(placeAdapter);
         placeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // Floating Action Button
+        FloatingActionButton fab = v.findViewById(R.id.fab);
+        // On Click Action Listener
+        fab.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Clickable Action
+             *
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                // Proceed to Visited Place Create Page
+                Intent intent = new Intent(getContext(), NewVisitedPlaceActivity.class);
+//                startActivityForResult(intent);
+            }
+        });
         return v;
     }
 

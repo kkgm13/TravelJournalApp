@@ -39,11 +39,11 @@ public class VisitedPlace implements Serializable {
 
 
     // Constructor
-    public VisitedPlace(String mPlaceName){
+    public VisitedPlace(String mPlaceName, String mPlaceNotes){
         this.mPlaceName = mPlaceName;
 //        this.mStartDate = mStartDate;
 //        this.mEndDate = mEndDate;
-//        this.mPlaceNotes = mPlaceNotes;
+        this.mPlaceNotes = mPlaceNotes;
     }
 
     public int getPlaceID() {

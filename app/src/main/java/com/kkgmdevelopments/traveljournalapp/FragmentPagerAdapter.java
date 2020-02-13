@@ -38,7 +38,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return TabPlacesFragment.newInstance(holiday); //.new Instance ()object
+            case 0: return TabPlacesFragment.newInstance(holiday);
             case 1: return new TabExploreFragment();
             default: return null;
         }

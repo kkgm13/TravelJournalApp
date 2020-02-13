@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         // On Click Action Listener
         fab.setOnClickListener(new View.OnClickListener() {
             /**
-             * Clickable Action
+             * Floating Action Bitton Clickable Action
              *
              * @param view
              */

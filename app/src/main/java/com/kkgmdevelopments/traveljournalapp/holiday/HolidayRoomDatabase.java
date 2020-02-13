@@ -71,7 +71,7 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
     /**
      * Populate Dummy Data to the DB
      */
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void>{
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final HolidayDAO hDao;
 //        String [] holidays = { "London", "Birmingham", "Brighton"};
 //        private LiveData<List<Holiday>> holidays;
@@ -94,10 +94,4 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
             return null;
         }
     }
-
-    public static Holiday addHoliday(final HolidayRoomDatabase hDB, Holiday holiday){
-        hDB.holidayDAO().insert(holiday);
-        return holiday;
-    }
-
 }

@@ -2,21 +2,31 @@ package com.kkgmdevelopments.traveljournalapp;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.places.NewVisitedPlaceActivity;
-import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceAdapter;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceListAdapter;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceViewModel;
+
+import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+
 
 
 /**
@@ -26,7 +36,10 @@ public class TabPlacesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
+    private VisitedPlaceViewModel mPlacesViewModel;
     private Holiday holiday;
+
+    public static final int NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 1;
 
 //    private TabPlacesFragment.OnFragmentInteractionListener mListener;
 
@@ -70,9 +83,17 @@ public class TabPlacesFragment extends Fragment {
 
         // Visited Places RecyclerView
         RecyclerView placeRecycler = v.findViewById(R.id.places_list);
-        final VisitedPlaceAdapter placeAdapter = new VisitedPlaceAdapter(getActivity());
+        final VisitedPlaceListAdapter placeAdapter = new VisitedPlaceListAdapter(getActivity());
         placeRecycler.setAdapter(placeAdapter);
         placeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mPlacesViewModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
+        mPlacesViewModel.getAllPlaces().observe(this, new Observer<List<VisitedPlace>>(){
+            @Override
+            public void onChanged(@Nullable List<VisitedPlace> visitedPlaces) {
+                placeAdapter.setPlaces(visitedPlaces);
+            }
+        });
 
         // Floating Action Button
         FloatingActionButton fab = v.findViewById(R.id.fab);
@@ -87,23 +108,22 @@ public class TabPlacesFragment extends Fragment {
             public void onClick(View view) {
                 // Proceed to Visited Place Create Page
                 Intent intent = new Intent(getContext(), NewVisitedPlaceActivity.class);
-//                startActivityForResult(intent);
+                startActivityForResult(intent, NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
             }
         });
         return v;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+            VisitedPlace place = (VisitedPlace) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomPlace.REPLY");
+            mPlacesViewModel.insert(place);
+            Toast.makeText(getActivity(), place.getPlaceName()+" has been created and linked to this holiday", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), R.string.empty_place_not_saved, Toast.LENGTH_LONG).show();
+        }
     }
 }

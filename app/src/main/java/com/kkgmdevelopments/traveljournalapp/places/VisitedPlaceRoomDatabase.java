@@ -17,7 +17,7 @@ import java.util.List;
  * This creates the database for Android Room to recognise.
  *
  */
-@Database(entities = {VisitedPlace.class}, version = 1, exportSchema = false)
+@Database(entities = {VisitedPlace.class}, version = 2, exportSchema = false)
 public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
 
     // Singleton instance of the Database
@@ -45,7 +45,7 @@ public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new PopulateDBAsync(INSTANCE).execute();
+//            new PopulateDBAsync(INSTANCE).execute();
         }
     };
 
@@ -65,13 +65,13 @@ public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            vpDao.deleteAll();
-//            vpDao.getAllPlaces();
+//            vpDao.deleteAll();
+            vpDao.getAllPlaces();
 
-            for(int i = 0; i < visitedPlaces.length; i++){
-                VisitedPlace vp = new VisitedPlace(visitedPlaces[i]);
-                vpDao.insert(vp);
-            }
+//            for(int i = 0; i < visitedPlaces.length; i++){
+//                VisitedPlace vp = new VisitedPlace(visitedPlaces[i]);
+//                vpDao.insert(vp);
+//            }
 
             return null;
         }

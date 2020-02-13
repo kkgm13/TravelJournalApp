@@ -13,14 +13,14 @@ import com.kkgmdevelopments.traveljournalapp.R;
 
 import java.util.List;
 
-public class VisitedPlaceAdapter extends RecyclerView.Adapter<VisitedPlaceAdapter.VisitedPlaceViewHolder> {
+public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceListAdapter.VisitedPlaceViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<VisitedPlace> mPlaces;
     private Context mContext;
     public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
 
-    public VisitedPlaceAdapter(Context context){
+    public VisitedPlaceListAdapter(Context context){
 //        this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -67,7 +67,7 @@ public class VisitedPlaceAdapter extends RecyclerView.Adapter<VisitedPlaceAdapte
      * Set the Place on the list and notify DataSet alterations
      * @param mPlaces
      */
-    void setPlaces(List<VisitedPlace> mPlaces) {
+    public void setPlaces(List<VisitedPlace> mPlaces) {
         this.mPlaces = mPlaces;
         notifyDataSetChanged();
     }

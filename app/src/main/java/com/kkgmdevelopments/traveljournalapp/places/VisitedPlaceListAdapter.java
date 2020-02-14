@@ -1,6 +1,8 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,7 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
     public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
 
     public VisitedPlaceListAdapter(Context context){
-//        this.mContext = context;
+        this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -76,19 +78,44 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
      * Visited Place View Holder
      *  This is the Holder information system for the Visited Place View
      */
-    class VisitedPlaceViewHolder extends RecyclerView.ViewHolder{
+    class VisitedPlaceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView placesItemName;         // Name Item View of Visited Place
         private final TextView placesItemNote;         // Notes Item View of Visited Place
         private final TextView placesItemLastUpdated;  // Last Updated Item View of Visited Place
 
+        /**
+         * Constructor
+         *
+         * @param itemView View Layout
+         */
         public VisitedPlaceViewHolder(@NonNull View itemView) {
             super(itemView);
             placesItemName = itemView.findViewById(R.id.cardItemName);
             placesItemNote = itemView.findViewById(R.id.cardItemNotes);
             placesItemLastUpdated = itemView.findViewById(R.id.cardItemLastUpdated);
+            itemView.setOnClickListener(this);
         }
 
+        /**
+         * Holder OnClick Method
+         *
+         * @param v View
+         */
+        @Override
+        public void onClick(View v) {
+            VisitedPlace selectedPlace = mPlaces.get(getAdapterPosition());
+            Intent detailedIntent = new Intent(mContext, VisitedPlaceDetailedActivity.class);
+            detailedIntent.putExtra("name", selectedPlace.getPlaceName());
+            detailedIntent.putExtra("notes", selectedPlace.getPlaceNotes());
+            mContext.startActivity(detailedIntent);
+        }
+
+        /**
+         * View Holder Data Binding Method
+         *  Bind the incoming data to the View Template
+         * @param place
+         */
         void bindTo(VisitedPlace place){
             placesItemName.setText(place.getPlaceName());
             if(place.getPlaceNotes() != null || place.getPlaceNotes() != ""){

@@ -3,6 +3,7 @@ package com.kkgmdevelopments.traveljournalapp.places;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Dao
 public interface VisitedPlaceDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(VisitedPlace place);
 
 //    void delete(VisitedPlace place);

@@ -4,10 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -15,13 +12,12 @@ import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
-import com.kkgmdevelopments.traveljournalapp.holiday.NewHolidayActivity;
-
 
 public class VisitedPlaceActivity extends AppCompatActivity {
 
-    private Holiday holiday;
-    private Context context;
+    private Holiday holiday;    // Holiday Data
+    private Context context;    // Context Data
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +25,8 @@ public class VisitedPlaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place);
 
         // Toolbar Override set
-        String message = getIntent().getStringExtra(HolidayListAdapter.EXTRA_REPLY);
         holiday = (Holiday) getIntent().getSerializableExtra("holiday");
-        getSupportActionBar().setTitle(message + " Holiday"); // Override Action Bar title
+        getSupportActionBar().setTitle(getIntent().getStringExtra(HolidayListAdapter.EXTRA_REPLY) + " Holiday"); // Override Action Bar title
 
         // Tabs Creation
         TabLayout tabLayout = findViewById(R.id.tab_list);

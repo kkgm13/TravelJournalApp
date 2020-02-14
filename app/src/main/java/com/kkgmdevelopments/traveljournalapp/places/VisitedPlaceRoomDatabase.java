@@ -55,7 +55,7 @@ public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
     private static class PopulateDBAsync extends AsyncTask<Void, Void, Void>{
 
         private final VisitedPlaceDAO vpDao;
-        String[] visitedPlaces = { "Place 1", "Place 2", "Place 3"};
+//        String[] visitedPlaces = { "Place 1", "Place 2", "Place 3"};
 //        private LiveData<List<VisitedPlace>> visitedPlaces;
 
         PopulateDBAsync(VisitedPlaceRoomDatabase db){

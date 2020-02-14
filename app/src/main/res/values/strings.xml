@@ -37,4 +37,8 @@
     <string name="card_notes_placeholder">This is sample text</string>
     <string name="no_notes">No additional information.</string>
     <string name="holiday_create_title">Create a new Holiday</string>
+    <string name="title_activity_visited_place_detailed">VisitedPlaceDetailed</string>
+    <string name="place_name_placeholder">Place Name</string>
+    <string name="visited_placeholder">Visited at: dd/mm/yyyy</string>
+    <string name="edit_place_button_text">Edit Visited Place</string>
 </resources>

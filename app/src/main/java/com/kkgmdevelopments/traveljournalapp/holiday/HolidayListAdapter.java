@@ -15,12 +15,18 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceActivity;
 
 import java.util.List;
 
+/**
+ * Holiday List Adapter
+ *
+ * This is the List (RecyclerView) Adapter that provides the list items of holidays
+ */
 public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.HolidayViewHolder> {
 
     private final LayoutInflater mInflater; // Layout Inflater
     private List<Holiday> mHolidays;        // Cached Copy of Holidays
     private Context mContext;               // Context
     public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
+    private static ClickListener clickListener;
 
     public HolidayListAdapter(Context context) {
         this.mContext = context;
@@ -54,7 +60,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
     }
 
     /**
-     * Set the Holidays
+     * Associate list of holidays with the Adapter
      *
      * @param holidays Holiday List
      */
@@ -101,7 +107,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
          *
          * @param itemView Relation to the view
          */
-        public HolidayViewHolder(@NonNull View itemView) {
+        private HolidayViewHolder(@NonNull View itemView) {
             super(itemView);
             holidayItemNameView = itemView.findViewById(R.id.cardItemName);
             holidayItemNoteView = itemView.findViewById(R.id.cardItemNotes);
@@ -134,6 +140,15 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
                 holidayItemNoteView.setText(R.string.no_notes);
             }
         }
+    }
 
+    /**
+     * Click Listener Interface
+     */
+    public interface ClickListener {
+        void onItemClick(View v, int position);
+    }
+    public void setOnItemClickListener(ClickListener clickListener){
+        HolidayListAdapter.clickListener =clickListener;
     }
 }

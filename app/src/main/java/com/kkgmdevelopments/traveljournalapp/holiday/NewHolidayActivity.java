@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.kkgmdevelopments.traveljournalapp.MainActivity;
 import com.kkgmdevelopments.traveljournalapp.R;
 
 import java.util.Calendar;
@@ -24,17 +25,17 @@ public class NewHolidayActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY";
 
-    private EditText mCreateHolidayName;        // Text Input Holiday Name
+    private EditText mHolidayName;        // Text Input Holiday Name
 
-    private TextView mCreateHolidayStartDate;   // Text Holiday Start Date
+    private TextView mHolidayStartDateField;   // Text Holiday Start Date
     private DatePickerDialog.OnDateSetListener mHolidayStartDate;   // Date Picker Dialog Listener Start Date
-
     private DatePickerDialog startDialog;       // Date Picker Dialog Starting
-    private TextView mCreateHolidayEndDate;     // Text Holiday End Date
-    private DatePickerDialog.OnDateSetListener mHolidayEndDate;     // Date Picker Dialog Listener End Date
 
+    private TextView mHolidayEndDateField;     // Text Holiday End Date
+    private DatePickerDialog.OnDateSetListener mHolidayEndDate;     // Date Picker Dialog Listener End Date
     private DatePickerDialog endDialog;         // Date Picker Dialog Ending
-    private EditText mCreateHolidayNotes;       // Text Input Holiday Notes
+
+    private EditText mHolidayNotes;       // Text Input Holiday Notes
 
     /**
      * Creation Instance
@@ -47,29 +48,34 @@ public class NewHolidayActivity extends AppCompatActivity {
         setContentView(R.layout.holiday_create);
 
         // Set Info based from UI ids
-        mCreateHolidayName = findViewById(R.id.holiday_create_name);
-        mCreateHolidayStartDate = findViewById(R.id.holiday_start_date);
-        mCreateHolidayEndDate = findViewById(R.id.holiday_end_date);
-        mCreateHolidayNotes = findViewById(R.id.holiday_notes);
+        mHolidayName = findViewById(R.id.holiday_create_name);
+        mHolidayStartDateField = findViewById(R.id.holiday_start_date);
+        mHolidayEndDateField = findViewById(R.id.holiday_end_date);
+        mHolidayNotes = findViewById(R.id.holiday_notes);
 
         // Edit Section
         final Bundle extras = getIntent().getExtras();
 
         // IF bundle has something, it is a holiday edit
         if(extras != null){
-//            Holiday holiday = extras
+            Holiday holiday = new Holiday();
+//                    extras.getString(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY, "");
+            if(holiday != null){
+                mHolidayName.setText(holiday.getMHolidayName());
+//                mHolidayStartDateField.setText(holiday);
+                mHolidayNotes.setText(holiday.getMHolidayNotes());
+            }
             // Set Action Bar Info
-//            getSupportActionBar().setTitle("Edit "+ extras.getString(EXTRA_DATA_UPDATE_WORD)+" Holiday"); // Override Action Bar title
-//
+            getSupportActionBar().setTitle("Edit "+ holiday.getMHolidayName()+" Holiday"); // Override Action Bar title
         } else {
             // Set Action Bar Info
             getSupportActionBar().setTitle(R.string.holiday_create_title); // Override Action Bar title
         }
 
-
+        /////////////////////////////////////////
 
         // Open Calendar Dialog for Start Date
-        mCreateHolidayStartDate.setOnClickListener(new View.OnClickListener(){
+        mHolidayStartDateField.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -89,12 +95,12 @@ public class NewHolidayActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 String date = dayOfMonth + "/" + month + "/" + year;
-                mCreateHolidayStartDate.setText(date);
+                mHolidayStartDateField.setText(date);
             }
         };
 
         // Open Calendar Dialog for End Dates
-        mCreateHolidayEndDate.setOnClickListener(new View.OnClickListener(){
+        mHolidayEndDateField.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -114,9 +120,11 @@ public class NewHolidayActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
                 String date = dayOfMonth + "/" + month + "/" + year;
-                mCreateHolidayEndDate.setText(date);
+                mHolidayEndDateField.setText(date);
             }
         };
+
+        //////////////////////////
 
         //Save button
         final Button button = findViewById(R.id.holiday_save);
@@ -125,7 +133,7 @@ public class NewHolidayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d("KKGM", mHolidayEndDate.toString() );
                 Intent replyIntent = new Intent();
-                if(TextUtils.isEmpty(mCreateHolidayName.getText())){
+                if(TextUtils.isEmpty(mHolidayName.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
                 }
 //                else if(startDialog.getDatePicker(). <= endDialog.getDatePicker()) {
@@ -133,8 +141,8 @@ public class NewHolidayActivity extends AppCompatActivity {
 //                }
                 else {
                     Holiday holiday = new Holiday(
-                            mCreateHolidayName.getText().toString(),
-                            mCreateHolidayNotes.getText().toString()
+                            mHolidayName.getText().toString(),
+                            mHolidayNotes.getText().toString()
                     );
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
                     setResult(RESULT_OK, replyIntent);

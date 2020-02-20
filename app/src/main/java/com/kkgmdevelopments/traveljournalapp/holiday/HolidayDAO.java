@@ -14,7 +14,7 @@ import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
 import java.util.List;
 
 /**
- * Holiday DAO
+ * Holiday DAO (Data Access Object)
  *  This is the Room Database handlers for a Holiday.
  *  Room is the Middleman for the DB and Android
  */
@@ -36,7 +36,8 @@ public interface HolidayDAO {
      * Get any Holiday
      */
     @Query("SELECT * FROM holiday_table LIMIT 1")
-    LiveData<List<Holiday>> getAnyHoliday();
+//    LiveData<List<Holiday>> getAnyHoliday();
+    Holiday[] getAnyHoliday();
 
     /**
      * Get all records from the Live DB

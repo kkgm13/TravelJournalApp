@@ -37,11 +37,6 @@ public class HolidayRepository {
     }
 
     /**
-     * Delete All Holiday Records
-     */
-    public void deleteAll(){new deleteAllHolidayAsyncTask(mHolidayDao).execute();}
-
-    /**
      * Insert a New Holiday
      *
      * @param holiday
@@ -50,10 +45,28 @@ public class HolidayRepository {
         new insertAsyncTask(mHolidayDao).execute(holiday);
     }
 
-    //
+    /**
+     * Update a Holiday
+     *
+     * @param holiday
+     */
+    public void updateHoliday(Holiday holiday){
+        new updateHolidayAsyncTask(mHolidayDao).execute(holiday);
+    }
+
+    /**
+     * Delete a Holiday
+     *
+     * @param holiday Selected Holiday
+     */
     public void deleteHoliday(Holiday holiday){
         new deleteHolidayAsyncTask(mHolidayDao).execute(holiday);
     }
+
+    /**
+     * Delete All Holiday Records
+     */
+    public void deleteAll(){new deleteAllHolidayAsyncTask(mHolidayDao).execute();}
 
     /**
      * Allow to insert an Asynchronous Task
@@ -88,10 +101,9 @@ public class HolidayRepository {
     private static class deleteAllHolidayAsyncTask extends AsyncTask<Void, Void, Void> {
         private HolidayDAO mAsyncTaskDao;
 
-        deleteAllHolidayAsyncTask(HolidayDAO dao){
+        public deleteAllHolidayAsyncTask(HolidayDAO dao){
             mAsyncTaskDao = dao;
         }
-
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -106,7 +118,7 @@ public class HolidayRepository {
     private static class deleteHolidayAsyncTask extends AsyncTask<Holiday, Void, Void>{
         private HolidayDAO mAsyncTaskDao;
 
-        deleteHolidayAsyncTask(HolidayDAO dao){
+        public deleteHolidayAsyncTask(HolidayDAO dao){
             mAsyncTaskDao = dao;
         }
 
@@ -117,4 +129,20 @@ public class HolidayRepository {
         }
     }
 
+    /**
+     * Allow to Asynchronous update a holiday
+     */
+    private static class updateHolidayAsyncTask extends AsyncTask<Holiday, Void, Void>{
+        private HolidayDAO mAsyncTaskDao;
+
+        public updateHolidayAsyncTask(HolidayDAO dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Holiday... params) {
+            mAsyncTaskDao.updateHoliday(params[0]);
+            return null;
+        }
+    }
 }

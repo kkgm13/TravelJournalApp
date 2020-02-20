@@ -50,9 +50,7 @@ public class Holiday implements Serializable {
 
     // Constructor
     public Holiday(
-//            int mHolidayID,
             String mHolidayName, String mHolidayNotes){
-//        this.mHolidayID = mHolidayID;
         this.mHolidayName = mHolidayName;
 //        this.mStartDate = mStartDate;
 //        this.mEndDate = mEndDate;

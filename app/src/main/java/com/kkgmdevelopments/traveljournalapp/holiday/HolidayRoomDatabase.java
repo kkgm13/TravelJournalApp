@@ -13,16 +13,16 @@ import com.kkgmdevelopments.traveljournalapp.Converter;
 
 /**
  * Holiday Database
- * This creates the database for Android Room to recognise.
  *
+ * This creates the database for Android Room to recognise.
+ * This also talks to HolidayViewModel to interact with data.
  */
 @Database(entities = {Holiday.class}, version = 5, exportSchema = false)
 //@TypeConverters({Converter.class})
 public abstract class HolidayRoomDatabase extends RoomDatabase {
-
     // Singleton instance of the Database
     private static HolidayRoomDatabase INSTANCE;
-    // Abstract DAO getter
+    // Abstract DAO
     public abstract HolidayDAO holidayDAO();
 
     /**
@@ -30,10 +30,10 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
      * @param context
      * @return Room Database Instance
      */
-    static HolidayRoomDatabase getDatabase(final Context context){
+    public static HolidayRoomDatabase getDatabase(final Context context){
         // If the instance has nothing
         if(INSTANCE == null){
-            // Synch the Database
+            // Sync the Database
             synchronized (HolidayRoomDatabase.class){
                 // If there is no database
                 if(INSTANCE == null){

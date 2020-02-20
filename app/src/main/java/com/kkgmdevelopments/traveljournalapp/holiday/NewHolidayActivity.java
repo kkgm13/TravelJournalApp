@@ -46,12 +46,27 @@ public class NewHolidayActivity extends AppCompatActivity {
         // Set Layout View
         setContentView(R.layout.holiday_create);
 
-        getSupportActionBar().setTitle(R.string.holiday_create_title); // Override Action Bar title
         // Set Info based from UI ids
         mCreateHolidayName = findViewById(R.id.holiday_create_name);
         mCreateHolidayStartDate = findViewById(R.id.holiday_start_date);
         mCreateHolidayEndDate = findViewById(R.id.holiday_end_date);
         mCreateHolidayNotes = findViewById(R.id.holiday_notes);
+
+        // Edit Section
+        final Bundle extras = getIntent().getExtras();
+
+        // IF bundle has something, it is a holiday edit
+        if(extras != null){
+//            Holiday holiday = extras
+            // Set Action Bar Info
+//            getSupportActionBar().setTitle("Edit "+ extras.getString(EXTRA_DATA_UPDATE_WORD)+" Holiday"); // Override Action Bar title
+//
+        } else {
+            // Set Action Bar Info
+            getSupportActionBar().setTitle(R.string.holiday_create_title); // Override Action Bar title
+        }
+
+
 
         // Open Calendar Dialog for Start Date
         mCreateHolidayStartDate.setOnClickListener(new View.OnClickListener(){

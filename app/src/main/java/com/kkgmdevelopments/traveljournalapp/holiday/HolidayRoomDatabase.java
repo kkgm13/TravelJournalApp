@@ -82,10 +82,10 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
         }
 
         @Override
-        protected Void doInBackground(final Void... voids) {
+        protected Void doInBackground(final Void... params) {
             // First Time use and cleaning
 //            hDao.deleteALL();
-            hDao.getAllHolidays();
+
 
 //            for(int i = 0; i < holidays.length; i++){
 //                Holiday holiday = new Holiday(holidays[i]);

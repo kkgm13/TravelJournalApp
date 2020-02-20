@@ -35,5 +35,15 @@ public class HolidayViewModel extends AndroidViewModel {
         mRepository.insert(holiday);
     }
 
+    /**
+     * Delete ALL holidays
+     */
+    public void deleteAll(){ mRepository.deleteAll();}
 
+    /**
+     * Delete a Holiday
+     *
+     * @param holiday Selected Holiday
+     */
+    public void deleteHoliday(Holiday holiday){mRepository.deleteHoliday(holiday);}
 }

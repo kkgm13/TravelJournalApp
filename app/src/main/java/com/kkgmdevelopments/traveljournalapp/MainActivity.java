@@ -7,7 +7,6 @@ import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.NewHolidayActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private HolidayViewModel mHolidayViewModel;
     // Recycler View
     private RecyclerView holidayRecycler;
-    // Request Code
+    // Request Codes
     public static final int NEW_HOLIDAY_ACTIVITY_REQUEST_CODE = 1;
+    public static final int UPDATE_HOLIDAY_ACTIVITY_REQUEST_CODE = 2;
+    // Extra Data strings
+    public static final String EXTRA_DATA_UPDATE_HOLIDAY = "extra_holiday_to_update";
+    public static final String EXTRA_DATA_ID = "extra_data_id";
+
 
     /**
      * Activity Creation
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         holidayRecycler.setAdapter(adapter);
         holidayRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-//        // Create View Modal
+        // Create View Modal
         mHolidayViewModel = ViewModelProviders.of(this).get(HolidayViewModel.class);
         //Get all the holidays and observe changes
         mHolidayViewModel.getAllHolidays().observe(this, new Observer<List<Holiday>>() {
@@ -83,10 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(getApplicationContext(), "In Development", Toast.LENGTH_LONG).show();
+                int position = viewHolder.getAdapterPosition();
+                Holiday selectHol = adapter.getHolidayPosition(position);
+                if(direction == ItemTouchHelper.LEFT){
+                    Toast.makeText(MainActivity.this, "Deleting "+selectHol.getMHolidayName()+" Holiday and associated data", Toast.LENGTH_SHORT).show();
+                    mHolidayViewModel.deleteHoliday(selectHol);
+                }
+
+                if(direction == ItemTouchHelper.RIGHT){
+                    Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
+//                    updateHolidayActivity(selectHol);
+                }
             }
         });
-
         helper.attachToRecyclerView(holidayRecycler);
 
         // Floating Action Button
@@ -105,8 +117,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
         });
+//        adapter.setOnItemClickListener(HolidayListAdapter.ClickListener(){
+//            @Override
+//            public void onItemClick(View v, int position){
+//                Holiday selectHol = adapter.getHolidayPosition(position);
+//                // Launch Update Holiday Activity
+//            }
+//        });
     }
 
+    /**
+     * Create Options Menu on the side
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -114,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Create Option Items that are selectable
+     * @param item Option Menu items
+     * @return ALL Option Items available
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -121,11 +150,19 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // Settings Option Item
         if (id == R.id.action_settings) {
             return true;
         }
 
+        // Clear DB Data Option Item
+        if(id == R.id.clear_data){
+            // Change so that it is a Dialog Confirmation
+            Toast.makeText(this, "Clearing all holiday data...",
+                    Toast.LENGTH_LONG).show();
+            mHolidayViewModel.deleteAll();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -151,5 +188,16 @@ public class MainActivity extends AppCompatActivity {
 //            State holiday NOT Made
             Toast.makeText(getApplicationContext(), R.string.empty_holiday_not_saved, Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Activity method to use same activity layout for Editing
+     * @param holiday
+     */
+    private void updateHolidayActivity(Holiday holiday){
+        Intent intent = new Intent(this, NewHolidayActivity.class);
+        intent.putExtra(EXTRA_DATA_UPDATE_HOLIDAY, holiday);
+        intent.putExtra(EXTRA_DATA_ID, holiday.getMHolidayID());
+        startActivityForResult(intent, UPDATE_HOLIDAY_ACTIVITY_REQUEST_CODE);
     }
 }

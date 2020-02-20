@@ -41,4 +41,5 @@
     <string name="place_name_placeholder">Place Name</string>
     <string name="visited_placeholder">Visited at: dd/mm/yyyy</string>
     <string name="edit_place_button_text">Edit Visited Place</string>
+    <string name="clear_all_holiday_data">Clear All Holiday Data</string>
 </resources>

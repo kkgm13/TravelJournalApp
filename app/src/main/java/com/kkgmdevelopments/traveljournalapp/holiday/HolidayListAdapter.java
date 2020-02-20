@@ -64,6 +64,15 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
     }
 
     /**
+     * Get the Holiday position in the List
+     * @param position Current list position
+     * @return Holiday Position in list
+     */
+    public Holiday getHolidayPosition(int position){
+        return mHolidays.get(position);
+    }
+
+    /**
      * Get the Holiday Database Size
      *
      * @return Holiday Size

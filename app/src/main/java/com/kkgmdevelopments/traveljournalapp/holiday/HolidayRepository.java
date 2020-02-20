@@ -36,6 +36,10 @@ public class HolidayRepository {
         return mAllHolidays;
     }
 
+    /**
+     * Delete All Holiday Records
+     */
+    public void deleteAll(){new deleteAllHolidayAsyncTask(mHolidayDao).execute();}
 
     /**
      * Insert a New Holiday
@@ -44,6 +48,11 @@ public class HolidayRepository {
      */
     public void insert (Holiday holiday){
         new insertAsyncTask(mHolidayDao).execute(holiday);
+    }
+
+    //
+    public void deleteHoliday(Holiday holiday){
+        new deleteHolidayAsyncTask(mHolidayDao).execute(holiday);
     }
 
     /**
@@ -69,6 +78,41 @@ public class HolidayRepository {
         @Override
         protected Void doInBackground(final Holiday... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    /**
+     * Allow to Asynchronous delete the records
+     */
+    private static class deleteAllHolidayAsyncTask extends AsyncTask<Void, Void, Void> {
+        private HolidayDAO mAsyncTaskDao;
+
+        deleteAllHolidayAsyncTask(HolidayDAO dao){
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAsyncTaskDao.deleteALL();
+            return null;
+        }
+    }
+
+    /**
+     * Allow to Asynchronous delete a holiday
+     */
+    private static class deleteHolidayAsyncTask extends AsyncTask<Holiday, Void, Void>{
+        private HolidayDAO mAsyncTaskDao;
+
+        deleteHolidayAsyncTask(HolidayDAO dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Holiday... params) {
+            mAsyncTaskDao.deleteHoliday(params[0]);
             return null;
         }
     }

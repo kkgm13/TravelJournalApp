@@ -4,10 +4,12 @@ package com.kkgmdevelopments.traveljournalapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +39,7 @@ public class TabPlacesFragment extends Fragment {
     private Holiday holiday; // Holiday Data
 
     public static final int NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 1;
+    public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
 
     public TabPlacesFragment() {
         // Required empty public constructor
@@ -85,10 +88,8 @@ public class TabPlacesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab_places, container, false);
 
-        // Get Data somehow???
+        // Get Associated Data somehow???
 //        Log.d("HELLOASDNOISNAIDOSA",getArguments().toString());
-
-        // places
 
         // Visited Places RecyclerView
         RecyclerView placeRecycler = v.findViewById(R.id.places_list);
@@ -122,6 +123,28 @@ public class TabPlacesFragment extends Fragment {
                 startActivityForResult(intent, NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
             }
         });
+
+        final ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT
+        ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                VisitedPlace selectedPlace = placeAdapter.getPlaceAtPosition(position);
+                if(direction == ItemTouchHelper.LEFT){
+                    Toast.makeText(getContext(), "Deleting "+selectedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
+                    mPlacesViewModel.deletePlace(selectedPlace);
+                }
+            }
+        });
+        helper.attachToRecyclerView(placeRecycler);
+
         return v;
     }
 
@@ -141,10 +164,19 @@ public class TabPlacesFragment extends Fragment {
         if(requestCode == NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == -1){
             // Create Visited Place Data
             VisitedPlace place = (VisitedPlace) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY);
-            // Place to the
+            // Place to the RecyclerView
             mPlacesViewModel.insert(place);
             // Notify user of Place Added
             Toast.makeText(getActivity(), place.getPlaceName()+" has been created and linked to this holiday", Toast.LENGTH_LONG).show();
+        } else if(requestCode == UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == -1) {
+            int id = data.getIntExtra(NewVisitedPlaceActivity.EXTRA_REPLY_ID, -1);
+            VisitedPlace evp = (VisitedPlace) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY);
+            if (id != -1){
+//                mPlacesViewModel.updatePlace(new VisitedPlace(id, ));
+                Toast.makeText(getActivity(), "Updated Place", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Unable to update this place", Toast.LENGTH_SHORT).show();
+            }
         } else {
             // Notify user that it hasn't been saved
             Toast.makeText(getActivity(), R.string.empty_place_not_saved, Toast.LENGTH_LONG).show();

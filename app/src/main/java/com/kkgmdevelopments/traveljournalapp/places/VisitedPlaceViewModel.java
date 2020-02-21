@@ -26,4 +26,16 @@ public class VisitedPlaceViewModel extends AndroidViewModel {
     public void insert(VisitedPlace place){
         mRepository.insert(place);
     }
+
+    public void deleteAll(){
+        mRepository.deleteAll();
+    }
+
+    public void deletePlace(VisitedPlace place){
+        mRepository.deletePlace(place);
+    }
+
+    public void updatePlace(VisitedPlace place){
+        mRepository.updatePlace(place);
+    }
 }

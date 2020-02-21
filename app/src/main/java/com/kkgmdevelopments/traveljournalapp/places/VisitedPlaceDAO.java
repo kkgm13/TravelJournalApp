@@ -2,10 +2,12 @@ package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
 
@@ -29,6 +31,15 @@ public interface VisitedPlaceDAO {
 
     @Query("SELECT * FROM places_table ORDER BY placeName ASC")
     LiveData<List<VisitedPlace>> getAllPlaces();
+
+    @Query("SELECT * FROM places_table LIMIT 1")
+    VisitedPlace[] getAnyPlaces();
+
+    @Delete
+    void deletePlace(VisitedPlace place);
+
+    @Update
+    void updatePlace(VisitedPlace... place);
 
 //    @Transaction
 //    @Query("SELECT * FROM holiday_table")

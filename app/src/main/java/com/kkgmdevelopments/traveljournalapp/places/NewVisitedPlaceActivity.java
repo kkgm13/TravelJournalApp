@@ -23,6 +23,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY";
+    public static final String EXTRA_REPLY_ID =
+            "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_ID";
 
     private EditText mPlaceNameField;           // Text Input Place Name
 
@@ -31,7 +33,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     private DatePickerDialog dateDialog;        // Date Picker Dialog Starting
 
     private EditText mPlacesNotesField;         // Text Input Place Notes
-
+    private VisitedPlace vp;
 
 
     @Override
@@ -39,11 +41,23 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visited_place_create);
 
-        getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
-
         mPlaceNameField = findViewById(R.id.place_name);
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
+
+        int id = -1;
+        final Bundle extras = getIntent().getExtras();
+
+        if(extras != null){
+            VisitedPlace vpEdit = (VisitedPlace) extras.getSerializable();
+            if(vpEdit != null){
+                mPlaceNameField.setText(vpEdit.getPlaceName());
+                mPlacesNotesField.setText(vpEdit.getPlaceNotes());
+            }
+            getSupportActionBar().setTitle("Edit" +vpEdit.getPlaceName()+" Place"); // Override Action Bar title
+        } else {
+            getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
+        }
 
         //////////////////////////
 
@@ -84,12 +98,19 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mPlaceNameField.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    VisitedPlace vp = new VisitedPlace(
-                            mPlaceNameField.getText().toString(),
-                            mPlacesNotesField.getText().toString(),
-                            new Date(),
-                            new Date()
-                    );
+                    if(extras != null && extras.containsKey(EXTRA_DATA_ID)){
+                        int id = extras.getInt(EXTRA_DATA_ID, -1);
+                        if(id != -1){
+                            replyIntent.putExtra(EXTRA_REPLY_ID, id);
+                        }
+                    } else {
+                        VisitedPlace vp = new VisitedPlace(
+                                mPlaceNameField.getText().toString(),
+                                mPlacesNotesField.getText().toString(),
+                                new Date(),
+                                new Date()
+                        );
+                    }
                     replyIntent.putExtra(EXTRA_REPLY, vp);
                     setResult(RESULT_OK, replyIntent);
                 }

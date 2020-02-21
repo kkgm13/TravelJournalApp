@@ -120,13 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
         });
-//        adapter.setOnItemClickListener(HolidayListAdapter.ClickListener(){
-//            @Override
-//            public void onItemClick(View v, int position){
-//                Holiday selectHol = adapter.getHolidayPosition(position);
-//                // Launch Update Holiday Activity
-//            }
-//        });
     }
 
     /**

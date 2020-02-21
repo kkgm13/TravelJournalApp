@@ -75,6 +75,10 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
         notifyDataSetChanged();
     }
 
+    public VisitedPlace getPlaceAtPosition(int position){
+        return mPlaces.get(position);
+    }
+
     /**
      * Visited Place View Holder
      *  This is the Holder information system for the Visited Place View

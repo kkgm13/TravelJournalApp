@@ -41,6 +41,12 @@ public class VisitedPlaceRepository {
         new insertAsyncTask(mPlaceDAO).execute(place);
     }
 
+    public void deleteAll(){ new deleteALLPlacesAsyncTask(mPlaceDAO).execute();}
+
+    public void deletePlace(VisitedPlace place) { new deletePlaceAsyncTask(mPlaceDAO).execute(place);}
+
+    public void updatePlace(VisitedPlace place) { new updatePlaceAsyncTask(mPlaceDAO).execute(place);}
+
     /**
      * Allow to insert an Asynchronous Task
      */
@@ -58,4 +64,56 @@ public class VisitedPlaceRepository {
             return null;
         }
     }
+
+    /**
+     * Delete all Async Tasks
+     */
+    private static class deleteALLPlacesAsyncTask extends AsyncTask<Void, Void, Void>{
+        private VisitedPlaceDAO mAsyncTaskDao;
+
+        deleteALLPlacesAsyncTask(VisitedPlaceDAO dao){
+            this.mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAsyncTaskDao.deleteAll();
+            return null;
+        }
+    }
+
+    /**
+     * Delete a Place Asynchronously
+     */
+    private static class deletePlaceAsyncTask extends AsyncTask<VisitedPlace, Void, Void>{
+        private VisitedPlaceDAO mAsyncDao;
+
+        deletePlaceAsyncTask(VisitedPlaceDAO dao){
+            this.mAsyncDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final VisitedPlace... params) {
+            mAsyncDao.deletePlace(params[0]);
+            return null;
+        }
+    }
+
+    /**
+     * Update a Place Asynchronously
+     */
+    private static class updatePlaceAsyncTask extends AsyncTask<VisitedPlace, Void, Void>{
+        private VisitedPlaceDAO mAsyncDao;
+
+        updatePlaceAsyncTask(VisitedPlaceDAO dao){
+            this.mAsyncDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final VisitedPlace... params) {
+            mAsyncDao.updatePlace(params[0]);
+            return null;
+        }
+    }
+
 }

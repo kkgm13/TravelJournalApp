@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.kkgmdevelopments.traveljournalapp.R;
 
 public class VisitedPlaceDetailedActivity extends AppCompatActivity {
+    public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
+    public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
+
+    public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

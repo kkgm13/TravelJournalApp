@@ -52,6 +52,7 @@ public class VisitedPlace implements Serializable {
     @Ignore
     public VisitedPlace(int id, String mPlaceName, String mPlaceNotes,
                         Date mPlaceCreatedAt, Date mPlaceModifiedAt){
+        this.mPlaceID = id;
         this.mPlaceName = mPlaceName;
 //        this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;

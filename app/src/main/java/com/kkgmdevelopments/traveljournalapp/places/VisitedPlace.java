@@ -1,12 +1,13 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Visited Place Model
@@ -19,37 +20,60 @@ public class VisitedPlace implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "pID")
     private int mPlaceID;
+
     @NonNull
     @ColumnInfo(name = "associatedHolidayID")
     public long associatedHolidayID;
+
     @NonNull
     @ColumnInfo(name = "placeName")
     private String mPlaceName;
+
+//    @NonNull
+//    @ColumnInfo(name = "placeDate")
 //    private Date mPlaceDate;
-//    private String mPlaceLocation;
+
+    @Nullable
+    @ColumnInfo(name = "placeLocation")
+    private String mPlaceLocation;
+
     @ColumnInfo(name = "placeNotes")
     private String mPlaceNotes;
+
+    @ColumnInfo(name = "created_at")
+    private Date mPlaceCreatedAt;
+
+    @ColumnInfo(name = "modified_at")
+    private Date mPlaceModifiedAt;
+
 //    private final int mPlacePhotos;
 //    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
     @Ignore
-    public VisitedPlace(){
-
-    }
-
-
-    // Constructor
-    public VisitedPlace(String mPlaceName, String mPlaceNotes){
+    public VisitedPlace(int id, String mPlaceName, String mPlaceNotes,
+                        Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceName = mPlaceName;
-//        this.mStartDate = mStartDate;
-//        this.mEndDate = mEndDate;
+//        this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;
+        this.mPlaceCreatedAt = mPlaceCreatedAt;
+        this.mPlaceModifiedAt = mPlaceModifiedAt;
     }
+    
+    // Constructor
+    public VisitedPlace(String mPlaceName, String mPlaceNotes,
+                        Date mPlaceCreatedAt, Date mPlaceModifiedAt){
+        this.mPlaceName = mPlaceName;
+//        this.mPlaceDate = mPlaceDate;
+        this.mPlaceNotes = mPlaceNotes;
+        this.mPlaceCreatedAt = mPlaceCreatedAt;
+        this.mPlaceModifiedAt = mPlaceModifiedAt;
+    }
+
+    // Encapsulation Methods //
 
     public int getPlaceID() {
         return mPlaceID;
     }
-
     public void setPlaceID(int mPlaceID) {
         this.mPlaceID = mPlaceID;
     }
@@ -57,16 +81,35 @@ public class VisitedPlace implements Serializable {
     public String getPlaceName() {
         return mPlaceName;
     }
-
     public void setPlaceName(String mPlaceName) {
         this.mPlaceName = mPlaceName;
+    }
+
+    public String getPlaceLocation() {
+        return mPlaceLocation;
+    }
+    public void setPlaceLocation(String mPlaceLocation) {
+        this.mPlaceLocation = mPlaceLocation;
     }
 
     public String getPlaceNotes() {
         return mPlaceNotes;
     }
-
     public void setPlaceNotes(String mPlaceNotes) {
         this.mPlaceNotes = mPlaceNotes;
+    }
+
+    public Date getPlaceCreatedAt() {
+        return mPlaceCreatedAt;
+    }
+    public void sePlaceCreatedAt(Date mPlaceCreatedAt) {
+        this.mPlaceCreatedAt = mPlaceCreatedAt;
+    }
+
+    public Date getPlaceModifiedAt() {
+        return mPlaceModifiedAt;
+    }
+    public void setPlaceModifiedAt(Date mPlaceModifiedAt) {
+        this.mPlaceModifiedAt = mPlaceModifiedAt;
     }
 }

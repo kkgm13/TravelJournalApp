@@ -4,20 +4,20 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import java.util.List;
+import com.kkgmdevelopments.traveljournalapp.DateConverter;
 
 /**
  * Holiday Database
  * This creates the database for Android Room to recognise.
  *
  */
-@Database(entities = {VisitedPlace.class}, version = 2, exportSchema = false)
+@Database(entities = {VisitedPlace.class}, version = 3, exportSchema = false)
+@TypeConverters({DateConverter.class})
 public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
 
     // Singleton instance of the Database

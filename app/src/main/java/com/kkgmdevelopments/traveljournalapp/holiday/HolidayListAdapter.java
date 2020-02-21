@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceActivity;
 
+import java.text.DateFormat;
 import java.util.List;
 
 /**
@@ -26,7 +27,6 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
     private List<Holiday> mHolidays;        // Cached Copy of Holidays
     private Context mContext;               // Context
     public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
-    private static ClickListener clickListener;
 
     public HolidayListAdapter(Context context) {
         this.mContext = context;
@@ -139,16 +139,9 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
             } else{
                 holidayItemNoteView.setText(R.string.no_notes);
             }
+            holidayItemLastUpdated.setText("Last Updated: "+
+                    DateFormat.getDateInstance().format(holiday.getMHolidayModifiedAt())
+            );
         }
-    }
-
-    /**
-     * Click Listener Interface
-     */
-    public interface ClickListener {
-        void onItemClick(View v, int position);
-    }
-    public void setOnItemClickListener(ClickListener clickListener){
-        HolidayListAdapter.clickListener =clickListener;
     }
 }

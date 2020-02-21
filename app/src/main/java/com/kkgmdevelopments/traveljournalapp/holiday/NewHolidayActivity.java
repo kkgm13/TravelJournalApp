@@ -19,11 +19,29 @@ import com.kkgmdevelopments.traveljournalapp.MainActivity;
 import com.kkgmdevelopments.traveljournalapp.R;
 
 import java.util.Calendar;
+import java.util.Date;
 
+/**
+ * Holiday Form Activity
+ *
+ * This is the activity to create a new Holiday.
+ * This also serves as editing a holiday as well.
+ */
 public class NewHolidayActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY";
+
+    public static final String EXTRA_REPLY_NAME =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_NAME";
+    public static final String EXTRA_REPLY_START_DATE =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_STARTDATE";
+    public static final String EXTRA_REPLY_END_DATE =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_ENDDATE";
+    public static final String EXTRA_REPLY_NOTES =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_NOTES";
+    public static final String EXTRA_REPLY_ID =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_ID";
 
     private EditText mHolidayName;        // Text Input Holiday Name
 
@@ -36,6 +54,8 @@ public class NewHolidayActivity extends AppCompatActivity {
     private DatePickerDialog endDialog;         // Date Picker Dialog Ending
 
     private EditText mHolidayNotes;       // Text Input Holiday Notes
+
+    private Holiday holiday;
 
     /**
      * Creation Instance
@@ -56,10 +76,9 @@ public class NewHolidayActivity extends AppCompatActivity {
         // Edit Section
         final Bundle extras = getIntent().getExtras();
 
-        // IF bundle has something, it is a holiday edit
+        // IF bundle has something, it is a holiday edit, else its a new one
         if(extras != null){
-            Holiday holiday = new Holiday();
-//                    extras.getString(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY, "");
+            Holiday holiday = (Holiday) extras.getSerializable(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY);
             if(holiday != null){
                 mHolidayName.setText(holiday.getMHolidayName());
 //                mHolidayStartDateField.setText(holiday);
@@ -96,6 +115,8 @@ public class NewHolidayActivity extends AppCompatActivity {
                 month = month + 1;
                 String date = dayOfMonth + "/" + month + "/" + year;
                 mHolidayStartDateField.setText(date);
+//                holiday.setMStartDate();
+
             }
         };
 
@@ -126,12 +147,12 @@ public class NewHolidayActivity extends AppCompatActivity {
 
         //////////////////////////
 
-        //Save button
+        // Save button
         final Button button = findViewById(R.id.holiday_save);
+        // On Click Action System
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("KKGM", mHolidayEndDate.toString() );
                 Intent replyIntent = new Intent();
                 if(TextUtils.isEmpty(mHolidayName.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
@@ -140,11 +161,31 @@ public class NewHolidayActivity extends AppCompatActivity {
 //
 //                }
                 else {
-                    Holiday holiday = new Holiday(
+                    holiday = new Holiday(
                             mHolidayName.getText().toString(),
-                            mHolidayNotes.getText().toString()
+                            new Date(), // Get Selected Start Date
+                            new Date(), // Get Selected End Date
+                            mHolidayNotes.getText().toString(),
+                            new Date(),
+                            new Date()
                     );
+
+                    String holidayName = mHolidayName.getText().toString();
+                    String holidayNotes = mHolidayNotes.getText().toString();
+//                    Long holidayStartDate = mHolidayStartDate
+//                    Long holidayEndDate = mHolidayEndDate
+
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
+                    replyIntent.putExtra(EXTRA_REPLY_NAME, holidayName);
+                    replyIntent.putExtra(EXTRA_REPLY_NOTES, holidayNotes);
+                    // If the Bundle had something and was known to edit by the Data ID
+                    if(extras != null && extras.containsKey(MainActivity.EXTRA_DATA_ID)){
+                        int id = extras.getInt(MainActivity.EXTRA_DATA_ID, -1);
+                        if(id != -1){
+                            // Add Information Intent
+                            replyIntent.putExtra(EXTRA_REPLY_ID, id);
+                        }
+                    }
                     setResult(RESULT_OK, replyIntent);
                 }
                 finish();

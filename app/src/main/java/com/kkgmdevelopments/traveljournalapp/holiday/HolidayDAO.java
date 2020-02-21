@@ -11,6 +11,7 @@ import androidx.room.Update;
 
 import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,4 +59,8 @@ public interface HolidayDAO {
      */
     @Update
     void updateHoliday(Holiday... holiday);
+
+    // Test
+    @Query("SELECT * FROM holiday_table WHERE holidayStart BETWEEN :from AND :to")
+    List<Holiday> findHolidaysBetweenDates(Date from, Date to);
 }

@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.kkgmdevelopments.traveljournalapp.Converter;
+import com.kkgmdevelopments.traveljournalapp.DateConverter;
 
 /**
  * Holiday Database
@@ -17,8 +17,8 @@ import com.kkgmdevelopments.traveljournalapp.Converter;
  * This creates the database for Android Room to recognise.
  * This also talks to HolidayViewModel to interact with data.
  */
-@Database(entities = {Holiday.class}, version = 5, exportSchema = false)
-//@TypeConverters({Converter.class})
+@Database(entities = {Holiday.class}, version = 7, exportSchema = false)
+@TypeConverters({DateConverter.class})
 public abstract class HolidayRoomDatabase extends RoomDatabase {
     // Singleton instance of the Database
     private static HolidayRoomDatabase INSTANCE;

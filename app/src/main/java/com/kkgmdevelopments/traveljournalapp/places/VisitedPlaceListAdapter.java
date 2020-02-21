@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
 
+import java.text.DateFormat;
 import java.util.List;
 
 public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceListAdapter.VisitedPlaceViewHolder> {
@@ -123,6 +124,9 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
             } else {
                 placesItemNote.setText(R.string.no_notes);
             }
+            placesItemLastUpdated.setText("Last Updated: "+
+                    DateFormat.getDateInstance().format(place.getPlaceModifiedAt())
+            );
         }
     }
 }

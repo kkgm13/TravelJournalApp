@@ -1,5 +1,6 @@
 package com.kkgmdevelopments.traveljournalapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,6 +10,7 @@ import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayViewModel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setHolidays(holidays);
             }
         });
-        // Create Touch helper
+
+        // Initialize Touch helper
         final ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -88,14 +91,14 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Holiday selectHol = adapter.getHolidayPosition(position);
+                // Right to left swipe
                 if(direction == ItemTouchHelper.LEFT){
                     Toast.makeText(MainActivity.this, "Deleting "+selectHol.getMHolidayName()+" Holiday and associated data", Toast.LENGTH_SHORT).show();
                     mHolidayViewModel.deleteHoliday(selectHol);
                 }
-
+                //Left to Right Swipe
                 if(direction == ItemTouchHelper.RIGHT){
-                    Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
-//                    updateHolidayActivity(selectHol);
+                    updateHolidayActivity(selectHol);
                 }
             }
         });
@@ -179,13 +182,25 @@ public class MainActivity extends AppCompatActivity {
 
         // If the request code is Good
         if (requestCode == NEW_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            Add a new Holiday via EXTRA REPLY CODE
-            Holiday holiday = (Holiday) data.getSerializableExtra("com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY");
+            // Add a new Holiday via EXTRA REPLY CODE
+            Holiday holiday = (Holiday) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY);
             mHolidayViewModel.insert(holiday);
-//            Confirm new holiday Made
+            // Confirm new holiday Made
             Toast.makeText(getApplicationContext(), holiday.getMHolidayName() + " Holiday has been created.", Toast.LENGTH_LONG).show();
+        } else if(requestCode == UPDATE_HOLIDAY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Get ID passed from data
+            int id = data.getIntExtra(NewHolidayActivity.EXTRA_REPLY_ID, -1);
+            String eHolName = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NAME);
+            // If ID has been passed to save
+            if(id != -1){
+//                mHolidayViewModel.updateHoliday(new Holiday(id,));
+                Toast.makeText(this, " Holiday updated", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(this, "Unable to update holiday", Toast.LENGTH_SHORT).show();
+            }
         } else {
-//            State holiday NOT Made
+            // State holiday NOT Made
             Toast.makeText(getApplicationContext(), R.string.empty_holiday_not_saved, Toast.LENGTH_LONG).show();
         }
     }

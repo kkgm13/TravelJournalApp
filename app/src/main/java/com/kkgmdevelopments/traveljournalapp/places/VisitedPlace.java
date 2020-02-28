@@ -29,9 +29,9 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeName")
     private String mPlaceName;
 
-//    @NonNull
-//    @ColumnInfo(name = "placeDate")
-//    private Date mPlaceDate;
+    @NonNull
+    @ColumnInfo(name = "placeDate")
+    private Date mPlaceDate;
 
     @Nullable
     @ColumnInfo(name = "placeLocation")
@@ -112,5 +112,13 @@ public class VisitedPlace implements Serializable {
     }
     public void setPlaceModifiedAt(Date mPlaceModifiedAt) {
         this.mPlaceModifiedAt = mPlaceModifiedAt;
+    }
+
+    public Date getPlaceDate() {
+        return mPlaceDate;
+    }
+
+    public void setPlaceDate(@NonNull Date mPlaceDate) {
+        this.mPlaceDate = mPlaceDate;
     }
 }

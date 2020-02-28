@@ -55,8 +55,13 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
      */
     @Override
     public void onBindViewHolder(HolidayListAdapter.HolidayViewHolder holder, int position) {
-        Holiday holiday = mHolidays.get(position);
-        holder.bindTo(holiday);
+        if(mHolidays != null){
+            Holiday holiday = mHolidays.get(position);
+            holder.bindTo(holiday);
+        } else {
+            holder.holidayItemNameView.setText(R.string.no_holidays);
+        }
+
     }
 
     /**

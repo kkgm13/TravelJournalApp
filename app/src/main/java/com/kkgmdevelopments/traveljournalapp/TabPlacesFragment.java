@@ -88,9 +88,6 @@ public class TabPlacesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_tab_places, container, false);
 
-        // Get Associated Data somehow???
-//        Log.d("HELLOASDNOISNAIDOSA",getArguments().toString());
-
         // Visited Places RecyclerView
         RecyclerView placeRecycler = v.findViewById(R.id.places_list);
         final VisitedPlaceListAdapter placeAdapter = new VisitedPlaceListAdapter(getActivity());
@@ -167,7 +164,7 @@ public class TabPlacesFragment extends Fragment {
             // Place to the RecyclerView
             mPlacesViewModel.insert(place);
             // Notify user of Place Added
-            Toast.makeText(getActivity(), place.getPlaceName()+" has been created and linked to this holiday", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), place.getPlaceName()+" has been created", Toast.LENGTH_LONG).show();
         } else if(requestCode == UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == -1) {
             int id = data.getIntExtra(NewVisitedPlaceActivity.EXTRA_REPLY_ID, -1);
             VisitedPlace evp = (VisitedPlace) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY);

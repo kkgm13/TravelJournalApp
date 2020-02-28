@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
 
+import java.text.DateFormat;
+
 public class VisitedPlaceDetailedActivity extends AppCompatActivity {
     public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
     public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
@@ -27,8 +29,12 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
         // Place Name
         TextView placeName = findViewById(R.id.placeName);
         TextView placeNotes = findViewById(R.id.placeNotes);
+        TextView placeDate = findViewById(R.id.placesDate);
 
         placeName.setText(getIntent().getStringExtra("name"));
+        placeDate.setText("Visited At: "+
+                DateFormat.getDateInstance().format(getIntent().getStringExtra("date"))
+        );
 
         if(getIntent().getStringExtra("notes") != null){
             placeNotes.setText(getIntent().getStringExtra("notes"));
@@ -42,8 +48,8 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), NewVisitedPlaceActivity.class);
 
-//                intent.putExtra(EXTRA_DATA_UPDATE_PLACE, place);
-//                intent.putExtra(EXTRA_PLACEDATA_ID, place.getPlaceID());
+                intent.putExtra(EXTRA_DATA_UPDATE_PLACE, getIntent().getStringExtra("selectedData"));
+                intent.putExtra(EXTRA_PLACEDATA_ID, getIntent().getStringExtra("id"));
                 startActivityForResult(intent, UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
             }
         });

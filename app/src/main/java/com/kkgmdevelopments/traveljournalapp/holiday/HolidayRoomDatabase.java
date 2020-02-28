@@ -4,12 +4,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.kkgmdevelopments.traveljournalapp.DateConverter;
+
+import java.util.List;
 
 /**
  * Holiday Database
@@ -64,7 +67,7 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen (@NonNull SupportSQLiteDatabase db){
             super.onOpen(db);
-//            new PopulateDbAsync(INSTANCE).execute();
+            new PopulateDbAsync(INSTANCE).execute();
         }
     };
 
@@ -85,7 +88,11 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
         protected Void doInBackground(final Void... params) {
             // First Time use and cleaning
 //            hDao.deleteALL();
+            hDao.getAllHolidays();
 
+//            if(hDao.getAnyHoliday().length < 1){
+//
+//            }
 
 //            for(int i = 0; i < holidays.length; i++){
 //                Holiday holiday = new Holiday(holidays[i]);

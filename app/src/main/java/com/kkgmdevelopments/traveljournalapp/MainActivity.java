@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_DATA_UPDATE_HOLIDAY = "extra_holiday_to_update";
     public static final String EXTRA_DATA_ID = "extra_data_id";
 
+    public HolidayListAdapter adapter;
 
     /**
      * Activity Creation
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Present Data to RecyclerView
         holidayRecycler = findViewById(R.id.holiday_list);
-        final HolidayListAdapter adapter = new HolidayListAdapter(this);
+        adapter = new HolidayListAdapter(this);
         holidayRecycler.setAdapter(adapter);
         holidayRecycler.setLayoutManager(new LinearLayoutManager(this));
 
@@ -184,15 +186,25 @@ public class MainActivity extends AppCompatActivity {
             // Get ID passed from data
             int id = data.getIntExtra(NewHolidayActivity.EXTRA_REPLY_ID, -1);
             String eHolName = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NAME);
+            Date eHolStart = (Date) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY_START_DATE);
+            Date eHolEnd = (Date) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY_END_DATE);
+            String eHolNotes = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NOTES);
             // If ID has been passed to save
             if(id != -1){
-//                mHolidayViewModel.updateHoliday(new Holiday(id,));
+                mHolidayViewModel.updateHoliday(new Holiday(id,
+                        eHolName,
+                        eHolStart,
+                        eHolEnd,
+                        eHolNotes,
+                        new Date(),
+                        new Date()));
                 Toast.makeText(this, " Holiday updated", Toast.LENGTH_SHORT).show();
-
             } else {
-                Toast.makeText(this, "Unable to update holiday", Toast.LENGTH_SHORT).show();
+                // Refreshing RecyclerView Issue
+                Toast.makeText(this, "Unable to update holiday", Toast.LENGTH_LONG).show();
             }
         } else {
+            adapter.notifyDataSetChanged();
             // State holiday NOT Made
             Toast.makeText(getApplicationContext(), R.string.empty_holiday_not_saved, Toast.LENGTH_LONG).show();
         }

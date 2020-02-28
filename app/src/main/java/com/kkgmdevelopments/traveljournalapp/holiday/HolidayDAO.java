@@ -43,7 +43,7 @@ public interface HolidayDAO {
     /**
      * Get all records from the Live DB
      */
-    @Query("SELECT * FROM holiday_table ORDER BY holidayName ASC")
+    @Query("SELECT * FROM holiday_table ORDER BY holidayStart ASC")
     LiveData<List<Holiday>> getAllHolidays();
 
     /**
@@ -59,8 +59,4 @@ public interface HolidayDAO {
      */
     @Update
     void updateHoliday(Holiday... holiday);
-
-    // Test
-    @Query("SELECT * FROM holiday_table WHERE holidayStart BETWEEN :from AND :to")
-    List<Holiday> findHolidaysBetweenDates(Date from, Date to);
 }

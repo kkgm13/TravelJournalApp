@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.kkgmdevelopments.traveljournalapp.MainActivity;
 import com.kkgmdevelopments.traveljournalapp.R;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -81,7 +82,8 @@ public class NewHolidayActivity extends AppCompatActivity {
             Holiday holiday = (Holiday) extras.getSerializable(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY);
             if(holiday != null){
                 mHolidayName.setText(holiday.getMHolidayName());
-//                mHolidayStartDateField.setText(holiday);
+                mHolidayStartDateField.setText(DateFormat.getDateInstance().format(holiday.getMStartDate()));
+                mHolidayEndDateField.setText(DateFormat.getDateInstance().format(holiday.getMEndDate()));
                 mHolidayNotes.setText(holiday.getMHolidayNotes());
             }
             // Set Action Bar Info
@@ -128,6 +130,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
+                cal.set(year,month,day);
 
                 endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mHolidayEndDate ,year, month, day);
                 endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
@@ -157,10 +160,11 @@ public class NewHolidayActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mHolidayName.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
                 }
-//                else if(startDialog.getDatePicker(). <= endDialog.getDatePicker()) {
-//
-//                }
                 else {
+                    String holidayName = mHolidayName.getText().toString();
+                    String holidayNotes = mHolidayNotes.getText().toString();
+//                    Date startDate = ;
+
                     holiday = new Holiday(
                             mHolidayName.getText().toString(),
                             new Date(), // Get Selected Start Date
@@ -170,14 +174,12 @@ public class NewHolidayActivity extends AppCompatActivity {
                             new Date()
                     );
 
-                    String holidayName = mHolidayName.getText().toString();
-                    String holidayNotes = mHolidayNotes.getText().toString();
-//                    Long holidayStartDate = mHolidayStartDate
-//                    Long holidayEndDate = mHolidayEndDate
-
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
                     replyIntent.putExtra(EXTRA_REPLY_NAME, holidayName);
                     replyIntent.putExtra(EXTRA_REPLY_NOTES, holidayNotes);
+                    // Get Date Fixed
+                    replyIntent.putExtra(EXTRA_REPLY_START_DATE, new Date());
+                    replyIntent.putExtra(EXTRA_REPLY_END_DATE, new Date());
                     // If the Bundle had something and was known to edit by the Data ID
                     if(extras != null && extras.containsKey(MainActivity.EXTRA_DATA_ID)){
                         int id = extras.getInt(MainActivity.EXTRA_DATA_ID, -1);

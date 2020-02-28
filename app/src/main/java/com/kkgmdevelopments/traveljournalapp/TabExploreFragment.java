@@ -15,7 +15,6 @@ import android.view.ViewGroup;
  */
 public class TabExploreFragment extends Fragment {
 
-
     public TabExploreFragment() {
         // Required empty public constructor
     }

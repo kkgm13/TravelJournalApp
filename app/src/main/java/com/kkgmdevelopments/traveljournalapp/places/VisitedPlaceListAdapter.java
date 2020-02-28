@@ -111,8 +111,10 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
         public void onClick(View v) {
             VisitedPlace selectedPlace = mPlaces.get(getAdapterPosition());
             Intent detailedIntent = new Intent(mContext, VisitedPlaceDetailedActivity.class);
+            detailedIntent.putExtra("selectedPlace", selectedPlace);
             detailedIntent.putExtra("name", selectedPlace.getPlaceName());
             detailedIntent.putExtra("notes", selectedPlace.getPlaceNotes());
+            detailedIntent.putExtra("name", selectedPlace.getPlaceDate());
             mContext.startActivity(detailedIntent);
         }
 

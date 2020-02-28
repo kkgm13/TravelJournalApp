@@ -25,23 +25,19 @@ public class Holiday implements Serializable {
 
     @NonNull
     @ColumnInfo(name = "holidayStart")
-//    @TypeConverters({DateConverter.class})
-    private Date mStartDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
+    private Date mStartDate;
 
     @NonNull
     @ColumnInfo(name = "holidayEnd")
-//    @TypeConverters({DateConverter.class})
     private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 
     @ColumnInfo(name = "holidayNotes")
     private String mHolidayNotes;
 
     @ColumnInfo(name = "created_at")
-//    @TypeConverters({DateConverter.class})
     private Date mHolidayCreatedAt;
 
     @ColumnInfo(name = "modified_at")
-//    @TypeConverters({DateConverter.class})
     private Date mHolidayModifiedAt;
 
     @Ignore

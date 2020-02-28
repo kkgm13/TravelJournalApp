@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -36,7 +37,16 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
         }
 
         final Button button = findViewById(R.id.btn_edit);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NewVisitedPlaceActivity.class);
 
+//                intent.putExtra(EXTRA_DATA_UPDATE_PLACE, place);
+//                intent.putExtra(EXTRA_PLACEDATA_ID, place.getPlaceID());
+                startActivityForResult(intent, UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
+            }
+        });
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

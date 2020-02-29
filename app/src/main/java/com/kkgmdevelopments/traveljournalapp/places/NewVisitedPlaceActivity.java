@@ -68,6 +68,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 mPlaceNameField.setText(vpEdit.getPlaceName());
                 mPlaceDateText.setText(DateFormat.getDateInstance().format(vpEdit.getPlaceDate()));
                 mPlacesNotesField.setText(vpEdit.getPlaceNotes());
+                mPlaceDate = vpEdit.getPlaceDate();
             }
             getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
         } else {

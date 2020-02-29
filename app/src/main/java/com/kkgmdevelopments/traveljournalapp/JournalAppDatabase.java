@@ -21,7 +21,7 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
  * This creates the database for Android Room to recognise.
  * This also talks to HolidayViewModel to interact with data.
  */
-@Database(entities = {Holiday.class, VisitedPlace.class}, version = 11, exportSchema = false)
+@Database(entities = {Holiday.class, VisitedPlace.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class JournalAppDatabase extends RoomDatabase {
     // Singleton instance of the Database
@@ -30,7 +30,6 @@ public abstract class JournalAppDatabase extends RoomDatabase {
     public abstract HolidayDAO holidayDAO();
     // Abstract DAO Visited Places
     public abstract VisitedPlaceDAO placeDAO();
-
 
     /**
      * Get the Database

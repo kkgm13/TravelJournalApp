@@ -29,6 +29,7 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeName")
     private String mPlaceName;
 
+    @NonNull
     @ColumnInfo(name = "placeDate")
     private Date mPlaceDate;
 

@@ -89,6 +89,8 @@ public class NewHolidayActivity extends AppCompatActivity {
                 mHolidayStartDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMStartDate()));
                 mHolidayEndDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMEndDate()));
                 mHolidayNotes.setText(eHoliday.getMHolidayNotes());
+                mHolidayStartDate = eHoliday.getMStartDate();
+                mHolidayEndDate = eHoliday.getMEndDate();
             }
             // Set Action Bar Info
             getSupportActionBar().setTitle("Edit "+ eHoliday.getMHolidayName()+" Holiday"); // Override Action Bar title

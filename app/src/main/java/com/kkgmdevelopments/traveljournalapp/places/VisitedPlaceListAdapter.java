@@ -130,12 +130,7 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
             } else {
                 placesItemNote.setText(R.string.no_notes);
             }
-            placesItemLastUpdated.setText(
-                    "Visited on: " +  DateFormat.getDateInstance().format(place.getPlaceDate())
-//                            +
-//                    "\nLast Updated: "+
-//                    DateFormat.getDateInstance().format(place.getPlaceModifiedAt())
-            );
+            placesItemLastUpdated.setText("Visited on: " +  DateFormat.getDateInstance().format(place.getPlaceDate()));
         }
     }
 }

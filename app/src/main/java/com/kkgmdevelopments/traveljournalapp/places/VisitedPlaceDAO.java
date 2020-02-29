@@ -29,7 +29,7 @@ public interface VisitedPlaceDAO {
     @Query("DELETE From places_table")
     void deleteAll();
 
-    @Query("SELECT * FROM places_table ORDER BY placeName ASC")
+    @Query("SELECT * FROM places_table ORDER BY placeDate DESC")
     LiveData<List<VisitedPlace>> getAllPlaces();
 
     @Query("SELECT * FROM places_table LIMIT 1")

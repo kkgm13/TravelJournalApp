@@ -23,11 +23,11 @@ public class Holiday implements Serializable {
     @ColumnInfo(name = "holidayName")
     private String mHolidayName;
 
-    @NonNull
+//    @NonNull
     @ColumnInfo(name = "holidayStart")
     private Date mStartDate;
 
-    @NonNull
+//    @NonNull
     @ColumnInfo(name = "holidayEnd")
     private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 

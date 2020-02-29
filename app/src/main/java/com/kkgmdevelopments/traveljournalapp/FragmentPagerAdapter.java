@@ -38,6 +38,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return TabPlacesFragment.newInstance(holiday);
+            // Todo: Map Exploration Fragment
             case 1: return new TabExploreFragment();
             default: return null;
         }

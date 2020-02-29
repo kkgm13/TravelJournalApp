@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -32,15 +33,20 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_DATE";
     public static final String EXTRA_REPLY_ID =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_ID";
+    public static final String EXTRA_REPLY_CREATED =
+            "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
 
     private EditText mPlaceNameField;           // Text Input Place Name
 
     private TextView mPlaceDateText;            // Text Visited Place Date
-    private DatePickerDialog.OnDateSetListener mPlaceStartDate;   // Date Picker Dialog Listener Start Date
+    private DatePickerDialog.OnDateSetListener mPlaceDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog dateDialog;        // Date Picker Dialog Starting
+    private Date mPlaceDate;                    // Place Visited Date
+
+    private TextView mPlacesTextField;          // Place Geolocation
 
     private EditText mPlacesNotesField;         // Text Input Place Notes
-    private VisitedPlace vp;
+    private VisitedPlace vpEdit;
 
 
     @Override
@@ -57,20 +63,18 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
 
         // If Bundle is known, Set information
         if(extras != null){
-            VisitedPlace vpEdit = (VisitedPlace) extras.getSerializable("selectedPlace");
+            vpEdit = (VisitedPlace) extras.getSerializable(TabPlacesFragment.EXTRA_DATA_UPDATE_PLACE);
             if(vpEdit != null){
                 mPlaceNameField.setText(vpEdit.getPlaceName());
                 mPlaceDateText.setText(DateFormat.getDateInstance().format(vpEdit.getPlaceDate()));
                 mPlacesNotesField.setText(vpEdit.getPlaceNotes());
             }
-            getSupportActionBar().setTitle("Edit" +vpEdit.getPlaceName()+" Place"); // Override Action Bar title
+            getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
         }
 
-        //////////////////////////
-
-        // Open Calendar Dialog for Start Date
+        // Open Calendar Dialog for Date
         mPlaceDateText.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -79,25 +83,22 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                dateDialog = new DatePickerDialog(NewVisitedPlaceActivity.this, R.style.DialogTheme, mPlaceStartDate ,year, month, day);
+                dateDialog = new DatePickerDialog(NewVisitedPlaceActivity.this, R.style.DialogTheme, mPlaceDateListener,year, month, day);
                 dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 dateDialog.show();
             }
         });
 
-        // Convert Selected Date for Start Date
-        mPlaceStartDate = new DatePickerDialog.OnDateSetListener() {
+        // Convert Selected Date for Date
+        mPlaceDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = dayOfMonth + "/" + month + "/" + year;
-                mPlaceDateText.setText(date);
-//                holiday.setMStartDate();
-
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                mPlaceDate = calendar.getTime();
+                mPlaceDateText.setText(DateFormat.getDateInstance().format(mPlaceDate));
             }
         };
-
-        /////////////////////////
 
         final Button button = findViewById(R.id.place_save);
         button.setOnClickListener(new View.OnClickListener() {
@@ -109,28 +110,27 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     // Cancel Edit
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String name = mPlaceNameField.getText().toString();
-                    String notes = mPlacesNotesField.getText().toString();
-
                     // Create Object
                     VisitedPlace vp = new VisitedPlace(
-                            name,
-                            notes,
+                            mPlaceNameField.getText().toString(),
+                            mPlaceDate,
+                            mPlacesNotesField.getText().toString(),
                             new Date(),
                             new Date()
                     );
-
                     replyIntent.putExtra(EXTRA_REPLY, vp);
-                    replyIntent.putExtra(EXTRA_REPLY_NAME, name);
-                    replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
+                    replyIntent.putExtra(EXTRA_REPLY_NAME, mPlaceNameField.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_NOTES, mPlacesNotesField.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_DATE, mPlaceDate);
 
                     // If action is an Edit to Update
-                    if(extras != null && extras.containsKey(VisitedPlaceDetailedActivity.EXTRA_PLACEDATA_ID)){
-                        int id = extras.getInt(VisitedPlaceDetailedActivity.EXTRA_PLACEDATA_ID, -1);
+                    if(extras != null && extras.containsKey(TabPlacesFragment.EXTRA_PLACEDATA_ID)){
+                        int id = extras.getInt(TabPlacesFragment.EXTRA_PLACEDATA_ID, -1);
                         // If provided ID
                         if(id != -1){
                             // Return the ID
                             replyIntent.putExtra(EXTRA_REPLY_ID, id);
+                            replyIntent.putExtra(EXTRA_REPLY_CREATED, vpEdit.getPlaceCreatedAt());
                         }
                     }
                     setResult(RESULT_OK, replyIntent);

@@ -113,8 +113,8 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
             Intent detailedIntent = new Intent(mContext, VisitedPlaceDetailedActivity.class);
             detailedIntent.putExtra("selectedPlace", selectedPlace);
             detailedIntent.putExtra("name", selectedPlace.getPlaceName());
-            detailedIntent.putExtra("notes", selectedPlace.getPlaceNotes());
-            detailedIntent.putExtra("name", selectedPlace.getPlaceDate());
+//            detailedIntent.putExtra("notes", selectedPlace.getPlaceNotes());
+//            detailedIntent.putExtra("name", selectedPlace.getPlaceDate());
             mContext.startActivity(detailedIntent);
         }
 
@@ -130,8 +130,11 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
             } else {
                 placesItemNote.setText(R.string.no_notes);
             }
-            placesItemLastUpdated.setText("Last Updated: "+
-                    DateFormat.getDateInstance().format(place.getPlaceModifiedAt())
+            placesItemLastUpdated.setText(
+                    "Visited on: " +  DateFormat.getDateInstance().format(place.getPlaceDate())
+//                            +
+//                    "\nLast Updated: "+
+//                    DateFormat.getDateInstance().format(place.getPlaceModifiedAt())
             );
         }
     }

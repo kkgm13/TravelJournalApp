@@ -16,7 +16,7 @@ import com.kkgmdevelopments.traveljournalapp.DateConverter;
  * This creates the database for Android Room to recognise.
  *
  */
-@Database(entities = {VisitedPlace.class}, version = 4, exportSchema = false)
+@Database(entities = {VisitedPlace.class}, version = 5, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class VisitedPlaceRoomDatabase extends RoomDatabase {
 

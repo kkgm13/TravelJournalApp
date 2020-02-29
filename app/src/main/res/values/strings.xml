@@ -18,7 +18,7 @@
     <string name="place_date_text">Date of Visit</string>
     <string name="place_location_text">Place Location</string>
     <string name="place_notes_text">Notes about this place</string>
-    <string name="save_place">Create Visited Place for this holiday</string>
+    <string name="save_place">Save Visited Place for this holiday</string>
 
     <!-- Toast Information -->
     <string name="empty_holiday_not_saved">Holiday Not Saved</string>

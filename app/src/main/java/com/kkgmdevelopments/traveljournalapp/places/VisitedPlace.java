@@ -29,7 +29,6 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeName")
     private String mPlaceName;
 
-    @NonNull
     @ColumnInfo(name = "placeDate")
     private Date mPlaceDate;
 
@@ -50,21 +49,21 @@ public class VisitedPlace implements Serializable {
 //    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
     @Ignore
-    public VisitedPlace(int id, String mPlaceName, String mPlaceNotes,
+    public VisitedPlace(int id, String mPlaceName, Date mPlaceDate, String mPlaceNotes,
                         Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceID = id;
         this.mPlaceName = mPlaceName;
-//        this.mPlaceDate = mPlaceDate;
+        this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;
         this.mPlaceCreatedAt = mPlaceCreatedAt;
         this.mPlaceModifiedAt = mPlaceModifiedAt;
     }
     
     // Constructor
-    public VisitedPlace(String mPlaceName, String mPlaceNotes,
+    public VisitedPlace(String mPlaceName, Date mPlaceDate, String mPlaceNotes,
                         Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceName = mPlaceName;
-//        this.mPlaceDate = mPlaceDate;
+        this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;
         this.mPlaceCreatedAt = mPlaceCreatedAt;
         this.mPlaceModifiedAt = mPlaceModifiedAt;

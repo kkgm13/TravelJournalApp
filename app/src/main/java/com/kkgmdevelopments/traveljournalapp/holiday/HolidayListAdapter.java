@@ -2,6 +2,7 @@ package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +140,8 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
          */
         void bindTo(Holiday holiday){
             holidayItemNameView.setText(holiday.getMHolidayName());
-            if(holiday.getMHolidayNotes() != null || holiday.getMHolidayNotes() != ""){
+            if(holiday.getMHolidayNotes() != null || holiday.getMHolidayNotes() != " "){
+                Log.d("QWERTYUIOP", holiday.getMHolidayNotes());
                 holidayItemNoteView.setText(holiday.getMHolidayNotes());
             } else{
                 holidayItemNoteView.setText(R.string.no_notes);

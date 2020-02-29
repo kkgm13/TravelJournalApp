@@ -43,20 +43,24 @@ public class NewHolidayActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_NOTES";
     public static final String EXTRA_REPLY_ID =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_ID";
+    public static final String EXTRA_REPLY_CREATED =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_CREATED";
 
     private EditText mHolidayName;        // Text Input Holiday Name
 
     private TextView mHolidayStartDateField;   // Text Holiday Start Date
-    private DatePickerDialog.OnDateSetListener mHolidayStartDate;   // Date Picker Dialog Listener Start Date
+    private DatePickerDialog.OnDateSetListener mStartDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog startDialog;       // Date Picker Dialog Starting
+    private Date mHolidayStartDate;             // Holiday Start Date
 
     private TextView mHolidayEndDateField;     // Text Holiday End Date
-    private DatePickerDialog.OnDateSetListener mHolidayEndDate;     // Date Picker Dialog Listener End Date
+    private DatePickerDialog.OnDateSetListener mEndDateListener;     // Date Picker Dialog Listener End Date
     private DatePickerDialog endDialog;         // Date Picker Dialog Ending
+    private Date mHolidayEndDate;             // Holiday Start Date
 
     private EditText mHolidayNotes;       // Text Input Holiday Notes
 
-    private Holiday holiday;
+    private Holiday eHoliday;
 
     /**
      * Creation Instance
@@ -79,21 +83,19 @@ public class NewHolidayActivity extends AppCompatActivity {
 
         // IF bundle has something, it is a holiday edit, else its a new one
         if(extras != null){
-            Holiday holiday = (Holiday) extras.getSerializable(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY);
-            if(holiday != null){
-                mHolidayName.setText(holiday.getMHolidayName());
-                mHolidayStartDateField.setText(DateFormat.getDateInstance().format(holiday.getMStartDate()));
-                mHolidayEndDateField.setText(DateFormat.getDateInstance().format(holiday.getMEndDate()));
-                mHolidayNotes.setText(holiday.getMHolidayNotes());
+            eHoliday = (Holiday) extras.getSerializable(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY);
+            if(eHoliday != null){
+                mHolidayName.setText(eHoliday.getMHolidayName());
+                mHolidayStartDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMStartDate()));
+                mHolidayEndDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMEndDate()));
+                mHolidayNotes.setText(eHoliday.getMHolidayNotes());
             }
             // Set Action Bar Info
-            getSupportActionBar().setTitle("Edit "+ holiday.getMHolidayName()+" Holiday"); // Override Action Bar title
+            getSupportActionBar().setTitle("Edit "+ eHoliday.getMHolidayName()+" Holiday"); // Override Action Bar title
         } else {
             // Set Action Bar Info
             getSupportActionBar().setTitle(R.string.holiday_create_title); // Override Action Bar title
         }
-
-        /////////////////////////////////////////
 
         // Open Calendar Dialog for Start Date
         mHolidayStartDateField.setOnClickListener(new View.OnClickListener(){
@@ -104,21 +106,20 @@ public class NewHolidayActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
-                startDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mHolidayStartDate ,year, month, day);
+                startDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mStartDateListener,year, month, day);
                 startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 startDialog.show();
             }
         });
 
         // Convert Selected Date for Start Date
-        mHolidayStartDate = new DatePickerDialog.OnDateSetListener() {
+        mStartDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = dayOfMonth + "/" + month + "/" + year;
-                mHolidayStartDateField.setText(date);
-//                holiday.setMStartDate();
-
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                mHolidayStartDate = calendar.getTime();
+                mHolidayStartDateField.setText(DateFormat.getDateInstance().format(mHolidayStartDate));
             }
         };
 
@@ -132,23 +133,23 @@ public class NewHolidayActivity extends AppCompatActivity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 cal.set(year,month,day);
 
-                endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mHolidayEndDate ,year, month, day);
+                endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mEndDateListener,year, month, day);
                 endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-//                endDialog.getDatePicker().setMinDate(startDialog.getDatePicker().);
+                endDialog.getDatePicker().setMinDate(mHolidayStartDate.getTime());
                 endDialog.show();
             }
         });
+
         // Convert Selected Date for Start Date
-        mHolidayEndDate = new DatePickerDialog.OnDateSetListener() {
+        mEndDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = dayOfMonth + "/" + month + "/" + year;
-                mHolidayEndDateField.setText(date);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                mHolidayEndDate = calendar.getTime();
+                mHolidayEndDateField.setText(DateFormat.getDateInstance().format(mHolidayEndDate));
             }
         };
-
-        //////////////////////////
 
         // Save button
         final Button button = findViewById(R.id.holiday_save);
@@ -159,33 +160,27 @@ public class NewHolidayActivity extends AppCompatActivity {
                 Intent replyIntent = new Intent();
                 if(TextUtils.isEmpty(mHolidayName.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
-                }
-                else {
-                    String holidayName = mHolidayName.getText().toString();
-                    String holidayNotes = mHolidayNotes.getText().toString();
-//                    Date startDate = ;
-
-                    holiday = new Holiday(
+                } else {
+                    Holiday holiday = new Holiday(
                             mHolidayName.getText().toString(),
-                            new Date(), // Get Selected Start Date
-                            new Date(), // Get Selected End Date
+                            mHolidayStartDate, // Get Selected Start Date
+                            mHolidayEndDate, // Get Selected End Date
                             mHolidayNotes.getText().toString(),
                             new Date(),
                             new Date()
                     );
-
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
-                    replyIntent.putExtra(EXTRA_REPLY_NAME, holidayName);
-                    replyIntent.putExtra(EXTRA_REPLY_NOTES, holidayNotes);
-                    // Get Date Fixed
-                    replyIntent.putExtra(EXTRA_REPLY_START_DATE, new Date());
-                    replyIntent.putExtra(EXTRA_REPLY_END_DATE, new Date());
+                    replyIntent.putExtra(EXTRA_REPLY_NAME, mHolidayName.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_NOTES, mHolidayNotes.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_START_DATE, mHolidayStartDate);
+                    replyIntent.putExtra(EXTRA_REPLY_END_DATE, mHolidayEndDate);
                     // If the Bundle had something and was known to edit by the Data ID
                     if(extras != null && extras.containsKey(MainActivity.EXTRA_DATA_ID)){
                         int id = extras.getInt(MainActivity.EXTRA_DATA_ID, -1);
                         if(id != -1){
                             // Add Information Intent
                             replyIntent.putExtra(EXTRA_REPLY_ID, id);
+                            replyIntent.putExtra(EXTRA_REPLY_CREATED, eHoliday.getMHolidayCreatedAt()); // java.lang.ClassCastException: java.util.Date cannot be cast to java.lang.String
                         }
                     }
                     setResult(RESULT_OK, replyIntent);

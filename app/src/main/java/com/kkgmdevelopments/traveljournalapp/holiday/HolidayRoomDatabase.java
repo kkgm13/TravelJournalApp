@@ -20,7 +20,7 @@ import java.util.List;
  * This creates the database for Android Room to recognise.
  * This also talks to HolidayViewModel to interact with data.
  */
-@Database(entities = {Holiday.class}, version = 7, exportSchema = false)
+@Database(entities = {Holiday.class}, version = 8, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class HolidayRoomDatabase extends RoomDatabase {
     // Singleton instance of the Database

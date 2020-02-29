@@ -25,6 +25,7 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceListAdapter;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -35,8 +36,13 @@ import java.util.List;
 public class TabPlacesFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
-    private VisitedPlaceViewModel mPlacesViewModel; // View Model Instance
+    public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
+    public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
+    public static final String EXTRA_PLACEDATA_CREATED = "extra_place_created";
+
+    public VisitedPlaceViewModel mPlacesViewModel; // View Model Instance
     private Holiday holiday; // Holiday Data
+    public VisitedPlaceListAdapter placeAdapter;
 
     public static final int NEW_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
@@ -90,7 +96,7 @@ public class TabPlacesFragment extends Fragment {
 
         // Visited Places RecyclerView
         RecyclerView placeRecycler = v.findViewById(R.id.places_list);
-        final VisitedPlaceListAdapter placeAdapter = new VisitedPlaceListAdapter(getActivity());
+        placeAdapter = new VisitedPlaceListAdapter(getActivity());
         placeRecycler.setAdapter(placeAdapter);
         placeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -123,7 +129,7 @@ public class TabPlacesFragment extends Fragment {
 
         final ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0,
-                ItemTouchHelper.LEFT
+                ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN
         ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -134,9 +140,17 @@ public class TabPlacesFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 VisitedPlace selectedPlace = placeAdapter.getPlaceAtPosition(position);
-                if(direction == ItemTouchHelper.LEFT){
+                if(direction == ItemTouchHelper.RIGHT){
                     Toast.makeText(getContext(), "Deleting "+selectedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
                     mPlacesViewModel.deletePlace(selectedPlace);
+                }
+                if(direction == ItemTouchHelper.DOWN){
+                    Intent intent = new Intent(getActivity(), NewVisitedPlaceActivity.class);
+
+                    intent.putExtra(EXTRA_DATA_UPDATE_PLACE ,selectedPlace);
+                    intent.putExtra(EXTRA_PLACEDATA_ID, selectedPlace.getPlaceID());
+                    intent.putExtra(EXTRA_PLACEDATA_CREATED, selectedPlace.getPlaceCreatedAt());
+                    startActivityForResult(intent, UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
                 }
             }
         });
@@ -167,14 +181,24 @@ public class TabPlacesFragment extends Fragment {
             Toast.makeText(getActivity(), place.getPlaceName()+" has been created", Toast.LENGTH_LONG).show();
         } else if(requestCode == UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == -1) {
             int id = data.getIntExtra(NewVisitedPlaceActivity.EXTRA_REPLY_ID, -1);
-            VisitedPlace evp = (VisitedPlace) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY);
+            String ePName = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_NAME);
+            String ePNotes = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_NOTES);
+            Date ePDate = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_DATE);
+            Date ePCreated = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_CREATED);
             if (id != -1){
-//                mPlacesViewModel.updatePlace(new VisitedPlace(id, ));
-                Toast.makeText(getActivity(), "Updated Place", Toast.LENGTH_SHORT).show();
+                mPlacesViewModel.updatePlace(new VisitedPlace(id,
+                        ePName,
+                        ePDate,
+                        ePNotes,
+                        ePCreated,
+                        new Date()
+                ));
+                Toast.makeText(getActivity(), "Updated "+ ePName +" Place", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "Unable to update this place", Toast.LENGTH_SHORT).show();
             }
         } else {
+            placeAdapter.notifyDataSetChanged();
             // Notify user that it hasn't been saved
             Toast.makeText(getActivity(), R.string.empty_place_not_saved, Toast.LENGTH_LONG).show();
         }

@@ -5,21 +5,32 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 
 import java.text.DateFormat;
+import java.util.Date;
 
 public class VisitedPlaceDetailedActivity extends AppCompatActivity {
-    public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
-    public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
+//    public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
+//    public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
+//    public static final String EXTRA_PLACEDATA_CREATED = "extra_place_created";
 
     public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
+
+    private VisitedPlace vp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +42,12 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
 
-        placeName.setText(getIntent().getStringExtra("name"));
-        placeDate.setText("Visited At: "+
-                DateFormat.getDateInstance().format(getIntent().getStringExtra("date"))
-        );
+        vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
-        if(getIntent().getStringExtra("notes") != null){
-            placeNotes.setText(getIntent().getStringExtra("notes"));
+        placeName.setText(vp.getPlaceName());
+        placeDate.setText("Visited At: "+ DateFormat.getDateInstance().format(vp.getPlaceDate()));
+        if(vp.getPlaceNotes() != null){
+            placeNotes.setText(vp.getPlaceNotes());
         } else {
             placeNotes.setText("No Additional Notes");
         }
@@ -46,22 +56,16 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NewVisitedPlaceActivity.class);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Join me in visiting "+vp.getPlaceName());
+                sendIntent.setType("text/plain");
 
-                intent.putExtra(EXTRA_DATA_UPDATE_PLACE, getIntent().getStringExtra("selectedData"));
-                intent.putExtra(EXTRA_PLACEDATA_ID, getIntent().getStringExtra("id"));
-                startActivityForResult(intent, UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
+                Intent shareIntent = Intent.createChooser(sendIntent, "Share Visited Place with...");
+                startActivity(shareIntent);
             }
         });
-
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
     }
-
 }

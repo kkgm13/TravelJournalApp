@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceActivity" >
+<!--    <item android:id="@+id/clear_data"-->
+<!--        android:title="Clear All Visited Places"-->
+<!--        android:orderInCategory="">-->
+    <item android:id="@+id/share_setting"
+        android:title="Share Current Holiday"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

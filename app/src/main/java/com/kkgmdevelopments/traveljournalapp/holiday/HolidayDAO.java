@@ -43,7 +43,7 @@ public interface HolidayDAO {
     /**
      * Get all records from the Live DB
      */
-    @Query("SELECT * FROM holiday_table ORDER BY holidayStart ASC")
+    @Query("SELECT * FROM holiday_table ORDER BY holidayStart DESC")
     LiveData<List<Holiday>> getAllHolidays();
 
     /**

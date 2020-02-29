@@ -18,6 +18,9 @@
     <string name="place_date_text">Date of Visit</string>
     <string name="place_location_text">Place Location</string>
     <string name="place_notes_text">Notes about this place</string>
+    <string name="location_text">"Latitude: %1$.4f \n Longitude: %2$.4f
+<!--\n Timestamp: %3$tr"-->
+    </string>
     <string name="save_place">Save Visited Place for this holiday</string>
 
     <!-- Toast Information -->
@@ -42,4 +45,10 @@
     <string name="visited_placeholder">Visited at: dd/mm/yyyy</string>
     <string name="edit_place_button_text">Edit Visited Place</string>
     <string name="clear_all_holiday_data">Clear All Holiday Data</string>
+
+    <!--  Location Related Text -->
+    <string name="service_unavailable">Service Unavailable</string>
+    <string name="invalid_data_geocode">Invalid Coordinates supplied to Geocoder</string>
+    <string name="no_address_found">No address Found</string>
+    <string name="address_text">"Address: %1$s \n Timestamp: %2$tr"</string>
 </resources>

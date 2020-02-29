@@ -16,10 +16,10 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
 
 /**
- * Holiday Database
+ * Room Database
  *
- * This creates the database for Android Room to recognise.
- * This also talks to HolidayViewModel to interact with data.
+ * This creates the Overall database for Android Room to recognise.
+ * This also talks to ANY Data Access Object (DAOs) to interact with data.
  */
 @Database(entities = {Holiday.class, VisitedPlace.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})

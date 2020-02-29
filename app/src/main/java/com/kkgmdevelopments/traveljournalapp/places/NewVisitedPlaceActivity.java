@@ -19,9 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.kkgmdevelopments.traveljournalapp.FetchAddressTask;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 
@@ -29,8 +29,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NewVisitedPlaceActivity extends AppCompatActivity {
+public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
 
+    // Reply Codes
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY";
     public static final String EXTRA_REPLY_NAME =
@@ -45,22 +46,23 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
+    // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
-
     private TextView mPlaceDateText;            // Text Visited Place Date
     private DatePickerDialog.OnDateSetListener mPlaceDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog dateDialog;        // Date Picker Dialog Starting
     private Date mPlaceDate;                    // Place Visited Date
-
-    private TextView mPlacesTextField;          // Place Geolocation
-
+    private TextView mPlaceLocationText;          // Place Geolocation
     private EditText mPlacesNotesField;         // Text Input Place Notes
-    private VisitedPlace vpEdit;                // VisitedPlace Object
 
+    // Location Based Elements
     private Location mLastLocation;
     private Button locationButton;
+    private TextView mPlaceLocation;
 
     private FusedLocationProviderClient fusedLocationClient;
+
+    private VisitedPlace vpEdit;                // VisitedPlace Object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         mPlaceNameField = findViewById(R.id.place_name);
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
-        mPlacesTextField = findViewById(R.id.mLocationText);
+        mPlaceLocation = findViewById(R.id.mLocationText); // Not the EditText
         int id = -1;
 
         locationButton = findViewById(R.id.btn_location);
@@ -131,7 +133,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent replyIntent = new Intent();
                 // If Nothing for Place Name
-                if(TextUtils.isEmpty(mPlaceNameField.getText())){
+                if(TextUtils.isEmpty(mPlaceNameField.getText()) || mPlaceDate == null){
                     // Cancel Edit
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
@@ -164,7 +166,12 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Get the Geographical Location
+     *  This provides the device with an idea of where the user is based on Location Services and GPS
+     */
     private void getLocation(){
+        // Allow the Permissions
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -172,23 +179,30 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                             {Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
         } else {
+            // Start grabbing infromation
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null){
                         mLastLocation = location;
-                        mPlacesTextField.setText(
+                        new FetchAddressTask(NewVisitedPlaceActivity.this, NewVisitedPlaceActivity.this).execute(location);
+                        mPlaceLocation.setText(
                                 getString(
-                                        R.string.location_text,
-                                        mLastLocation.getLatitude(),
-                                        mLastLocation.getLongitude()
-//                                        mLastLocation.getTime()
+                                        R.string.address_text,
+                                        getString(R.string.loading),
+                                        System.currentTimeMillis()
                                 )
                         );
+                    } else {
+                        mPlaceLocation.setText(R.string.no_location);
                     }
                 }
             });
         }
     }
 
+    @Override
+    public void onTaskCompleted(String result) {
+        mPlaceLocation.setText(getString(R.string.address_text,result,System.currentTimeMillis()));
+    }
 }

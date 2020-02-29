@@ -160,7 +160,7 @@ public class NewHolidayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent replyIntent = new Intent();
-                if(TextUtils.isEmpty(mHolidayName.getText())){
+                if(TextUtils.isEmpty(mHolidayName.getText()) || mHolidayStartDate == null || mHolidayEndDate == null){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
                     Holiday holiday = new Holiday(

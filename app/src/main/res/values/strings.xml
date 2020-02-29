@@ -51,4 +51,6 @@
     <string name="invalid_data_geocode">Invalid Coordinates supplied to Geocoder</string>
     <string name="no_address_found">No address Found</string>
     <string name="address_text">"Address: %1$s \n Timestamp: %2$tr"</string>
+    <string name="loading">Loading</string>
+    <string name="no_location">No Address Found</string>
 </resources>

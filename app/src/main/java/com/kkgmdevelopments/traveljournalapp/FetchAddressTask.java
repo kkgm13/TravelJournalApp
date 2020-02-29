@@ -16,11 +16,23 @@ import java.util.Locale;
 public class FetchAddressTask extends AsyncTask<Location, Void, String> {
     private final String TAG = FetchAddressTask.class.getSimpleName();
     private Context context;
+    private OnTaskCompleted taskListener;
 
-    FetchAddressTask(Context context){
+    /**
+     * Constructor
+     * @param context Application Context
+     * @param taskListener OnTaskCompleted
+     */
+    public FetchAddressTask(Context context, OnTaskCompleted taskListener){
         this.context = context;
+        this.taskListener = taskListener;
     }
 
+    /**
+     * Core Address Fetchign Task
+     * @param params
+     * @return
+     */
     @Override
     protected String doInBackground(Location... params) {
         // Create Geocoder
@@ -30,7 +42,8 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
         List<Address> addresses = null;
         // Have a result string
         String resultMessage = "";
-        // Get the addresses
+
+        // Try and see if there are any address within the area
         try{
             // Get Addresses
             addresses = geocoder.getFromLocation(
@@ -50,8 +63,9 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
                 Address address = addresses.get(0);
                 ArrayList<String> addressParts = new ArrayList<>();
                 // Loop through each address line
-                for (int i = 0; i < address.getMaxAddressLineIndex() ; i++) {
+                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                     // Add to the list
+                    Log.d("QWERTYUIOP", address.getAddressLine(i).toString());
                     addressParts.add(address.getAddressLine(i));
                 }
                 // Return results
@@ -72,8 +86,23 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
         return resultMessage;
     }
 
+    /**
+     * On Post Execute
+     *  Once this has posted information
+     *
+     * @param address Location Address
+     */
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    protected void onPostExecute(String address) {
+        taskListener.onTaskCompleted(address);
+        super.onPostExecute(address);
+    }
+
+    /**
+     * OnTaskCompleted Interface
+     *  Utilize to talk with Activites
+     */
+    public interface OnTaskCompleted{
+        void onTaskCompleted(String result);
     }
 }

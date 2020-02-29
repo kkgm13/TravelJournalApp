@@ -4,6 +4,9 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.kkgmdevelopments.traveljournalapp.JournalAppDatabase;
+
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ public class VisitedPlaceRepository {
      * @param application Current Application instance
      */
     VisitedPlaceRepository(Application application){
-        VisitedPlaceRoomDatabase db =  VisitedPlaceRoomDatabase.getDatabase(application);
+        JournalAppDatabase db =  JournalAppDatabase.getDatabase(application);
         mPlaceDAO = db.placeDAO();
         mAllPlaces = mPlaceDAO.getAllPlaces();
     }

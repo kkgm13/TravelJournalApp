@@ -1,18 +1,19 @@
-package com.kkgmdevelopments.traveljournalapp.holiday;
+package com.kkgmdevelopments.traveljournalapp;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import com.kkgmdevelopments.traveljournalapp.DateConverter;
 
-import java.util.List;
+import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+import com.kkgmdevelopments.traveljournalapp.holiday.HolidayDAO;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
 
 /**
  * Holiday Database
@@ -20,31 +21,34 @@ import java.util.List;
  * This creates the database for Android Room to recognise.
  * This also talks to HolidayViewModel to interact with data.
  */
-@Database(entities = {Holiday.class}, version = 8, exportSchema = false)
+@Database(entities = {Holiday.class, VisitedPlace.class}, version = 11, exportSchema = false)
 @TypeConverters({DateConverter.class})
-public abstract class HolidayRoomDatabase extends RoomDatabase {
+public abstract class JournalAppDatabase extends RoomDatabase {
     // Singleton instance of the Database
-    private static HolidayRoomDatabase INSTANCE;
-    // Abstract DAO
+    private static JournalAppDatabase INSTANCE;
+    // Abstract DAO Holidays
     public abstract HolidayDAO holidayDAO();
+    // Abstract DAO Visited Places
+    public abstract VisitedPlaceDAO placeDAO();
+
 
     /**
      * Get the Database
      * @param context
      * @return Room Database Instance
      */
-    public static HolidayRoomDatabase getDatabase(final Context context){
+    public static JournalAppDatabase getDatabase(final Context context){
         // If the instance has nothing
         if(INSTANCE == null){
             // Sync the Database
-            synchronized (HolidayRoomDatabase.class){
+            synchronized (JournalAppDatabase.class){
                 // If there is no database
                 if(INSTANCE == null){
                     // Create the database
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),    // Context from the Application
-                            HolidayRoomDatabase.class,          // The Room Database
-                            "holiday_database"           // The Database Name (App or Model?)
+                            JournalAppDatabase.class,          // The Room Database
+                            "traveljournalapp_database"  // The Database Name (App)
                     )
                             .fallbackToDestructiveMigration()   // Wipes & rebuilds if no migration object
                             .addCallback(sRoomDataCallback)     // Provide a Callback to the Room Database
@@ -76,11 +80,14 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
      */
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final HolidayDAO hDao;
+        private final VisitedPlaceDAO pDAO;
 //        String [] holidays = { "London", "Birmingham", "Brighton"};
 //        private LiveData<List<Holiday>> holidays;
 
-        PopulateDbAsync(HolidayRoomDatabase db) {
+        PopulateDbAsync(JournalAppDatabase db) {
             hDao = db.holidayDAO();
+            pDAO = db.placeDAO();
+
 //            holidays = hDao.getAllHolidays();
         }
 
@@ -89,6 +96,7 @@ public abstract class HolidayRoomDatabase extends RoomDatabase {
             // First Time use and cleaning
 //            hDao.deleteALL();
             hDao.getAllHolidays();
+            pDAO.getAllPlaces();
 
 //            if(hDao.getAnyHoliday().length < 1){
 //

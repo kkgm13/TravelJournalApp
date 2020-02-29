@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
+import com.kkgmdevelopments.traveljournalapp.JournalAppDatabase;
+
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public class HolidayRepository {
      * @param application
      */
     public HolidayRepository(Application application){
-        HolidayRoomDatabase db = HolidayRoomDatabase.getDatabase(application);
+        JournalAppDatabase db = JournalAppDatabase.getDatabase(application);
         mHolidayDao = db.holidayDAO();
         mAllHolidays = mHolidayDao.getAllHolidays();
     }

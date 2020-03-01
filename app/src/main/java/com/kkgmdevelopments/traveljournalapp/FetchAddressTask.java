@@ -65,7 +65,6 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
                 // Loop through each address line
                 for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                     // Add to the list
-                    Log.d("QWERTYUIOP", address.getAddressLine(i).toString());
                     addressParts.add(address.getAddressLine(i));
                 }
                 // Return results

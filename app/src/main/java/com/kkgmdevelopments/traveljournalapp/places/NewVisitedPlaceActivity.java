@@ -1,5 +1,7 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -12,24 +14,34 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.kkgmdevelopments.traveljournalapp.FetchAddressTask;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
+public class NewVisitedPlaceActivity extends AppCompatActivity {
 
     // Reply Codes
     public static final String EXTRA_REPLY =
@@ -45,6 +57,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchA
     public static final String EXTRA_REPLY_CREATED =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
@@ -52,15 +65,16 @@ public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchA
     private DatePickerDialog.OnDateSetListener mPlaceDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog dateDialog;        // Date Picker Dialog Starting
     private Date mPlaceDate;                    // Place Visited Date
-    private TextView mPlaceLocationText;          // Place Geolocation
+//    private TextView mPlaceLocationText;          // Place Geolocation
     private EditText mPlacesNotesField;         // Text Input Place Notes
 
     // Location Based Elements
-    private Location mLastLocation;
-    private Button locationButton;
-    private TextView mPlaceLocation;
-
-    private FusedLocationProviderClient fusedLocationClient;
+//    private Location mLastLocation;
+//    private Button locationButton;
+//    private TextView mPlaceLocation;
+    private PlacesClient placesClient;
+    private AutocompleteSupportFragment autocompleteSupportFragment;
+//    private FusedLocationProviderClient fusedLocationClient;
 
     private VisitedPlace vpEdit;                // VisitedPlace Object
 
@@ -69,23 +83,45 @@ public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visited_place_create);
 
+        // View Information
         mPlaceNameField = findViewById(R.id.place_name);
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
-        mPlaceLocation = findViewById(R.id.mLocationText); // Not the EditText
+//        mPlaceLocation = findViewById(R.id.mLocationText); // Not the EditText
         int id = -1;
+//        locationButton = findViewById(R.id.btn_location);
 
-        locationButton = findViewById(R.id.btn_location);
+        // Initialize Places API
+        if(!Places.isInitialized()){
+            Places.initialize(getApplicationContext(), getString(R.string.places_api));
+        }
+        placesClient = Places.createClient(this);
+        autocompleteSupportFragment =
+                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationButton.setOnClickListener(new View.OnClickListener() {
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                getLocation();
+            public void onPlaceSelected(@NonNull Place place) {
+                Log.i("traveljournalapp-pAPI", "Place: "+place.getName()+", "+place.getId());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i("traveljournalapp-pAPI", "Error Occured: " + status);
             }
         });
 
+        // Location
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        locationButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getLocation();
+//            }
+//        });
 
+        // Bundle Information
         final Bundle extras = getIntent().getExtras();
         // If Bundle is known, Set information
         if(extras != null){
@@ -170,39 +206,63 @@ public class NewVisitedPlaceActivity extends AppCompatActivity implements FetchA
      * Get the Geographical Location
      *  This provides the device with an idea of where the user is based on Location Services and GPS
      */
-    private void getLocation(){
-        // Allow the Permissions
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]
-                            {Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION_PERMISSION);
-        } else {
-            // Start grabbing infromation
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if (location != null){
-                        mLastLocation = location;
-                        new FetchAddressTask(NewVisitedPlaceActivity.this, NewVisitedPlaceActivity.this).execute(location);
-                        mPlaceLocation.setText(
-                                getString(
-                                        R.string.address_text,
-                                        getString(R.string.loading),
-                                        System.currentTimeMillis()
-                                )
-                        );
-                    } else {
-                        mPlaceLocation.setText(R.string.no_location);
-                    }
-                }
-            });
-        }
-    }
+//    private void getLocation(){
+//        // Allow the Permissions
+//        if (ActivityCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]
+//                            {Manifest.permission.ACCESS_FINE_LOCATION},
+//                    REQUEST_LOCATION_PERMISSION);
+//        } else {
+//            // Start grabbing Information
+//            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                @Override
+//                public void onSuccess(Location location) {
+//                    if (location != null){
+//                        mLastLocation = location;
+//                        new FetchAddressTask(NewVisitedPlaceActivity.this, NewVisitedPlaceActivity.this).execute(location);
+//                        mPlaceLocation.setText(
+//                                getString(
+//                                        R.string.address_text,
+//                                        getString(R.string.loading),
+//                                        System.currentTimeMillis()
+//                                )
+//                        );
+//                    } else {
+//                        mPlaceLocation.setText(R.string.no_location);
+//                    }
+//                }
+//            });
+//        }
+//    }
 
+//    @Override
+//    public void onTaskCompleted(String result) {
+//        mPlaceLocation.setText(getString(R.string.address_text,result,System.currentTimeMillis()));
+//    }
+
+    /**
+     * Places API Activity Result Handler
+     *
+     *
+     * @param requestCode Request Code from Google API
+     * @param resultCode  Result Code from Google API
+     * @param data        Google Data
+     */
     @Override
-    public void onTaskCompleted(String result) {
-        mPlaceLocation.setText(getString(R.string.address_text,result,System.currentTimeMillis()));
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i("traveljournalapp-pAPI", "Place: "+place.getName()+", "+place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i("traveljournalapp-pAPI", "Code "+status.getStatusCode()+": "+status.getStatusMessage());
+            } else if(resultCode == RESULT_CANCELED){
+                // Nothing
+            }
+        }
     }
 }

@@ -24,12 +24,6 @@ import java.text.DateFormat;
 import java.util.Date;
 
 public class VisitedPlaceDetailedActivity extends AppCompatActivity {
-//    public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
-//    public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
-//    public static final String EXTRA_PLACEDATA_CREATED = "extra_place_created";
-
-    public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
-
     private VisitedPlace vp;
 
     @Override
@@ -42,6 +36,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
 
+        // Create VP information
         vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
         placeName.setText(vp.getPlaceName());
@@ -52,6 +47,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity {
             placeNotes.setText("No Additional Notes");
         }
 
+        // Sharing Button
         final Button button = findViewById(R.id.btn_edit);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

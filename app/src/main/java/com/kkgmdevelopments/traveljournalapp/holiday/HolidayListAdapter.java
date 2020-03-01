@@ -141,7 +141,6 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
         void bindTo(Holiday holiday){
             holidayItemNameView.setText(holiday.getMHolidayName());
             if(holiday.getMHolidayNotes() != null || holiday.getMHolidayNotes() != " "){
-                Log.d("QWERTYUIOP", holiday.getMHolidayNotes());
                 holidayItemNoteView.setText(holiday.getMHolidayNotes());
             } else{
                 holidayItemNoteView.setText(R.string.no_notes);

@@ -36,7 +36,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Card Placeholder Text -->
-    <string name="card_name_placeholder">Placeholder Text</string>
+    <string name="card_name_placeholder">Card Text</string>
     <string name="card_last_update_placeholder">Last Updated: dd/mm/yyyy</string>
     <string name="card_notes_placeholder">This is sample text</string>
     <string name="no_notes">No additional information.</string>

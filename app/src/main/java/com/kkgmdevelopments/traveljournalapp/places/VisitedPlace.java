@@ -6,6 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,8 +23,8 @@ public class VisitedPlace implements Serializable {
     private int mPlaceID;
 
     @NonNull
-    @ColumnInfo(name = "associatedHolidayID")
-    public long associatedHolidayID;
+    @ColumnInfo(name = "holidayID")
+    private int associatedHolidayID;
 
     @NonNull
     @ColumnInfo(name = "placeName")
@@ -37,6 +38,7 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeLocation")
     private String mPlaceLocation;
 
+    @Nullable
     @ColumnInfo(name = "placeNotes")
     private String mPlaceNotes;
 
@@ -50,10 +52,12 @@ public class VisitedPlace implements Serializable {
 //    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
     @Ignore
-    public VisitedPlace(int id, String mPlaceName, Date mPlaceDate, String mPlaceNotes,
-                        Date mPlaceCreatedAt, Date mPlaceModifiedAt){
+    public VisitedPlace(int id, String mPlaceName,
+//                        int associatedHolidayID,
+                        Date mPlaceDate, String mPlaceNotes, Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceID = id;
         this.mPlaceName = mPlaceName;
+//        this.associatedHolidayID = associatedHolidayID;
         this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;
         this.mPlaceCreatedAt = mPlaceCreatedAt;
@@ -61,10 +65,12 @@ public class VisitedPlace implements Serializable {
     }
     
     // Constructor
-    public VisitedPlace(String mPlaceName, Date mPlaceDate, String mPlaceNotes,
-                        Date mPlaceCreatedAt, Date mPlaceModifiedAt){
+    public VisitedPlace(String mPlaceName,
+//                        int associatedHolidayID,
+                        Date mPlaceDate, String mPlaceNotes, Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceName = mPlaceName;
         this.mPlaceDate = mPlaceDate;
+//        this.associatedHolidayID = associatedHolidayID;
         this.mPlaceNotes = mPlaceNotes;
         this.mPlaceCreatedAt = mPlaceCreatedAt;
         this.mPlaceModifiedAt = mPlaceModifiedAt;
@@ -84,6 +90,14 @@ public class VisitedPlace implements Serializable {
     }
     public void setPlaceName(String mPlaceName) {
         this.mPlaceName = mPlaceName;
+    }
+
+    public int getAssociatedHolidayID() {
+        return associatedHolidayID;
+    }
+
+    public void setAssociatedHolidayID(int associatedHolidayID) {
+        this.associatedHolidayID = associatedHolidayID;
     }
 
     public String getPlaceLocation() {
@@ -118,7 +132,8 @@ public class VisitedPlace implements Serializable {
         return mPlaceDate;
     }
 
-    public void setPlaceDate(@NonNull Date mPlaceDate) {
+    public void setPlaceDate(Date mPlaceDate) {
         this.mPlaceDate = mPlaceDate;
     }
+
 }

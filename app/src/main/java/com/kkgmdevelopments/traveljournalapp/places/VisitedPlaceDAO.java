@@ -9,7 +9,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
+import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlaces;
 
 import java.util.List;
 
@@ -41,9 +41,7 @@ public interface VisitedPlaceDAO {
     @Update
     void updatePlace(VisitedPlace... place);
 
-//    @Transaction
-//    @Query("SELECT * FROM holiday_table")
-//    List<HolidayPlace> getHolidaywithPlaces();
-    // error: There is a problem with the query: [SQLITE_ERROR] SQL error or missing database (no such table: holiday_table)
-
+    @Transaction
+    @Query("SELECT * FROM holiday_table WHERE hID IN (SELECT DISTINCT(holidayID) FROM places_table)")
+    LiveData<List<HolidayPlaces>> getVisitedPlaces();
 }

@@ -79,10 +79,10 @@ public class VisitedPlaceActivity extends AppCompatActivity {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Have a look in my Holiday to "+holiday.getMHolidayName());
+            //sendIntent.setData();
             sendIntent.setType("text/plain");
 
-            Intent shareIntent = Intent.createChooser(sendIntent, "Share "+holiday.getMHolidayName()+" Holiday to...");
-            startActivity(shareIntent);
+            startActivity(Intent.createChooser(sendIntent, "Share "+holiday.getMHolidayName()+" Holiday to..."));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Holiday Repository
  *
- * Controls all the holidays and DB connection instance
+ * Controls all the Visited Places and DB connection instance
  */
 public class VisitedPlaceRepository {
     public VisitedPlaceDAO mPlaceDAO;
@@ -49,6 +49,8 @@ public class VisitedPlaceRepository {
     public void deletePlace(VisitedPlace place) { new deletePlaceAsyncTask(mPlaceDAO).execute(place);}
 
     public void updatePlace(VisitedPlace place) { new updatePlaceAsyncTask(mPlaceDAO).execute(place);}
+
+    public void getVisitedPlaces() { mPlaceDAO.getVisitedPlaces(); }
 
     /**
      * Allow to insert an Asynchronous Task

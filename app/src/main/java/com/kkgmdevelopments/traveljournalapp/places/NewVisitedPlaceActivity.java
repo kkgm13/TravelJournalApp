@@ -59,6 +59,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
 
+//    https://www.youtube.com/watch?v=8hSRml50u1o
+
     // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
     private TextView mPlaceDateText;            // Text Visited Place Date
@@ -173,17 +175,21 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     // Cancel Edit
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
+                    String notes = null;
+                    if(!mPlacesNotesField.getText().toString().isEmpty()){
+                        notes = mPlacesNotesField.getText().toString();
+                    }
                     // Create Object
                     VisitedPlace vp = new VisitedPlace(
                             mPlaceNameField.getText().toString(),
                             mPlaceDate,
-                            mPlacesNotesField.getText().toString(),
+                            notes,
                             new Date(),
                             new Date()
                     );
                     replyIntent.putExtra(EXTRA_REPLY, vp);
                     replyIntent.putExtra(EXTRA_REPLY_NAME, mPlaceNameField.getText().toString());
-                    replyIntent.putExtra(EXTRA_REPLY_NOTES, mPlacesNotesField.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
                     replyIntent.putExtra(EXTRA_REPLY_DATE, mPlaceDate);
 
                     // If action is an Edit to Update

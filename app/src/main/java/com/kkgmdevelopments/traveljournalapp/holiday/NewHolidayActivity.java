@@ -163,17 +163,22 @@ public class NewHolidayActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mHolidayName.getText()) || mHolidayStartDate == null || mHolidayEndDate == null){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
+                    String notes = null;
+                    if(! mHolidayNotes.getText().toString().isEmpty()){
+                        notes = mHolidayNotes.getText().toString();
+                    }
+
                     Holiday holiday = new Holiday(
                             mHolidayName.getText().toString(),
                             mHolidayStartDate, // Get Selected Start Date
                             mHolidayEndDate, // Get Selected End Date
-                            mHolidayNotes.getText().toString(),
+                            notes,
                             new Date(),
                             new Date()
                     );
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
                     replyIntent.putExtra(EXTRA_REPLY_NAME, mHolidayName.getText().toString());
-                    replyIntent.putExtra(EXTRA_REPLY_NOTES, mHolidayNotes.getText().toString());
+                    replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
                     replyIntent.putExtra(EXTRA_REPLY_START_DATE, mHolidayStartDate);
                     replyIntent.putExtra(EXTRA_REPLY_END_DATE, mHolidayEndDate);
                     // If the Bundle had something and was known to edit by the Data ID

@@ -19,4 +19,13 @@
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog" />
 
+    <!--  Card information  -->
+    <style name="text_view_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Large</item>
+<!--        <item name="android:textSize">30sp</item>-->
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
+    </style>
 </resources>

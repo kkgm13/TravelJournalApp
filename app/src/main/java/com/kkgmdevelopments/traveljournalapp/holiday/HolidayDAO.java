@@ -9,9 +9,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlace;
+import com.kkgmdevelopments.traveljournalapp.holidayplaces.HolidayPlaces;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,4 +58,8 @@ public interface HolidayDAO {
      */
     @Update
     void updateHoliday(Holiday... holiday);
+
+    @Transaction
+    @Query("SELECT * FROM holiday_table")
+    List<HolidayPlaces> getHolidaywithPlaces();
 }

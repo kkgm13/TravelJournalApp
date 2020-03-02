@@ -125,7 +125,7 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
          */
         void bindTo(VisitedPlace place){
             placesItemName.setText(place.getPlaceName());
-            if(place.getPlaceNotes() != null || place.getPlaceNotes() != ""){
+            if(!place.getPlaceNotes().isEmpty()){
                 placesItemNote.setText(place.getPlaceNotes());
             } else {
                 placesItemNote.setText(R.string.no_notes);

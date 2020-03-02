@@ -1,6 +1,7 @@
 package com.kkgmdevelopments.traveljournalapp.holiday;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -31,6 +32,7 @@ public class Holiday implements Serializable {
     @ColumnInfo(name = "holidayEnd")
     private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 
+//    @Nullable
     @ColumnInfo(name = "holidayNotes")
     private String mHolidayNotes;
 

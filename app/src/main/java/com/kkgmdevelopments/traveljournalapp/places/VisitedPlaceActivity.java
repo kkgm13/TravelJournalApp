@@ -31,6 +31,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Tabs Creation
         TabLayout tabLayout = findViewById(R.id.tab_list);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.gallery_tab_text));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.places_tab_text));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.explore_tab_text));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -39,6 +40,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
         final ViewPager viewPager = findViewById(R.id.places_pager);
         final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), context, tabLayout.getTabCount(), holiday);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(1);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

@@ -37,9 +37,10 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0: return TabPlacesFragment.newInstance(holiday);
-            // Todo: Map Exploration Fragment
-            case 1: return new TabExploreFragment();
+            case 0: return new TabGalleryFragment();
+            case 1: return TabPlacesFragment.newInstance(holiday);
+            // Todo: Sync Current Position with Map Exploration Fragment
+            case 2: return new TabExploreFragment();
             default: return null;
         }
     }

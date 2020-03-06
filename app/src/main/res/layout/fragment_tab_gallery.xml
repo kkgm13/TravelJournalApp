@@ -3,18 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TabExploreFragment">
+    tools:context=".TabGalleryFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FRAGMENT CREATED BUT ON HOLD" />
-
-<!--    <fragment-->
-<!--        android:id="@+id/maps_fragment"-->
-<!--        class="com.google.android.gms.maps.MapFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

@@ -40,6 +40,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class NewVisitedPlaceActivity extends AppCompatActivity {
 
@@ -56,10 +57,10 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_ID";
     public static final String EXTRA_REPLY_CREATED =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
+    public static final String EXTRA_REPLY_LOCATION =
+            "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_LOCATION";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
-
-//    https://www.youtube.com/watch?v=8hSRml50u1o
 
     // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
@@ -71,14 +72,11 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     private EditText mPlacesNotesField;         // Text Input Place Notes
 
     // Location Based Elements
-//    private Location mLastLocation;
-//    private Button locationButton;
-//    private TextView mPlaceLocation;
     private PlacesClient placesClient;
     private AutocompleteSupportFragment autocompleteSupportFragment;
-//    private FusedLocationProviderClient fusedLocationClient;
 
     private VisitedPlace vpEdit;                // VisitedPlace Object
+    private Place placeLocation;                // Place Object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +87,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         mPlaceNameField = findViewById(R.id.place_name);
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
-//        mPlaceLocation = findViewById(R.id.mLocationText); // Not the EditText
         int id = -1;
-//        locationButton = findViewById(R.id.btn_location);
 
         // Initialize Places API
         if(!Places.isInitialized()){
@@ -105,7 +101,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i("traveljournalapp-pAPI", "Place: "+place.getName()+", "+place.getId());
+                placeLocation = place;
             }
 
             @Override
@@ -182,6 +178,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     // Create Object
                     VisitedPlace vp = new VisitedPlace(
                             mPlaceNameField.getText().toString(),
+                            placeLocation.getId(),
                             mPlaceDate,
                             notes,
                             new Date(),
@@ -191,6 +188,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     replyIntent.putExtra(EXTRA_REPLY_NAME, mPlaceNameField.getText().toString());
                     replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
                     replyIntent.putExtra(EXTRA_REPLY_DATE, mPlaceDate);
+                    replyIntent.putExtra(EXTRA_REPLY_LOCATION, placeLocation.getId());
 
                     // If action is an Edit to Update
                     if(extras != null && extras.containsKey(TabPlacesFragment.EXTRA_PLACEDATA_ID)){

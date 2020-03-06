@@ -1,6 +1,5 @@
 package com.kkgmdevelopments.traveljournalapp;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,7 +27,6 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceViewModel;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * Tab Places Fragment
  *  Fragment for All Visited Places for a Holiday
@@ -39,6 +37,7 @@ public class TabPlacesFragment extends Fragment {
     public static final String EXTRA_PLACEDATA_ID = "extra_data_id";
     public static final String EXTRA_DATA_UPDATE_PLACE = "extra_place_to_update";
     public static final String EXTRA_PLACEDATA_CREATED = "extra_place_created";
+    public static final String EXTRA_PLACEDATA_PLACE = "extra_place_loc";
 
     public VisitedPlaceViewModel mPlacesViewModel; // View Model Instance
     private Holiday holiday; // Holiday Data
@@ -150,6 +149,7 @@ public class TabPlacesFragment extends Fragment {
                     intent.putExtra(EXTRA_DATA_UPDATE_PLACE ,selectedPlace);
                     intent.putExtra(EXTRA_PLACEDATA_ID, selectedPlace.getPlaceID());
                     intent.putExtra(EXTRA_PLACEDATA_CREATED, selectedPlace.getPlaceCreatedAt());
+                    intent.putExtra(EXTRA_PLACEDATA_PLACE, selectedPlace.getPlaceLocation());
                     startActivityForResult(intent, UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE);
                 }
             }
@@ -185,9 +185,11 @@ public class TabPlacesFragment extends Fragment {
             String ePNotes = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_NOTES);
             Date ePDate = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_DATE);
             Date ePCreated = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_CREATED);
+            String eLoc = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_LOCATION);
             if (id != -1){
                 mPlacesViewModel.updatePlace(new VisitedPlace(id,
                         ePName,
+                        eLoc,
                         ePDate,
                         ePNotes,
                         ePCreated,

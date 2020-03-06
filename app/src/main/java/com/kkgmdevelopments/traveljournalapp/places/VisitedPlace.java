@@ -52,11 +52,12 @@ public class VisitedPlace implements Serializable {
 //    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
 
     @Ignore
-    public VisitedPlace(int id, String mPlaceName,
+    public VisitedPlace(int id, String mPlaceName, String mPlaceLocation,
 //                        int associatedHolidayID,
                         Date mPlaceDate, String mPlaceNotes, Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceID = id;
         this.mPlaceName = mPlaceName;
+        this.mPlaceLocation = mPlaceLocation;
 //        this.associatedHolidayID = associatedHolidayID;
         this.mPlaceDate = mPlaceDate;
         this.mPlaceNotes = mPlaceNotes;
@@ -65,11 +66,12 @@ public class VisitedPlace implements Serializable {
     }
     
     // Constructor
-    public VisitedPlace(String mPlaceName,
+    public VisitedPlace(String mPlaceName, String mPlaceLocation,
 //                        int associatedHolidayID,
                         Date mPlaceDate, String mPlaceNotes, Date mPlaceCreatedAt, Date mPlaceModifiedAt){
         this.mPlaceName = mPlaceName;
         this.mPlaceDate = mPlaceDate;
+        this.mPlaceLocation = mPlaceLocation;
 //        this.associatedHolidayID = associatedHolidayID;
         this.mPlaceNotes = mPlaceNotes;
         this.mPlaceCreatedAt = mPlaceCreatedAt;
@@ -135,5 +137,4 @@ public class VisitedPlace implements Serializable {
     public void setPlaceDate(Date mPlaceDate) {
         this.mPlaceDate = mPlaceDate;
     }
-
 }

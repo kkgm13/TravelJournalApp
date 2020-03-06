@@ -34,7 +34,7 @@ ext {
     roomVersion = '2.2.2'
     archLifecycleVersion = '2.1.0'
     cardviewVersion = '1.0.0'
-    glideVersion = '4.10.0'
-    gmsVersion = '17.0.0' // NO LONGER IN USE
+    glideVersion = '4.11.0'
+//    gmsVersion = '17.0.0' // NO LONGER IN USE
     placesVersion = '2.2.0'
 }

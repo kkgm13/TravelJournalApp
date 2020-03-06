@@ -21,12 +21,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -129,6 +133,25 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 mPlaceDateText.setText(DateFormat.getDateInstance().format(vpEdit.getPlaceDate()));
                 mPlacesNotesField.setText(vpEdit.getPlaceNotes());
                 mPlaceDate = vpEdit.getPlaceDate();
+                // Place Data
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
+                FetchPlaceRequest request = FetchPlaceRequest.newInstance(vpEdit.getPlaceLocation(), placeFields);
+                placesClient.fetchPlace(request).addOnSuccessListener(this, new OnSuccessListener<FetchPlaceResponse>() {
+                    @Override
+                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+                        placeLocation = fetchPlaceResponse.getPlace();
+//                placeLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                    }
+                }).addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if(e instanceof ApiException){
+                            ApiException exception = (ApiException) e;
+                            int statusCode = exception.getStatusCode();
+                            Log.e("QWERTYUIOP", "Place not found: " + exception.getMessage());
+                        }
+                    }
+                });
             }
             getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
         } else {

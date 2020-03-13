@@ -40,7 +40,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
         final ViewPager viewPager = findViewById(R.id.places_pager);
         final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), context, tabLayout.getTabCount(), holiday);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(1); // Set the Default Tab Item to view
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -55,7 +55,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                viewPager.setCurrentItem(tab.getPosition());
             }
         });
     }

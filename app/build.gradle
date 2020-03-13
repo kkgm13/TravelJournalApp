@@ -38,13 +38,17 @@ dependencies {
     implementation "androidx.cardview:cardview:$rootProject.cardviewVersion"
     // Glide Image Dependence
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation 'com.github.bumptech.glide:volley-integration:4.11.0'
+    implementation 'com.android.volley:volley:1.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
+
 //    implementation "com.google.android.gms:play-services-location:$rootProject.gmsVersion"
     implementation "com.google.android.libraries.places:places:$rootProject.placesVersion"
+    implementation 'androidx.palette:palette:1.0.0'
 
 
 //    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'

@@ -3,13 +3,14 @@ package com.kkgmdevelopments.traveljournalapp.places;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +32,6 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.kkgmdevelopments.traveljournalapp.FetchAddressTask;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 
@@ -60,6 +60,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_LOCATION";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
@@ -105,7 +106,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.i("traveljournalapp-pAPI", "Error Occured: " + status);
+                Log.i("TJA-pAPI", "Error Occured: " + status);
             }
         });
 
@@ -143,7 +144,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                         if(e instanceof ApiException){
                             ApiException exception = (ApiException) e;
                             int statusCode = exception.getStatusCode();
-                            Log.e("QWERTYUIOP", "Place not found: " + exception.getMessage());
+                            Log.e("TJAPlaceErr", "Place not found: " + exception.getMessage());
                         }
                     }
                 });
@@ -189,7 +190,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     // Cancel Edit
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String notes = null;
+                    String notes = "";
                     if(!mPlacesNotesField.getText().toString().isEmpty()){
                         notes = mPlacesNotesField.getText().toString();
                     }
@@ -278,13 +279,28 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 Place place = Autocomplete.getPlaceFromIntent(data);
-                Log.i("traveljournalapp-pAPI", "Place: "+place.getName()+", "+place.getId());
+                Log.i("tja-pAPI", "Place: "+place.getName()+", "+place.getId());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR){
                 Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i("traveljournalapp-pAPI", "Code "+status.getStatusCode()+": "+status.getStatusMessage());
+                Log.i("tja-pAPI", "Code "+status.getStatusCode()+": "+status.getStatusMessage());
             } else if(resultCode == RESULT_CANCELED){
                 // Nothing
             }
+        }
+
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap image = (Bitmap) extras.get("data");
+            Log.i("tja-Image", image.toString());
+
+//            imageView.setImageBitmap(image);
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePicIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePicIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePicIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 }

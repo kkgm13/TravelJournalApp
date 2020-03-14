@@ -18,9 +18,8 @@ import com.kkgmdevelopments.traveljournalapp.images.SpacePhoto;
 import com.kkgmdevelopments.traveljournalapp.images.SpacePhotoActivity;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TabGalleryFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Holiday Gallery Fragment
+ *  Fragment for relevant images for the associated holiday and visited place of the holidays
  */
 public class TabGalleryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -64,44 +63,56 @@ public class TabGalleryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tab_gallery, container, false);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        // Create a Recycler View that uses a Grid Layout manager that will propose the amount of images
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         RecyclerView recyclerView = v.findViewById(R.id.gallery_imgs);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
+        // Utilize the Image Gallery Adapter
         ImageGalleryAdapter adapter = new ImageGalleryAdapter(getActivity(), SpacePhoto.getSpacePhotos());
         recyclerView.setAdapter(adapter);
 
         return v;
     }
 
-    private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder>  {
+    /**
+     * Image Gallery Adapter
+     *  The Adapter that manages the Image Gallery system
+     */
+    private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
+
+        private SpacePhoto[] mSpacePhotos;
+        private Context mContext;
+
+        public ImageGalleryAdapter(Context context, SpacePhoto[] spacePhotos) {
+            mContext = context;
+            mSpacePhotos = spacePhotos;
+        }
 
         @Override
-        public ImageGalleryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
             // Inflate the layout
             View photoView = inflater.inflate(R.layout.image_item, parent, false);
-            ImageGalleryAdapter.MyViewHolder viewHolder = new ImageGalleryAdapter.MyViewHolder(photoView);
+            ImageViewHolder viewHolder = new ImageViewHolder(photoView);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(ImageGalleryAdapter.MyViewHolder holder, int position) {
+        public void onBindViewHolder(ImageViewHolder holder, int position) {
             SpacePhoto spacePhoto = mSpacePhotos[position];
             ImageView imageView = holder.mPhotoImageView;
 
             Glide.with(mContext)
                     .load(spacePhoto.getURL())
-                    .placeholder(R.drawable.common_full_open_on_phone)
+                    .placeholder(R.drawable.quantum_ic_clear_grey600_24)
                     .into(imageView);
         }
 
@@ -110,11 +121,13 @@ public class TabGalleryFragment extends Fragment {
             return (mSpacePhotos.length);
         }
 
-        public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
+        /**
+         * Image Gallery View Holder
+         */
+        public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public ImageView mPhotoImageView;
 
-            public MyViewHolder(View itemView) {
+            public ImageViewHolder(View itemView) {
                 super(itemView);
                 mPhotoImageView = itemView.findViewById(R.id.gallery_img);
                 itemView.setOnClickListener(this);
@@ -131,14 +144,6 @@ public class TabGalleryFragment extends Fragment {
                     startActivity(intent);
                 }
             }
-        }
-
-        private SpacePhoto[] mSpacePhotos;
-        private Context mContext;
-
-        public ImageGalleryAdapter(Context context, SpacePhoto[] spacePhotos) {
-            mContext = context;
-            mSpacePhotos = spacePhotos;
         }
     }
 }

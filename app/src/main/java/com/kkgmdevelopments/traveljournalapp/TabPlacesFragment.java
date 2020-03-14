@@ -85,7 +85,7 @@ public class TabPlacesFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return View of the Fragment
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

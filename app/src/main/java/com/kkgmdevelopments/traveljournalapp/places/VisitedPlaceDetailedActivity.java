@@ -1,6 +1,7 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.google.android.gms.common.api.ApiException;
@@ -18,11 +19,14 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
@@ -35,12 +39,13 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     private VisitedPlace vp;
     private double placeLat;
     private double placeLng;
-//    private LatLng placeLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visited_place_show);
+        placeLat = 9.2;
+        placeLng = 22.1;
 
         // Place Name
         TextView placeName = findViewById(R.id.placeName);
@@ -53,8 +58,6 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
             Places.initialize(getApplicationContext(), getString(R.string.places_api));
         }
         PlacesClient placesClient = Places.createClient(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         // Create VP information
         vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
@@ -68,10 +71,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 Place place = fetchPlaceResponse.getPlace();
                 // Set Location Information
                 placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(6).getName());
-                Log.i("QWERTYUIOP",place.getLatLng().toString() +"\n"+ String.valueOf(place.getLatLng().latitude)+"\n"+String.valueOf(place.getLatLng().longitude));
-                placeLat = place.getLatLng().latitude;
-                placeLng = place.getLatLng().longitude;
-//                placeLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                mapLatLng(place.getLatLng().latitude, place.getLatLng().longitude);
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
@@ -80,15 +80,17 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                    ApiException exception = (ApiException) e;
                    int statusCode = exception.getStatusCode();
                     placeLoc.setText("Place not known to Google");
-                   Log.e("QWERTYUIOP", "Place not found: " + exception.getMessage());
+                   Log.e("tja-pAPIERR", "Code: "+statusCode+" - Place not found: " + exception.getMessage());
                 }
             }
         });
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         // UI Elements
         placeName.setText(vp.getPlaceName());
         placeDate.setText("Visited At: "+ DateFormat.getDateInstance().format(vp.getPlaceDate()));
-        if(vp.getPlaceNotes() != null){
+        if(vp.getPlaceNotes() != ""){
             placeNotes.setText(vp.getPlaceNotes());
         } else {
             placeNotes.setText("No Additional Notes");
@@ -113,14 +115,31 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     }
 
     /**
+     * Passing Lat Lng Info
+     *  Passes the Place LatLng from the PlaceID search
+     *  ISSUE
+     *
+     * @param lat Latitude Info
+     * @param lng Longitude Info
+     *
+     */
+    private void mapLatLng(double lat, double lng){
+        placeLng = lng;
+        placeLat = lat;
+        Log.i("BEFORE", String.valueOf(placeLat));
+        Log.i("BEFORE", String.valueOf(placeLng));
+    }
+
+    /**
      * Google Map View Provider
      *  This provides a Google Map object to be presented with any additional data
      * @param googleMap
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.w("TestIOP", placeLat+"\n"+placeLng);
         googleMap.addMarker(new MarkerOptions()
-            .position(new LatLng(placeLat, placeLng))
+            .position(new LatLng(placeLat,placeLng))
             .title("Marker"));
     }
 }

@@ -38,7 +38,6 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "placeLocation")
     private String mPlaceLocation;
 
-    @Nullable
     @ColumnInfo(name = "placeNotes")
     private String mPlaceNotes;
 

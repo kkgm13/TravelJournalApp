@@ -68,12 +68,12 @@ public class SpacePhoto implements Parcelable {
 
     public static SpacePhoto[] getSpacePhotos() {
         return new SpacePhoto[]{
-                new SpacePhoto("http://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
-                new SpacePhoto("http://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
-                new SpacePhoto("http://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
-                new SpacePhoto("http://i.imgur.com/qpr5LR2.jpg", "Earth"),
-                new SpacePhoto("http://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
-                new SpacePhoto("http://i.imgur.com/3wQcZeY.jpg", "Satellite"),
+                new SpacePhoto("https://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
+                new SpacePhoto("https://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
+                new SpacePhoto("https://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
+                new SpacePhoto("https://i.imgur.com/qpr5LR2.jpg", "Earth"),
+                new SpacePhoto("https://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
+                new SpacePhoto("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
         };
     }
 }

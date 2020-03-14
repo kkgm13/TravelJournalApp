@@ -32,7 +32,6 @@ public class Holiday implements Serializable {
     @ColumnInfo(name = "holidayEnd")
     private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java
 
-//    @Nullable
     @ColumnInfo(name = "holidayNotes")
     private String mHolidayNotes;
 

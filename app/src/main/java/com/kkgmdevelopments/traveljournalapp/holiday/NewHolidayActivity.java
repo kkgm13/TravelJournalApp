@@ -163,7 +163,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mHolidayName.getText()) || mHolidayStartDate == null || mHolidayEndDate == null){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String notes = null;
+                    String notes = "";
                     if(! mHolidayNotes.getText().toString().isEmpty()){
                         notes = mHolidayNotes.getText().toString();
                     }

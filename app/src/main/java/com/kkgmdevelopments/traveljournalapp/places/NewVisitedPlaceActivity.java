@@ -3,13 +3,23 @@ package com.kkgmdevelopments.traveljournalapp.places;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.ApiException;
@@ -34,8 +45,13 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
+import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,9 +74,11 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
     public static final String EXTRA_REPLY_LOCATION =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_LOCATION";
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_LOCATION_PERMISSION = 0;
+    private static final int REQUEST_CAMERA_PERMISSION = 0;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 2;
 
     // GUI Elements
     private EditText mPlaceNameField;           // Text Input Place Name
@@ -68,8 +86,11 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mPlaceDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog dateDialog;        // Date Picker Dialog Starting
     private Date mPlaceDate;                    // Place Visited Date
-//    private TextView mPlaceLocationText;          // Place Geolocation
     private EditText mPlacesNotesField;         // Text Input Place Notes
+    private ImageButton camButton;                   // Camera Button
+    private RecyclerView horizontal_recycler;   // RecyclerView
+    private HorizontalAdapter adapter;
+    private String currentPhotoPath;
 
     // Location Based Elements
     private PlacesClient placesClient;
@@ -87,6 +108,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         mPlaceNameField = findViewById(R.id.place_name);
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
+        camButton = findViewById(R.id.camerabutton);
         int id = -1;
 
         // Initialize Places API
@@ -150,8 +172,10 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 });
             }
             getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
+            camButton.setEnabled(true);
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
+            camButton.setEnabled(false);
         }
 
         // Open Calendar Dialog for Date
@@ -180,6 +204,23 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             }
         };
 
+        // Camera section
+        if(camButton.isEnabled()){
+            camButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dispatchTakePictureIntent();
+                }
+            });
+        }
+
+        horizontal_recycler = findViewById(R.id.hor_img_recycler);
+        adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
+        LinearLayoutManager horizonLayManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        horizontal_recycler.setLayoutManager(horizonLayManager);
+        horizontal_recycler.setAdapter(adapter);
+
+        // Saving Button
         final Button button = findViewById(R.id.place_save);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,14 +235,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     if(!mPlacesNotesField.getText().toString().isEmpty()){
                         notes = mPlacesNotesField.getText().toString();
                     }
-                    // Create Object
-                    VisitedPlace vp = new VisitedPlace(
-                            mPlaceNameField.getText().toString(),
-                            placeLocation.getId(),
-                            mPlaceDate,
-                            notes,
-                            new Date(),
-                            new Date()
+                    // Create New Object
+                    VisitedPlace vp = new VisitedPlace(mPlaceNameField.getText().toString(), placeLocation.getId(), mPlaceDate, notes, new Date(), new Date()
                     );
                     replyIntent.putExtra(EXTRA_REPLY, vp);
                     replyIntent.putExtra(EXTRA_REPLY_NAME, mPlaceNameField.getText().toString());
@@ -224,6 +259,10 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 
     /**
      * Get the Geographical Location
@@ -274,7 +313,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
      * @param data        Google Data
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
             if(resultCode == RESULT_OK){
@@ -286,21 +325,55 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             } else if(resultCode == RESULT_CANCELED){
                 // Nothing
             }
-        }
-
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+        } else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
-            Bitmap image = (Bitmap) extras.get("data");
-            Log.i("tja-Image", image.toString());
-
+//            Bitmap image = (Bitmap) extras.get("data");
+            Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
+            adapter.addBitmap(image);
+            adapter.notifyDataSetChanged();
+//            Log.i("tja-Image", image.toString());
 //            imageView.setImageBitmap(image);
         }
     }
 
+    /**
+     * Start running the Camera
+     */
     private void dispatchTakePictureIntent() {
-        Intent takePicIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePicIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePicIntent, REQUEST_IMAGE_CAPTURE);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.CAMERA},
+                    REQUEST_CAMERA_PERMISSION);
+        } else {
+            Intent takePicIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if(takePicIntent.resolveActivity(getPackageManager()) != null){
+                File photoFile = null;
+                try{
+                    photoFile = createImageFile();
+                }catch (IOException ex){
+                    Log.e("tja-err", ex.getMessage());
+                }
+                if(photoFile != null){
+                    Uri photoURI = FileProvider.getUriForFile(this, "com.kkgmdevelopments.traveljournalapp.fileprovider", photoFile);// ISSUE
+                    takePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePicIntent, REQUEST_TAKE_PHOTO);
+                }
+//                if (takePicIntent.resolveActivity(getPackageManager()) != null) {
+//                    startActivityForResult(takePicIntent, REQUEST_IMAGE_CAPTURE);
+//                }
+            }
         }
+    }
+
+    private File createImageFile() throws IOException{
+        String timestamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
+        String imageName = "JPEG_"+timestamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageName, ".jpg", storageDir);
+
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 }

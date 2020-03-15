@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kkgmdevelopments.traveljournalapp">
 
+    <!--  Features to use  -->
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,7 @@
             android:label="@string/title_activity_visited_place_detailed"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".places.NewVisitedPlaceActivity" />
-        <activity android:name=".places.VisitedPlaceActivity" />
+        <activity android:name=".places.VisitedPlaceActivity"/>
         <activity android:name=".holiday.NewHolidayActivity" />
         <activity
             android:name=".MainActivity"
@@ -38,6 +39,15 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.kkgmdevelopments.traveljournalapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 
 </manifest>

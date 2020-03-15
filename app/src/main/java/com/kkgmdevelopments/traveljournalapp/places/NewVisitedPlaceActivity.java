@@ -76,8 +76,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_LOCATION";
     private static final int REQUEST_LOCATION_PERMISSION = 0;
     private static final int REQUEST_CAMERA_PERMISSION = 0;
-    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int REQUEST_TAKE_PHOTO = 2;
     static final int REQUEST_IMAGE_CAPTURE = 2;
 
     // GUI Elements
@@ -355,6 +355,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 }catch (IOException ex){
                     Log.e("tja-err", ex.getMessage());
                 }
+                Log.i("tja-err", photoFile.getAbsolutePath());
+                Log.i("tja-err", getApplicationContext().getPackageName());
                 if(photoFile != null){
                     Uri photoURI = FileProvider.getUriForFile(this, "com.kkgmdevelopments.traveljournalapp.fileprovider", photoFile);// ISSUE
                     takePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);

@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.kkgmdevelopments.traveljournalapp.images.SpacePhoto;
-import com.kkgmdevelopments.traveljournalapp.images.SpacePhotoActivity;
+import com.kkgmdevelopments.traveljournalapp.images.Photo;
+import com.kkgmdevelopments.traveljournalapp.images.PhotoActivity;
 
 /**
  * Holiday Gallery Fragment
@@ -74,7 +74,7 @@ public class TabGalleryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // Utilize the Image Gallery Adapter
-        ImageGalleryAdapter adapter = new ImageGalleryAdapter(getActivity(), SpacePhoto.getSpacePhotos());
+        ImageGalleryAdapter adapter = new ImageGalleryAdapter(getActivity(), Photo.getSpacePhotos());
         recyclerView.setAdapter(adapter);
 
         return v;
@@ -85,13 +85,12 @@ public class TabGalleryFragment extends Fragment {
      *  The Adapter that manages the Image Gallery system
      */
     private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
-
-        private SpacePhoto[] mSpacePhotos;
+        private Photo[] mPhotos;
         private Context mContext;
 
-        public ImageGalleryAdapter(Context context, SpacePhoto[] spacePhotos) {
+        public ImageGalleryAdapter(Context context, Photo[] photos) {
             mContext = context;
-            mSpacePhotos = spacePhotos;
+            mPhotos = photos;
         }
 
         @Override
@@ -107,18 +106,18 @@ public class TabGalleryFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ImageViewHolder holder, int position) {
-            SpacePhoto spacePhoto = mSpacePhotos[position];
+            Photo photo = mPhotos[position];
             ImageView imageView = holder.mPhotoImageView;
 
             Glide.with(mContext)
-                    .load(spacePhoto.getURL())
+                    .load(photo.getURL())
                     .placeholder(R.drawable.quantum_ic_clear_grey600_24)
                     .into(imageView);
         }
 
         @Override
         public int getItemCount() {
-            return (mSpacePhotos.length);
+            return (mPhotos.length);
         }
 
         /**
@@ -137,10 +136,10 @@ public class TabGalleryFragment extends Fragment {
             public void onClick(View view) {
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
-                    SpacePhoto spacePhoto = mSpacePhotos[position];
+                    Photo photo = mPhotos[position];
 
-                    Intent intent = new Intent(mContext, SpacePhotoActivity.class);
-                    intent.putExtra(SpacePhotoActivity.EXTRA_SPACE_PHOTO, spacePhoto);
+                    Intent intent = new Intent(mContext, PhotoActivity.class);
+                    intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, photo);
                     startActivity(intent);
                 }
             }

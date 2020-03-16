@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +47,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
-import com.kkgmdevelopments.traveljournalapp.images.SpacePhoto;
+import com.kkgmdevelopments.traveljournalapp.images.Photo;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
 
@@ -351,7 +350,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
             // Save to Database
-            SpacePhoto placeImg = new SpacePhoto(currentPhotoPath, vpEdit.getPlaceName()+" "+adapter.getItemCount());
+            Photo placeImg = new Photo(currentPhotoPath, vpEdit.getPlaceName()+" "+adapter.getItemCount());
             PlaceImage placePic = new PlaceImage(vpEdit.getPlaceID(), placeImg);
             placeImageViewModel.insertImage(placePic);
             // Keep in order for adapter to see

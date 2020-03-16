@@ -70,7 +70,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
             public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
                 Place place = fetchPlaceResponse.getPlace();
                 // Set Location Information
-                placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(6).getName());
+                placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(place.getAddressComponents().asList().size() - 1).getName());
                 mapLatLng(place.getLatLng().latitude, place.getLatLng().longitude);
             }
         }).addOnFailureListener(this, new OnFailureListener() {

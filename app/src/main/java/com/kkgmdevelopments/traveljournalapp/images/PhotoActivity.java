@@ -20,7 +20,7 @@ import com.kkgmdevelopments.traveljournalapp.R;
 /**
  * This just presents the image as an activity
  */
-public class SpacePhotoActivity extends AppCompatActivity {
+public class PhotoActivity extends AppCompatActivity {
 
     public static final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
     private ImageView mImageView;
@@ -32,7 +32,7 @@ public class SpacePhotoActivity extends AppCompatActivity {
 //        getSupportActionBar().setTitle("");
 
         mImageView = findViewById(R.id.image);
-        SpacePhoto photo = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
+        Photo photo = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
 
         Glide.with(this)
                 .load(photo.getURL())

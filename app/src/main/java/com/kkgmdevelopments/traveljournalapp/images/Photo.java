@@ -3,7 +3,7 @@ package com.kkgmdevelopments.traveljournalapp.images;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SpacePhoto implements Parcelable {
+public class Photo implements Parcelable {
 
     private String mURL;
     private String mTitle;
@@ -13,7 +13,7 @@ public class SpacePhoto implements Parcelable {
      * @param mURL
      * @param mTitle
      */
-    public SpacePhoto(String mURL, String mTitle) {
+    public Photo(String mURL, String mTitle) {
         this.mTitle = mTitle;
         this.mURL = mURL;
     }
@@ -22,20 +22,20 @@ public class SpacePhoto implements Parcelable {
      * Protected Constructor
      * @param in
      */
-    protected SpacePhoto(Parcel in) {
+    protected Photo(Parcel in) {
         mURL = in.readString();
         mTitle = in.readString();
     }
 
-    public static final Creator<SpacePhoto> CREATOR = new Creator<SpacePhoto>() {
+    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
         @Override
-        public SpacePhoto createFromParcel(Parcel in) {
-            return new SpacePhoto(in);
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
         }
 
         @Override
-        public SpacePhoto[] newArray(int size) {
-            return new SpacePhoto[size];
+        public Photo[] newArray(int size) {
+            return new Photo[size];
         }
     };
 
@@ -66,14 +66,14 @@ public class SpacePhoto implements Parcelable {
         this.mTitle = mTitle;
     }
 
-    public static SpacePhoto[] getSpacePhotos() {
-        return new SpacePhoto[]{
-                new SpacePhoto("https://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
-                new SpacePhoto("https://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
-                new SpacePhoto("https://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
-                new SpacePhoto("https://i.imgur.com/qpr5LR2.jpg", "Earth"),
-                new SpacePhoto("https://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
-                new SpacePhoto("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
+    public static Photo[] getSpacePhotos() {
+        return new Photo[]{
+                new Photo("https://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
+                new Photo("https://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
+                new Photo("https://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
+                new Photo("https://i.imgur.com/qpr5LR2.jpg", "Earth"),
+                new Photo("https://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
+                new Photo("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
         };
     }
 }

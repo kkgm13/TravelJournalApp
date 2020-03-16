@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.kkgmdevelopments.traveljournalapp.images.SpacePhoto;
+import com.kkgmdevelopments.traveljournalapp.images.Photo;
 
 @Entity(tableName = "places_images_table")
 public class PlaceImage {
@@ -18,17 +18,17 @@ public class PlaceImage {
     @ColumnInfo(name = "placeID")
     private int placeID;
     @Embedded
-    private SpacePhoto image;
+    private Photo image;
 
     @Ignore
-    public PlaceImage(int id, int placeID, SpacePhoto image){
+    public PlaceImage(int id, int placeID, Photo image){
         this.id = id;
         this.placeID = placeID;
         this.image = image;
 
     }
 
-    public PlaceImage(int placeID, SpacePhoto image){
+    public PlaceImage(int placeID, Photo image){
         this.placeID = placeID;
         this.image = image;
     }
@@ -49,11 +49,11 @@ public class PlaceImage {
         this.placeID = placeID;
     }
 
-    public SpacePhoto getImage() {
+    public Photo getImage() {
         return image;
     }
 
-    public void setImage(SpacePhoto image) {
+    public void setImage(Photo image) {
         this.image = image;
     }
 }

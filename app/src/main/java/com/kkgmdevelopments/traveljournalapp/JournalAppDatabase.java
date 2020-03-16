@@ -12,6 +12,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayDAO;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageDAO;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
 import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
 
@@ -21,7 +23,7 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
  * This creates the Overall database for Android Room to recognise.
  * This also talks to ANY Data Access Object (DAOs) to interact with data.
  */
-@Database(entities = {Holiday.class, VisitedPlace.class}, version = 3, exportSchema = false)
+@Database(entities = {Holiday.class, VisitedPlace.class, PlaceImage.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class JournalAppDatabase extends RoomDatabase {
     // Singleton instance of the Database
@@ -30,6 +32,8 @@ public abstract class JournalAppDatabase extends RoomDatabase {
     public abstract HolidayDAO holidayDAO();
     // Abstract DAO Visited Places
     public abstract VisitedPlaceDAO placeDAO();
+    // Abstract DAO Place Images
+    public abstract PlaceImageDAO placeImageDAO();
 
     /**
      * Get the Database
@@ -80,12 +84,14 @@ public abstract class JournalAppDatabase extends RoomDatabase {
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
         private final HolidayDAO hDao;
         private final VisitedPlaceDAO pDAO;
+        private final PlaceImageDAO piDAO;
 //        String [] holidays = { "London", "Birmingham", "Brighton"};
 //        private LiveData<List<Holiday>> holidays;
 
         PopulateDbAsync(JournalAppDatabase db) {
             hDao = db.holidayDAO();
             pDAO = db.placeDAO();
+            piDAO = db.placeImageDAO();
 
 //            holidays = hDao.getAllHolidays();
         }
@@ -96,6 +102,7 @@ public abstract class JournalAppDatabase extends RoomDatabase {
 //            hDao.deleteALL();
             hDao.getAllHolidays();
             pDAO.getAllPlaces();
+            piDAO.getAllImages();
 
 //            if(hDao.getAnyHoliday().length < 1){
 //

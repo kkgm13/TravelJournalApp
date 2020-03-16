@@ -1,10 +1,12 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +48,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabPlacesFragment;
 import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
+import com.kkgmdevelopments.traveljournalapp.images.SpacePhoto;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +79,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_CREATED";
     public static final String EXTRA_REPLY_LOCATION =
             "com.kkgmdevelopments.traveljournalapp.roomPlaces.REPLY_LOCATION";
+    // Request Codes
     private static final int REQUEST_LOCATION_PERMISSION = 0;
     private static final int REQUEST_CAMERA_PERMISSION = 0;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -89,15 +95,17 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     private EditText mPlacesNotesField;         // Text Input Place Notes
     private ImageButton camButton;                   // Camera Button
     private RecyclerView horizontal_recycler;   // RecyclerView
-    private HorizontalAdapter adapter;
-    private String currentPhotoPath;
+    private HorizontalAdapter adapter;          // Gallery Adapter
+    private String currentPhotoPath;            // Photo Path
 
     // Location Based Elements
     private PlacesClient placesClient;
     private AutocompleteSupportFragment autocompleteSupportFragment;
 
+    // Object Elements
     private VisitedPlace vpEdit;                // VisitedPlace Object
     private Place placeLocation;                // Place Object
+    private PlaceImageViewModel placeImageViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,11 +222,28 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             });
         }
 
+        // Gallery Information
         horizontal_recycler = findViewById(R.id.hor_img_recycler);
         adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
+        placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
         LinearLayoutManager horizonLayManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontal_recycler.setLayoutManager(horizonLayManager);
         horizontal_recycler.setAdapter(adapter);
+
+        placeImageViewModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
+            @Override
+            public void onChanged(List<PlaceImage> placeImages) {
+                for(PlaceImage img : placeImages){
+                    currentPhotoPath = img.getImage().getURL();
+                    Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
+                    adapter.addBitmap(image);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        if(vpEdit != null){
+            placeImageViewModel.getPlaceImages(vpEdit.getPlaceID());
+        }
 
         // Saving Button
         final Button button = findViewById(R.id.place_save);
@@ -259,10 +284,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 
     /**
      * Get the Geographical Location
@@ -305,8 +326,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
 //    }
 
     /**
-     * Places API Activity Result Handler
-     *
+     *  Activity Result Handler
      *
      * @param requestCode Request Code from Google API
      * @param resultCode  Result Code from Google API
@@ -315,6 +335,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Place API Activity Result Handler
         if(requestCode == AUTOCOMPLETE_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 Place place = Autocomplete.getPlaceFromIntent(data);
@@ -325,19 +346,22 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             } else if(resultCode == RESULT_CANCELED){
                 // Nothing
             }
-        } else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-//            Bitmap image = (Bitmap) extras.get("data");
+        }
+        // Camera Activity Result Handler
+        else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
+            // Save to Database
+            SpacePhoto placeImg = new SpacePhoto(currentPhotoPath, vpEdit.getPlaceName()+" "+adapter.getItemCount());
+            PlaceImage placePic = new PlaceImage(vpEdit.getPlaceID(), placeImg);
+            placeImageViewModel.insertImage(placePic);
+            // Keep in order for adapter to see
             adapter.addBitmap(image);
             adapter.notifyDataSetChanged();
-//            Log.i("tja-Image", image.toString());
-//            imageView.setImageBitmap(image);
         }
     }
 
     /**
-     * Start running the Camera
+     * Camera Intent Handler
      */
     private void dispatchTakePictureIntent() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -355,26 +379,27 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 }catch (IOException ex){
                     Log.e("tja-err", ex.getMessage());
                 }
-                Log.i("tja-err", photoFile.getAbsolutePath());
-                Log.i("tja-err", getApplicationContext().getPackageName());
+                // If File is NOT null, take the picture
                 if(photoFile != null){
                     Uri photoURI = FileProvider.getUriForFile(this, "com.kkgmdevelopments.traveljournalapp.fileprovider", photoFile);// ISSUE
                     takePicIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(takePicIntent, REQUEST_TAKE_PHOTO);
                 }
-//                if (takePicIntent.resolveActivity(getPackageManager()) != null) {
-//                    startActivityForResult(takePicIntent, REQUEST_IMAGE_CAPTURE);
-//                }
             }
         }
     }
 
+    /**
+     * Create the Image with specific Name
+     *
+     * @return File Image
+     * @throws IOException
+     */
     private File createImageFile() throws IOException{
         String timestamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
         String imageName = "JPEG_"+timestamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageName, ".jpg", storageDir);
-
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }

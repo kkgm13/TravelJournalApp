@@ -76,4 +76,6 @@ public class Photo implements Parcelable {
                 new Photo("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
         };
     }
+
+
 }

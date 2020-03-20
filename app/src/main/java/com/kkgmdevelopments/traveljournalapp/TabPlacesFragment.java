@@ -47,7 +47,7 @@ public class TabPlacesFragment extends Fragment {
     public static final int UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE = 2;
 
     public TabPlacesFragment() {
-        // Required empty public constructor
+         // Required empty public constructor
     }
 
     /**

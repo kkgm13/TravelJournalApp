@@ -5,17 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".TabExploreFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 <!--    <TextView-->
+<!--        android:id="@+id/exploreTest"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
-<!--        android:text="FRAGMENT CREATED BUT ON HOLD" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/maps_fragment"-->
-<!--        class="com.google.android.gms.maps.MapFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
+<!--        android:text="@string/location_text"/>-->
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/maps_fragment"

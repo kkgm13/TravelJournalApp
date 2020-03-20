@@ -28,6 +28,9 @@ public class Holiday implements Serializable {
     @ColumnInfo(name = "holidayStart")
     private Date mStartDate;
 
+//    @ColumnInfo(name = "companions")
+//    private String mCompanions;
+
     @NonNull
     @ColumnInfo(name = "holidayEnd")
     private Date mEndDate; // https://developer.android.com/training/data-storage/room/referencing-data#java

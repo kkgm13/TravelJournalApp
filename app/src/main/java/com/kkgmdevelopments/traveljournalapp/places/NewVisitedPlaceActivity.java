@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -61,6 +62,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Form Activity for New Visited Place
+ */
 public class NewVisitedPlaceActivity extends AppCompatActivity {
 
     // Reply Codes
@@ -118,35 +122,27 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         camButton = findViewById(R.id.camerabutton);
         int id = -1;
 
+        // Reset Issue with Button overlapping screen
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         // Initialize Places API
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), getString(R.string.places_api));
         }
         placesClient = Places.createClient(this);
-        autocompleteSupportFragment =
-                (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
+        autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(@NonNull Place place) {
+            public void onPlaceSelected(Place place) {
                 placeLocation = place;
             }
 
             @Override
-            public void onError(@NonNull Status status) {
+            public void onError(Status status) {
                 Log.i("TJA-pAPI", "Error Occured: " + status);
             }
         });
-
-        // Location
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//        locationButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getLocation();
-//            }
-//        });
 
         // Bundle Information
         final Bundle extras = getIntent().getExtras();
@@ -182,6 +178,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             camButton.setEnabled(true);
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
+            camButton.setVisibility(View.GONE); // Disappear
             camButton.setEnabled(false);
         }
 
@@ -222,13 +219,12 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         }
 
         // Gallery Information
-        horizontal_recycler = findViewById(R.id.hor_img_recycler);
+        horizontal_recycler = findViewById(R.id.hor_img_recycler); // Error with ID despite being in XML file
         adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
         placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
         LinearLayoutManager horizonLayManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         horizontal_recycler.setLayoutManager(horizonLayManager);
         horizontal_recycler.setAdapter(adapter);
-
         placeImageViewModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
             @Override
             public void onChanged(List<PlaceImage> placeImages) {
@@ -267,7 +263,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
                     replyIntent.putExtra(EXTRA_REPLY_DATE, mPlaceDate);
                     replyIntent.putExtra(EXTRA_REPLY_LOCATION, placeLocation.getId());
-
                     // If action is an Edit to Update
                     if(extras != null && extras.containsKey(TabPlacesFragment.EXTRA_PLACEDATA_ID)){
                         int id = extras.getInt(TabPlacesFragment.EXTRA_PLACEDATA_ID, -1);
@@ -283,46 +278,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * Get the Geographical Location
-     *  This provides the device with an idea of where the user is based on Location Services and GPS
-     */
-//    private void getLocation(){
-//        // Allow the Permissions
-//        if (ActivityCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]
-//                            {Manifest.permission.ACCESS_FINE_LOCATION},
-//                    REQUEST_LOCATION_PERMISSION);
-//        } else {
-//            // Start grabbing Information
-//            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                @Override
-//                public void onSuccess(Location location) {
-//                    if (location != null){
-//                        mLastLocation = location;
-//                        new FetchAddressTask(NewVisitedPlaceActivity.this, NewVisitedPlaceActivity.this).execute(location);
-//                        mPlaceLocation.setText(
-//                                getString(
-//                                        R.string.address_text,
-//                                        getString(R.string.loading),
-//                                        System.currentTimeMillis()
-//                                )
-//                        );
-//                    } else {
-//                        mPlaceLocation.setText(R.string.no_location);
-//                    }
-//                }
-//            });
-//        }
-//    }
-
-//    @Override
-//    public void onTaskCompleted(String result) {
-//        mPlaceLocation.setText(getString(R.string.address_text,result,System.currentTimeMillis()));
-//    }
 
     /**
      *  Activity Result Handler
@@ -363,13 +318,16 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
      * Camera Intent Handler
      */
     private void dispatchTakePictureIntent() {
+        // Check Permissions
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                             {Manifest.permission.CAMERA},
                     REQUEST_CAMERA_PERMISSION);
-        } else {
+        }
+        // Start Picture Intent
+        else {
             Intent takePicIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if(takePicIntent.resolveActivity(getPackageManager()) != null){
                 File photoFile = null;

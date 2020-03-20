@@ -1,10 +1,11 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -19,10 +20,8 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,19 +38,23 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     private VisitedPlace vp;
     private double placeLat;
     private double placeLng;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visited_place_show);
-        placeLat = 9.2;
-        placeLng = 22.1;
 
-        // Place Name
+//        placeLat = 52.4868584;
+//        placeLng = -1.8882174;
+
+        // UI Initialization
         TextView placeName = findViewById(R.id.placeName);
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
         final TextView placeLoc = findViewById(R.id.placesLocation);
+//        ImageView placeImg = findViewById(R.id.placeImg);
+//        Glide.with(this).load(getIntent().getIntExtra("image", 0)).into(placeImg);
 
         // Initialise Places
         if(!Places.isInitialized()){
@@ -63,7 +66,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
         vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
         // Map Data
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(vp.getPlaceLocation(), placeFields);
         placesClient.fetchPlace(request).addOnSuccessListener(this, new OnSuccessListener<FetchPlaceResponse>() {
             @Override
@@ -71,6 +74,8 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 Place place = fetchPlaceResponse.getPlace();
                 // Set Location Information
                 placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(place.getAddressComponents().asList().size() - 1).getName());
+                Log.i("BEFORE-Lat", String.valueOf(place.getLatLng().latitude));
+                Log.i("BEFORE-lng", String.valueOf(place.getLatLng().longitude));
                 mapLatLng(place.getLatLng().latitude, place.getLatLng().longitude);
             }
         }).addOnFailureListener(this, new OnFailureListener() {
@@ -84,7 +89,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 }
             }
         });
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.placeMap);
         mapFragment.getMapAsync(this);
 
         // UI Elements
@@ -110,8 +115,6 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 startActivity(shareIntent);
             }
         });
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
     }
 
     /**
@@ -126,8 +129,8 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     private void mapLatLng(double lat, double lng){
         placeLng = lng;
         placeLat = lat;
-        Log.i("BEFORE", String.valueOf(placeLat));
-        Log.i("BEFORE", String.valueOf(placeLng));
+        Log.i("mapLatLng-Lat", String.valueOf(placeLat));
+        Log.i("mapLatLng-lng", String.valueOf(placeLng));
     }
 
     /**
@@ -138,8 +141,11 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.w("TestIOP", placeLat+"\n"+placeLng);
+        LatLng placeLoc = new LatLng(placeLat,placeLng);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLoc));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         googleMap.addMarker(new MarkerOptions()
-            .position(new LatLng(placeLat,placeLng))
-            .title("Marker"));
+            .position(placeLoc)
+            .title(vp.getPlaceName()));
     }
 }

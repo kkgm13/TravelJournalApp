@@ -1,5 +1,8 @@
 package com.kkgmdevelopments.traveljournalapp.placeimage;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
@@ -25,7 +28,6 @@ public class PlaceImage {
         this.id = id;
         this.placeID = placeID;
         this.image = image;
-
     }
 
     public PlaceImage(int placeID, Photo image){
@@ -56,4 +58,15 @@ public class PlaceImage {
     public void setImage(Photo image) {
         this.image = image;
     }
+
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int flags) {
+//        parcel.writeInt(placeID);
+////        parcel.writeP
+//    }
 }

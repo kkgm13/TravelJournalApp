@@ -35,4 +35,8 @@ public class PlaceImageViewModel extends AndroidViewModel {
     public LiveData<List<PlaceImage>> getAllImages(){
         return mRepository.getAllImages();
     }
+
+    public void getPlaceAllImages(){
+        mRepository.getPlaceAllImages();
+    }
 }

@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onChanged(@Nullable List<Holiday> holidays) {
-                // Update cached copy in the adapter
-                adapter.setHolidays(holidays);
+                adapter.setHolidays(holidays);// Update cached copy in the adapter
             }
         });
 
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // Get Position
                 int position = viewHolder.getAdapterPosition();
                 Holiday selectHol = adapter.getHolidayPosition(position);
                 // Right to left swipe

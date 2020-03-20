@@ -3,12 +3,9 @@ package com.kkgmdevelopments.traveljournalapp.placeimage;
 import android.app.Application;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.kkgmdevelopments.traveljournalapp.JournalAppDatabase;
-
 import java.util.List;
 
 public class PlaceImageRepository {
@@ -42,8 +39,19 @@ public class PlaceImageRepository {
         new getPlaceImagesAsyncTask(mDao).execute(placeID);
     }
 
+    /**
+     * Get All Images from DB
+     * @return
+     */
     public LiveData<List<PlaceImage>> getAllImages(){
         return placePictureList;
+    }
+
+    /**
+     * Get Images for Gallery
+     */
+    public void getPlaceAllImages(){
+        new getPlaceAllImagesAsyncTask(mDao).execute();
     }
 
     /**
@@ -110,6 +118,29 @@ public class PlaceImageRepository {
         @Override
         protected List<PlaceImage> doInBackground(Integer... ids) {
             List<PlaceImage> pics = (mDao.getAllPlaceImages(ids[0]));
+            return pics;
+        }
+
+        @Override
+        protected void onPostExecute(List<PlaceImage> placeImages) {
+            super.onPostExecute(placeImages);
+            placePictureList.setValue(placeImages);
+        }
+    }
+
+    /**
+     * Async task to get all Visted place pictures from an associated Holiday
+     */
+    private class getPlaceAllImagesAsyncTask extends AsyncTask<Void, Void, List<PlaceImage>>{
+        private PlaceImageDAO mDao;
+
+        public getPlaceAllImagesAsyncTask(PlaceImageDAO mDao){
+            this.mDao = mDao;
+        }
+
+        @Override
+        protected List<PlaceImage> doInBackground(Void... voids) {
+            List<PlaceImage> pics = (mDao.getAllImages());
             return pics;
         }
 

@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageDAO;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -22,6 +24,7 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
     private List<VisitedPlace> mPlaces;
     private Context mContext;
     public static final String EXTRA_REPLY = "com.kkgmdevelopments.traveljournalapp.extra.REPLY";
+    private PlaceImageDAO images;
 
     public VisitedPlaceListAdapter(Context context){
         this.mContext = context;
@@ -110,11 +113,11 @@ public class VisitedPlaceListAdapter extends RecyclerView.Adapter<VisitedPlaceLi
         @Override
         public void onClick(View v) {
             VisitedPlace selectedPlace = mPlaces.get(getAdapterPosition());
+//            images.getAllImages();
             Intent detailedIntent = new Intent(mContext, VisitedPlaceDetailedActivity.class);
             detailedIntent.putExtra("selectedPlace", selectedPlace);
             detailedIntent.putExtra("name", selectedPlace.getPlaceName());
-//            detailedIntent.putExtra("notes", selectedPlace.getPlaceNotes());
-//            detailedIntent.putExtra("name", selectedPlace.getPlaceDate());
+//            detailedIntent.putExtra("image", 1 );
             mContext.startActivity(detailedIntent);
         }
 

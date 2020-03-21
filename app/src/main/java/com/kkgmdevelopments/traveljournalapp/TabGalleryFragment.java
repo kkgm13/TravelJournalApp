@@ -11,26 +11,32 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.images.Photo;
 import com.kkgmdevelopments.traveljournalapp.images.PhotoActivity;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * Holiday Gallery Fragment
+ *  Gallery Fragment
  *  Fragment for relevant images for the associated holiday and visited place of the holidays
  */
 public class TabGalleryFragment extends Fragment {
 
     private PlaceImageViewModel placeImageViewModel;
     private Holiday holiday;
+    private ImageGalleryAdapter adapter;
 
 
     public TabGalleryFragment() {
@@ -65,6 +71,7 @@ public class TabGalleryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
         }
     }
 
@@ -79,23 +86,47 @@ public class TabGalleryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
-        // Unsure with call
-        final ImageGalleryAdapter adapter = new ImageGalleryAdapter(getContext(), Photo.getSpacePhotos());
-        // Very unsure about call here
+        // In the onCreateView of your Gallery Fragment, comment out the code that displays
+        // the fixed set of images.
+
+        adapter = new ImageGalleryAdapter(
+                getContext(),
+                Photo.getSpacePhotos()
+        );
+
+        // Somehow final code????
+//        ArrayList<Photo> images = Photo.getPhotos();
+//        for (Photo image: images) {
+//            mAdapter.addImageModel(image);
+//        }
+//        mAdapter.notifyDataSetChanged();
+
+
+
+        // New Version??
+//        final ImageGalleryAdapter adapter = new ImageGalleryAdapter(
+//                getContext()
+//                // ????
+//        );
+
+        // Add some code to initialise a placePictureViewModel and use it to observe
+        // placePictureViewModel.getPlacePictures().
         placeImageViewModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
             @Override
             public void onChanged(List<PlaceImage> placeImages) {
                 for(PlaceImage img : placeImages){
                     String path = img.getImage().getURL();
                     Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 200, 200);
+//                    adapter.addImage(Photo.getSpacePhotos().length, Photo.getSpacePhotos(), img.getImage());
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged(); //??
             }
         });
+        // Then call placePictureViewModel.getPicturesAllPlaces().
         placeImageViewModel.getPlaceAllImages();
 
         // Utilize the Image Gallery Adapter
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter); // ???
 
         return v;
     }
@@ -107,10 +138,25 @@ public class TabGalleryFragment extends Fragment {
     private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
         private Photo[] mPhotos;
         private Context mContext;
+        private List<Photo> photoList;
 
         public ImageGalleryAdapter(Context context, Photo[] photos) {
             mContext = context;
             mPhotos = photos;
+        }
+
+
+        public Photo[] addImage(int curLen, Photo[] array, Photo photo){
+
+//            List<Photo> newList = Arrays.asList(Photo.getSpacePhotos());
+
+
+            Photo[] newList = new Photo[curLen+1];
+            for(int i = 0; i < curLen; i++){
+                newList[i] = array[i];
+            }
+            newList[curLen] = photo;
+            return newList;
         }
 
         @Override

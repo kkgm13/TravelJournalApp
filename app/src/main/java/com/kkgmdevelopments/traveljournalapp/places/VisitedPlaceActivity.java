@@ -1,17 +1,21 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.SettingsActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 
@@ -73,6 +77,11 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Settings Option Item
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+//            PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+//            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//            Toast.makeText(this, "Preferences Updated", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -85,6 +94,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
             sendIntent.setType("text/plain");
 
             startActivity(Intent.createChooser(sendIntent, "Share "+holiday.getMHolidayName()+" Holiday to..."));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

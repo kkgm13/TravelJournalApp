@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreference
+        android:id="@+id/lift2id"
+        android:defaultValue="true"
+        app:key="lift2cam"
+        app:summary="During editing a place or viewing a holiday, raising the phone "
+        app:title='Enable "Lift To Cam"' />
+
+    <PreferenceCategory android:title="App Permissions">
+        <CheckBoxPreference
+            android:id="@+id/locPerm"
+            app:defaultValue="true"
+            app:key="locPerm"
+            app:title="Location Permission"
+            app:summary="Enable/Disable to allow the app location permissions" />
+        <CheckBoxPreference
+            android:id="@+id/camPerm"
+            android:defaultValue="true"
+            app:key="camPerm"
+            app:summary="Enable/Disable to allow app camera permissions"
+            app:title="Camera Permissions" />
+    </PreferenceCategory>
+
+    <Preference
+            app:key="feedback"
+            app:title="Send Feedback"
+            app:summary="Report technical issues or suggest new features"/>
+
+</PreferenceScreen>

@@ -161,7 +161,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
                         placeLocation = fetchPlaceResponse.getPlace();
-//                placeLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                     }
                 }).addOnFailureListener(this, new OnFailureListener() {
                     @Override
@@ -175,11 +174,11 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 });
             }
             getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
-            camButton.setEnabled(true);
+            camButton.setEnabled(true);     // Enable Camera button (Layout requires fixing)
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
             camButton.setVisibility(View.GONE); // Disappear
-            camButton.setEnabled(false);
+            camButton.setEnabled(false);    // Disable Camera Button
         }
 
         // Open Calendar Dialog for Date
@@ -306,7 +305,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
             // Save to Database
             Photo placeImg = new Photo(currentPhotoPath, vpEdit.getPlaceName()+" "+adapter.getItemCount());
-            PlaceImage placePic = new PlaceImage(vpEdit.getPlaceID(), placeImg);
+            PlaceImage placePic = new PlaceImage(vpEdit.getPlaceID(), placeImg); // Create new Picture with information
             placeImageViewModel.insertImage(placePic);
             // Keep in order for adapter to see
             adapter.addBitmap(image);

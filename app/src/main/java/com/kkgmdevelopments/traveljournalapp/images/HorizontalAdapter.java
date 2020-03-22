@@ -64,7 +64,6 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Vi
         public ViewHolder(View v){
             super(v);
             imageView = v.findViewById(R.id.gallery_img);
-//            txtView = v.findViewById(R.id.txtview);
         }
     }
 }

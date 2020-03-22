@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * Holiday Model
- * Bitmap = Images???
  */
 @Entity(tableName = "holiday_table")
 public class Holiday implements Serializable {

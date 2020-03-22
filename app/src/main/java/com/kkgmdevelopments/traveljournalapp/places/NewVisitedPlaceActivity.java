@@ -2,6 +2,7 @@ package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
@@ -120,6 +121,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
         camButton = findViewById(R.id.camerabutton);
+        ConstraintLayout editPlaceGalLayout = findViewById(R.id.editPlaceGalLayout);
         int id = -1;
 
         // Reset Issue with Button overlapping screen
@@ -130,7 +132,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             Places.initialize(getApplicationContext(), getString(R.string.places_api));
         }
         placesClient = Places.createClient(this);
-        autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteSupportFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -155,7 +158,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 mPlacesNotesField.setText(vpEdit.getPlaceNotes());
                 mPlaceDate = vpEdit.getPlaceDate();
                 // Place Data
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
+                List<Place.Field> placeFields =
+                        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
                 FetchPlaceRequest request = FetchPlaceRequest.newInstance(vpEdit.getPlaceLocation(), placeFields);
                 placesClient.fetchPlace(request).addOnSuccessListener(this, new OnSuccessListener<FetchPlaceResponse>() {
                     @Override
@@ -174,11 +178,11 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 });
             }
             getSupportActionBar().setTitle("Edit " + vpEdit.getPlaceName() + " Place"); // Override Action Bar title
-            camButton.setEnabled(true);     // Enable Camera button (Layout requires fixing)
+            editPlaceGalLayout.setEnabled(true);     // Enable Camera button (Layout requires fixing)
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
-            camButton.setVisibility(View.GONE); // Disappear
-            camButton.setEnabled(false);    // Disable Camera Button
+//            camButton.setVisibility(View.GONE); // Disappear
+            editPlaceGalLayout.setEnabled(false);    // Disable Camera Button
         }
 
         // Open Calendar Dialog for Date

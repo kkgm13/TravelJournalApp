@@ -20,9 +20,7 @@ import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 
 public class VisitedPlaceActivity extends AppCompatActivity {
-
     private Holiday holiday;    // Holiday Data
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Pager Adapters Initialize
         final ViewPager viewPager = findViewById(R.id.places_pager);
-        final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), context, tabLayout.getTabCount(), holiday);
+        final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), getApplicationContext(), tabLayout.getTabCount(), holiday);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(1); // Set the Default Tab Item to view
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -72,16 +70,12 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        return super.onOptionsItemSelected(item);
         int id = item.getItemId();
 
         // Settings Option Item
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-//            PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-//            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//            Toast.makeText(this, "Preferences Updated", Toast.LENGTH_SHORT).show();
             return true;
         }
 

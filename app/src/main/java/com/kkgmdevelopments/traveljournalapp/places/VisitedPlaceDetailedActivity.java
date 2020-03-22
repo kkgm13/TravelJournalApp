@@ -36,23 +36,20 @@ import java.util.List;
 
 public class VisitedPlaceDetailedActivity extends AppCompatActivity implements OnMapReadyCallback {
     private VisitedPlace vp;
-    private double placeLat;
-    private double placeLng;
     private GoogleMap googleMap;
+    private LatLng placeLtLg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.visited_place_show);
 
-//        placeLat = 52.4868584;
-//        placeLng = -1.8882174;
-
         // UI Initialization
         TextView placeName = findViewById(R.id.placeName);
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
         final TextView placeLoc = findViewById(R.id.placesLocation);
+
 //        ImageView placeImg = findViewById(R.id.placeImg);
 //        Glide.with(this).load(getIntent().getIntExtra("image", 0)).into(placeImg);
 
@@ -74,9 +71,11 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 Place place = fetchPlaceResponse.getPlace();
                 // Set Location Information
                 placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(place.getAddressComponents().asList().size() - 1).getName());
-                Log.i("BEFORE-Lat", String.valueOf(place.getLatLng().latitude));
-                Log.i("BEFORE-lng", String.valueOf(place.getLatLng().longitude));
-                mapLatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                placeLtLg = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                // Set the Map camera & marker information
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLtLg));
+                googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                googleMap.addMarker(new MarkerOptions().position(placeLtLg).title(vp.getPlaceName()));
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
@@ -89,6 +88,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 }
             }
         });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.placeMap);
         mapFragment.getMapAsync(this);
 
@@ -118,34 +118,12 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     }
 
     /**
-     * Passing Lat Lng Info
-     *  Passes the Place LatLng from the PlaceID search
-     *  ISSUE
-     *
-     * @param lat Latitude Info
-     * @param lng Longitude Info
-     *
-     */
-    private void mapLatLng(double lat, double lng){
-        placeLng = lng;
-        placeLat = lat;
-        Log.i("mapLatLng-Lat", String.valueOf(placeLat));
-        Log.i("mapLatLng-lng", String.valueOf(placeLng));
-    }
-
-    /**
      * Google Map View Provider
      *  This provides a Google Map object to be presented with any additional data
      * @param googleMap
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.w("TestIOP", placeLat+"\n"+placeLng);
-        LatLng placeLoc = new LatLng(placeLat,placeLng);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLoc));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-        googleMap.addMarker(new MarkerOptions()
-            .position(placeLoc)
-            .title(vp.getPlaceName()));
+        this.googleMap = googleMap;
     }
 }

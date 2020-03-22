@@ -61,11 +61,6 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        if (view != null) {
-//            ViewGroup parent = (ViewGroup) view.getParent();
-//            if (parent != null)
-//                parent.removeView(view);
-//        }
         // Inflate the layout for this fragment
         try {
             getLocation();

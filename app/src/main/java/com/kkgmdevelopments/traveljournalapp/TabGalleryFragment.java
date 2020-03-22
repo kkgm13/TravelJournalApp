@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
+import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
 import com.kkgmdevelopments.traveljournalapp.images.Photo;
 import com.kkgmdevelopments.traveljournalapp.images.PhotoActivity;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
@@ -36,7 +37,9 @@ public class TabGalleryFragment extends Fragment {
 
     private PlaceImageViewModel placeImageViewModel;
     private Holiday holiday;
-    private ImageGalleryAdapter adapter;
+    private HorizontalAdapter adapter;
+//    private ImageGalleryAdapter adapter;
+    private Photo[] galleryImg;
 
 
     public TabGalleryFragment() {
@@ -89,19 +92,12 @@ public class TabGalleryFragment extends Fragment {
         // In the onCreateView of your Gallery Fragment, comment out the code that displays
         // the fixed set of images.
 
-        adapter = new ImageGalleryAdapter(
-                getContext(),
-                Photo.getSpacePhotos()
-        );
+//        adapter = new ImageGalleryAdapter(
+//                getContext(),
+//                Photo.getSpacePhotos()
+//        );
 
-        // Somehow final code????
-//        ArrayList<Photo> images = Photo.getPhotos();
-//        for (Photo image: images) {
-//            mAdapter.addImageModel(image);
-//        }
-//        mAdapter.notifyDataSetChanged();
-
-
+        adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getContext());
 
         // New Version??
 //        final ImageGalleryAdapter adapter = new ImageGalleryAdapter(
@@ -114,9 +110,11 @@ public class TabGalleryFragment extends Fragment {
         placeImageViewModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
             @Override
             public void onChanged(List<PlaceImage> placeImages) {
+//                ArrayList<Photo> images =
                 for(PlaceImage img : placeImages){
                     String path = img.getImage().getURL();
                     Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 200, 200);
+                    adapter.addBitmap(b);
 //                    adapter.addImage(Photo.getSpacePhotos().length, Photo.getSpacePhotos(), img.getImage());
                 }
                 adapter.notifyDataSetChanged(); //??
@@ -124,9 +122,8 @@ public class TabGalleryFragment extends Fragment {
         });
         // Then call placePictureViewModel.getPicturesAllPlaces().
         placeImageViewModel.getPlaceAllImages();
-
         // Utilize the Image Gallery Adapter
-        recyclerView.setAdapter(adapter); // ???
+        recyclerView.setAdapter(adapter);
 
         return v;
     }
@@ -138,25 +135,18 @@ public class TabGalleryFragment extends Fragment {
     private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
         private Photo[] mPhotos;
         private Context mContext;
-        private List<Photo> photoList;
+        private List<Bitmap> photoList;
 
         public ImageGalleryAdapter(Context context, Photo[] photos) {
             mContext = context;
             mPhotos = photos;
         }
 
+        public void addBitmap(Bitmap b) {
+            if(photoList == null){
 
-        public Photo[] addImage(int curLen, Photo[] array, Photo photo){
-
-//            List<Photo> newList = Arrays.asList(Photo.getSpacePhotos());
-
-
-            Photo[] newList = new Photo[curLen+1];
-            for(int i = 0; i < curLen; i++){
-                newList[i] = array[i];
             }
-            newList[curLen] = photo;
-            return newList;
+            photoList.add(b);
         }
 
         @Override

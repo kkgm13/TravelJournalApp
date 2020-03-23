@@ -19,10 +19,8 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
      * @param fm
      * @param numOfTabs
      */
-    public FragmentPagerAdapter(FragmentManager fm, Context context, int numOfTabs
-                                , Holiday holiday
-    ) {
-        super(fm);
+    public FragmentPagerAdapter(FragmentManager fm, Context context, int numOfTabs, Holiday holiday) {
+        super(fm); // Deprecated Issues
         this.numOfTabs = numOfTabs;
         this.context = context;
         this.holiday = holiday;
@@ -40,7 +38,6 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
             // Todo: Create Gallery
             case 0: return new TabGalleryFragment();
             case 1: return TabPlacesFragment.newInstance(holiday);
-            // Todo: Sync Current Position with Map Exploration Fragment
             case 2: return new TabExploreFragment();
             default: return null;
         }
@@ -55,6 +52,4 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return numOfTabs;
     }
-
-
 }

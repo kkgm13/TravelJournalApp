@@ -22,10 +22,17 @@ public class PlaceImageRepository {
         new insertPlaceImageAsyncTask(mDao).execute(image);
     }
 
+    /**
+     * Delete a image place based on the PlaceImage
+     * @param image PlaceImage
+     */
     public void deleteImage(PlaceImage image){
         new deleteImageAsyncTask(mDao).execute(image);
     }
 
+    /**
+     * Delet all the Images
+     */
     public void deleteAllImages(){
         new deleteAllImagesAsyncTask(mDao).execute();
     }

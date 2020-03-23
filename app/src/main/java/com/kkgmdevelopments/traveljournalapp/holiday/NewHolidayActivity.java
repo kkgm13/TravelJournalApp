@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -109,7 +106,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 startDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mStartDateListener,year, month, day);
-                startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+//                startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 startDialog.show();
             }
         });
@@ -136,7 +133,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                 cal.set(year,month,day);
 
                 endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mEndDateListener,year, month, day);
-                endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+//                endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 endDialog.getDatePicker().setMinDate(mHolidayStartDate.getTime());
                 endDialog.show();
             }

@@ -181,7 +181,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             editPlaceGalLayout.setEnabled(true);     // Enable Camera button (Layout requires fixing)
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
-//            camButton.setVisibility(View.GONE); // Disappear
+            camButton.setVisibility(View.GONE); // Disappear
             editPlaceGalLayout.setEnabled(false);    // Disable Camera Button
         }
 
@@ -195,7 +195,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 dateDialog = new DatePickerDialog(NewVisitedPlaceActivity.this, R.style.DialogTheme, mPlaceDateListener,year, month, day);
-                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+//                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 dateDialog.show();
             }
         });

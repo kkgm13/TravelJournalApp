@@ -33,13 +33,6 @@ public interface HolidayDAO {
     void deleteALL();
 
     /**
-     * Get any Holiday
-     */
-    @Query("SELECT * FROM holiday_table LIMIT 1")
-//    LiveData<List<Holiday>> getAnyHoliday();
-    Holiday[] getAnyHoliday();
-
-    /**
      * Get all records from the Live DB
      */
     @Query("SELECT * FROM holiday_table ORDER BY holidayStart DESC")

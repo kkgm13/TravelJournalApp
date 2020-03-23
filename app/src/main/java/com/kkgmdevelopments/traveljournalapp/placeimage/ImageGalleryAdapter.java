@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.images.Photo;
-import com.kkgmdevelopments.traveljournalapp.images.PhotoActivity;
+import com.kkgmdevelopments.traveljournalapp.images.PhotoDetailedActivity;
 
 import java.util.List;
 
 /**
- * Image Gallery Adapter
+ * Image Gallery Adapter (Not in Use)
  *  The Adapter that manages the Image Gallery system
  */
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
@@ -80,8 +80,8 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
             int position = getAdapterPosition();
             if(position != RecyclerView.NO_POSITION) {
                 Photo photo = mPhotos[position];
-                Intent intent = new Intent(mContext, PhotoActivity.class);
-                intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, photo);
+                Intent intent = new Intent(mContext, PhotoDetailedActivity.class);
+                intent.putExtra(PhotoDetailedActivity.EXTRA_SPACE_PHOTO, photo);
 //                    intent.putExtra("titleName", )
                 mContext.startActivity(intent);
             }

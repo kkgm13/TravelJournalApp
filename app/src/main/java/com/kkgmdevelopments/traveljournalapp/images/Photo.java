@@ -3,6 +3,13 @@ package com.kkgmdevelopments.traveljournalapp.images;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.kkgmdevelopments.traveljournalapp.placeimage.ImageGalleryAdapter;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageRepository;
+
+import java.io.Serializable;
+import java.util.List;
+
 public class Photo implements Parcelable {
 
     private String mURL;
@@ -27,6 +34,7 @@ public class Photo implements Parcelable {
         mTitle = in.readString();
     }
 
+// If implementing Parcelable
     public static final Creator<Photo> CREATOR = new Creator<Photo>() {
         @Override
         public Photo createFromParcel(Parcel in) {

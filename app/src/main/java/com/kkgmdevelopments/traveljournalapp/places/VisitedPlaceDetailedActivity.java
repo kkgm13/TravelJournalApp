@@ -1,6 +1,9 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +24,10 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
@@ -29,8 +36,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
+import com.kkgmdevelopments.traveljournalapp.images.Photo;
+import com.kkgmdevelopments.traveljournalapp.placeimage.ImageGalleryAdapter;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
+import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,6 +51,11 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
     private VisitedPlace vp;
     private GoogleMap googleMap;
     private LatLng placeLtLg;
+    private List<PlaceImage> mPlacePicture = new ArrayList<PlaceImage>();
+    private PlaceImageViewModel placeImgModel;
+    private VisitedPlaceViewModel vPlaceModel;
+    private String curImgPath;
+    private HorizontalAdapter horAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +67,9 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
         final TextView placeLoc = findViewById(R.id.placesLocation);
+
+        vPlaceModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
+        placeImgModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
 
 //        ImageView placeImg = findViewById(R.id.placeImg);
 //        Glide.with(this).load(getIntent().getIntExtra("image", 0)).into(placeImg);
@@ -62,12 +83,13 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
         // Create VP information
         vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
-        // Map Data
+        // Place & Map Data
         List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(vp.getPlaceLocation(), placeFields);
         placesClient.fetchPlace(request).addOnSuccessListener(this, new OnSuccessListener<FetchPlaceResponse>() {
             @Override
             public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+                // Get the Place based from provided PlaceID context
                 Place place = fetchPlaceResponse.getPlace();
                 // Set Location Information
                 placeLoc.setText(place.getName() + ", "+place.getAddressComponents().asList().get(place.getAddressComponents().asList().size() - 1).getName());
@@ -88,7 +110,6 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 }
             }
         });
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.placeMap);
         mapFragment.getMapAsync(this);
 
@@ -101,6 +122,26 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
             placeNotes.setText("No Additional Notes");
         }
 
+
+        horAdapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
+        final LinearLayoutManager hozLayMan = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recView = (RecyclerView) findViewById(R.id.imgGallery);
+        recView.setLayoutManager(hozLayMan);
+        recView.setAdapter(horAdapter);
+        placeImgModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
+            @Override
+            public void onChanged(List<PlaceImage> placeImages) {
+                for(PlaceImage p : placeImages){
+                    mPlacePicture.add(p);
+                    curImgPath = p.getImage().getURL();
+                    Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(curImgPath), 300, 300);
+                    horAdapter.addBitmap(b);
+                }
+                horAdapter.notifyDataSetChanged();
+            }
+        });
+        placeImgModel.getPlaceImages(vp.getPlaceID());
+
         // Sharing Button
         final Button button = findViewById(R.id.btn_edit);
         button.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +149,8 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Join me in visiting "+vp.getPlaceName());
+                sendIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Join me in visiting "+vp.getPlaceName()+ " and we can catch up 😊");
                 sendIntent.setType("text/plain");
 
                 Intent shareIntent = Intent.createChooser(sendIntent, "Share Visited Place with...");

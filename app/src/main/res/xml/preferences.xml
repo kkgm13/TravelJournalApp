@@ -5,6 +5,7 @@
     <SwitchPreference
         android:id="@+id/lift2id"
         android:defaultValue="true"
+        app:enabled="false"
         app:key="lift2cam"
         app:summary="During editing a place or viewing a holiday, raising the phone "
         app:title='Enable "Lift To Cam"' />

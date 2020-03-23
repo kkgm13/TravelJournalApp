@@ -45,7 +45,7 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
     public static View view;
     public TextView text;
     private SupportMapFragment mapFrag;
-    private FusedLocationProviderClient fusedLocationClient;
+//    private FusedLocationProviderClient fusedLocationClient;
     private GoogleMap googleMap;
 
     public TabExploreFragment() {
@@ -63,9 +63,9 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         try {
-            getLocation();
+            getLocation(); // Check the Android Runtime permissions
             view =  inflater.inflate(R.layout.fragment_tab_explore, container, false);
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
             fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
@@ -76,7 +76,6 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
                         // Update the Camera Map
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
                         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-
                     }
                 }
             });
@@ -88,8 +87,6 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
         }
         return view;
     }
-
-
 
     /**
      * Get the Geographical Location

@@ -12,21 +12,21 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.common.util.ArrayUtils;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
-import com.kkgmdevelopments.traveljournalapp.images.HorizontalAdapter;
 import com.kkgmdevelopments.traveljournalapp.images.Photo;
-import com.kkgmdevelopments.traveljournalapp.images.PhotoActivity;
+import com.kkgmdevelopments.traveljournalapp.images.PhotoDetailedActivity;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
+import com.kkgmdevelopments.traveljournalapp.places.VisitedPlace;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,9 +37,10 @@ public class TabGalleryFragment extends Fragment {
 
     private PlaceImageViewModel placeImageViewModel;
     private Holiday holiday;
-    private HorizontalAdapter adapter;
-//    private ImageGalleryAdapter adapter;
-    private Photo[] galleryImg;
+    private ImageGalleryAdapter adapter;
+    private VisitedPlace vp;
+//    private Photo[] galleryImg;
+    private List<PlaceImage> placeImageList;
 
 
     public TabGalleryFragment() {
@@ -80,24 +81,23 @@ public class TabGalleryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        placeImageList = new ArrayList<>();
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tab_gallery, container, false);
+        placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
         // Create a Recycler View that uses a Grid Layout manager that will propose the amount of images
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         RecyclerView recyclerView = v.findViewById(R.id.gallery_imgs);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
+
         // In the onCreateView of your Gallery Fragment, comment out the code that displays
         // the fixed set of images.
 
-//        adapter = new ImageGalleryAdapter(
-//                getContext(),
-//                Photo.getSpacePhotos()
-//        );
+        adapter = new ImageGalleryAdapter(getContext(), placeImageList);
 
-        adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getContext());
+//        adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getContext());
 
         // New Version??
 //        final ImageGalleryAdapter adapter = new ImageGalleryAdapter(
@@ -107,17 +107,14 @@ public class TabGalleryFragment extends Fragment {
 
         // Add some code to initialise a placePictureViewModel and use it to observe
         // placePictureViewModel.getPlacePictures().
-        placeImageViewModel.getAllImages().observe(this, new Observer<List<PlaceImage>>() {
+        placeImageViewModel.getAllImages().observe(getActivity(), new Observer<List<PlaceImage>>() {
             @Override
             public void onChanged(List<PlaceImage> placeImages) {
 //                ArrayList<Photo> images =
                 for(PlaceImage img : placeImages){
-                    String path = img.getImage().getURL();
-                    Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path), 200, 200);
-                    adapter.addBitmap(b);
-//                    adapter.addImage(Photo.getSpacePhotos().length, Photo.getSpacePhotos(), img.getImage());
+                    placeImageList.add(img);
                 }
-                adapter.notifyDataSetChanged(); //??
+                adapter.notifyDataSetChanged();
             }
         });
         // Then call placePictureViewModel.getPicturesAllPlaces().
@@ -133,20 +130,13 @@ public class TabGalleryFragment extends Fragment {
      *  The Adapter that manages the Image Gallery system
      */
     private class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder>  {
-        private Photo[] mPhotos;
+//        private Photo[] mPhotos;
         private Context mContext;
-        private List<Bitmap> photoList;
+        private List<PlaceImage> photoList;
 
-        public ImageGalleryAdapter(Context context, Photo[] photos) {
+        public ImageGalleryAdapter(Context context, List<PlaceImage> photos) {
             mContext = context;
-            mPhotos = photos;
-        }
-
-        public void addBitmap(Bitmap b) {
-            if(photoList == null){
-
-            }
-            photoList.add(b);
+            photoList = photos;
         }
 
         @Override
@@ -161,7 +151,7 @@ public class TabGalleryFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ImageViewHolder holder, int position) {
-            Photo photo = mPhotos[position];
+            Photo photo = photoList.get(position).getImage();
             ImageView imageView = holder.mPhotoImageView;
             Glide.with(mContext)
                     .load(photo.getURL())
@@ -171,7 +161,12 @@ public class TabGalleryFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return (mPhotos.length);
+            return (photoList.size());
+        }
+
+        public void setPhotos(List<PlaceImage> photos){
+            photoList = photos;
+            notifyDataSetChanged();
         }
 
         /**
@@ -190,10 +185,9 @@ public class TabGalleryFragment extends Fragment {
             public void onClick(View view) {
                 int position = getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION) {
-                    Photo photo = mPhotos[position];
-                    Intent intent = new Intent(mContext, PhotoActivity.class);
-                    intent.putExtra(PhotoActivity.EXTRA_SPACE_PHOTO, photo);
-//                    intent.putExtra("titleName", )
+                    PlaceImage photo = photoList.get(position);
+                    Intent intent = new Intent(mContext, PhotoDetailedActivity.class);
+                    intent.putExtra(PhotoDetailedActivity.EXTRA_SPACE_PHOTO, photo.getImage());
                     startActivity(intent);
                 }
             }

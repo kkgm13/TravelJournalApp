@@ -19,7 +19,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
-        <activity android:name=".images.PhotoActivity" />
+        <activity android:name=".images.PhotoDetailedActivity" />
         <activity
             android:name=".places.VisitedPlaceDetailedActivity"
             android:label="@string/title_activity_visited_place_detailed"

@@ -24,6 +24,11 @@ public class PlaceImage {
     private Photo image;
 
     @Ignore
+    public PlaceImage(){
+
+    }
+
+    @Ignore
     public PlaceImage(int id, int placeID, Photo image){
         this.id = id;
         this.placeID = placeID;
@@ -58,15 +63,4 @@ public class PlaceImage {
     public void setImage(Photo image) {
         this.image = image;
     }
-
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel parcel, int flags) {
-//        parcel.writeInt(placeID);
-////        parcel.writeP
-//    }
 }

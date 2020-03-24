@@ -57,7 +57,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+
             }
         });
     }

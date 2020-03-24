@@ -7,6 +7,7 @@ import androidx.palette.graphics.Palette;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.libraries.places.api.model.Place;
 import com.kkgmdevelopments.traveljournalapp.R;
+import com.kkgmdevelopments.traveljournalapp.TabGalleryFragment;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
 
@@ -46,7 +48,7 @@ public class PhotoDetailedActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.image);
         mDelBtn = findViewById(R.id.btnDelete);
 
-        final PlaceImage photo = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
+        final PlaceImage photo = (PlaceImage) getIntent().getSerializableExtra(TabGalleryFragment.EXTRA_PHOTO);
         Glide.with(this)
                 .load(photo.getImage().getURL())
                 .asBitmap()
@@ -60,8 +62,6 @@ public class PhotoDetailedActivity extends AppCompatActivity {
                     @Override
                     public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         onPalette(Palette.from(resource).generate());
-//                        ViewGroup parent = (ViewGroup) mImageView.getParent().getParent();
-//                        parent.setBackgroundColor(Color.GRAY);
                         mImageView.setImageBitmap(resource);
                         return false;
                     }
@@ -74,28 +74,6 @@ public class PhotoDetailedActivity extends AppCompatActivity {
                     }
 
                 })
-//                .listener(new RequestListener<String, Bitmap>() {
-//                    @Override
-//                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                        return false;
-//                    }
-//
-//                    @Override
-//                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-////                        onPalette(Palette.from(resource));
-//                        ViewGroup parent = (ViewGroup) mImageView.getParent().getParent();
-//                        parent.setBackgroundColor(Color.GRAY);
-//                        mImageView.setImageDrawable(resource);
-//                        return false;
-//                    }
-//
-//                    public void onPalette(Palette palette){
-//                        if(null != palette) {
-//                            ViewGroup parent = (ViewGroup) mImageView.getParent().getParent();
-//                            parent.setBackgroundColor(Color.GRAY);
-//                        }
-//                    }
-//                })
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(mImageView);
         mDelBtn.setOnClickListener(new View.OnClickListener() {

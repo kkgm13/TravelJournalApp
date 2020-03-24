@@ -31,13 +31,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
         mPhotos = photos;
     }
 
-    public void addBitmap(Bitmap b) {
-        if(photoList == null){
-
-        }
-        photoList.add(b);
-    }
-
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();

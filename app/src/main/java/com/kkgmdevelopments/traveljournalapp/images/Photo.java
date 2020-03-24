@@ -1,16 +1,9 @@
 package com.kkgmdevelopments.traveljournalapp.images;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.kkgmdevelopments.traveljournalapp.placeimage.ImageGalleryAdapter;
-import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
-import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageRepository;
-
+//import android.os.Parcel;
 import java.io.Serializable;
-import java.util.List;
 
-public class Photo implements Parcelable {
+public class Photo implements Serializable {
 
     private String mURL;
     private String mTitle;
@@ -25,38 +18,39 @@ public class Photo implements Parcelable {
         this.mURL = mURL;
     }
 
-    /**
-     * Protected Constructor
-     * @param in
-     */
-    protected Photo(Parcel in) {
-        mURL = in.readString();
-        mTitle = in.readString();
-    }
-
-// If implementing Parcelable
-    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
-        @Override
-        public Photo createFromParcel(Parcel in) {
-            return new Photo(in);
-        }
-
-        @Override
-        public Photo[] newArray(int size) {
-            return new Photo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(mURL);
-        parcel.writeString(mTitle);
-    }
+//// If implementing Parcelable
+//    /**
+//     * Protected Constructor
+//     * @param in
+//     */
+//    protected Photo(Parcel in) {
+//        in.readInt();
+//        mURL = in.readString();
+//        mTitle = in.readString();
+//    }
+//
+//    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+//        @Override
+//        public Photo createFromParcel(Parcel in) {
+//            return new Photo(in);
+//        }
+//
+//        @Override
+//        public Photo[] newArray(int size) {
+//            return new Photo[size];
+//        }
+//    };
+//
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int i) {
+//        parcel.writeString(mURL);
+//        parcel.writeString(mTitle);
+//    }
 
     public String getURL() {
         return mURL;

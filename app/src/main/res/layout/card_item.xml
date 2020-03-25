@@ -18,7 +18,7 @@
             android:id="@+id/cardItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/text_view_style"
+            style="@style/cardTitleText"
             tools:text="@string/card_name_placeholder"/>
 
         <TextView

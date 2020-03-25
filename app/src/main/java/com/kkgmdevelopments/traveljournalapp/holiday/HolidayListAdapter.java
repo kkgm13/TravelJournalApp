@@ -105,6 +105,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
 
         private final TextView holidayItemNameView;         // Name Item View of Holiday
         private final TextView holidayItemNoteView;         // Notes Item View of Holiday
+        private TextView holidayItemCompanionView;    // Companions List view of the Holiday
         private final TextView holidayItemLastUpdated;      // Last Updated Item View of Holiday
 
         /**
@@ -116,6 +117,7 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
             super(itemView);
             holidayItemNameView = itemView.findViewById(R.id.cardItemName);
             holidayItemNoteView = itemView.findViewById(R.id.cardItemNotes);
+            holidayItemCompanionView = itemView.findViewById(R.id.cardItemCompanions);
             holidayItemLastUpdated = itemView.findViewById(R.id.cardItemLastUpdated);
             itemView.setOnClickListener(this);
         }
@@ -139,7 +141,11 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
          */
         void bindTo(Holiday holiday){
             holidayItemNameView.setText(holiday.getMHolidayName());
-            String notes = holiday.getMHolidayNotes();
+            if(holiday.getMCompanions().equals("Just me")){
+                holidayItemCompanionView.setVisibility(View.GONE);
+            } else {
+                holidayItemCompanionView.setText(holiday.getMCompanions());
+            }
             if(holiday.getMHolidayNotes().equals("")){
                 holidayItemNoteView.setText(R.string.no_notes);
             } else {

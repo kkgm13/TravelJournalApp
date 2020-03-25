@@ -20,12 +20,19 @@
             android:layout_height="wrap_content"
             style="@style/text_view_style"
             tools:text="@string/card_name_placeholder"/>
+
         <TextView
+            android:id="@+id/cardItemCompanions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/cardItemName"/>
+
+                <TextView
             android:id="@+id/cardItemLastUpdated"
-            android:layout_below="@id/cardItemName"
-            android:text="@string/card_last_update_placeholder"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                    android:layout_below="@id/cardItemCompanions"
+            android:text="@string/card_last_update_placeholder" />
 
         <TextView
             android:id="@+id/cardItemNotes"
@@ -33,5 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cardItemLastUpdated"
             android:text="@string/no_notes" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

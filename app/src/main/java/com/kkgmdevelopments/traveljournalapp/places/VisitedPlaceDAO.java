@@ -21,27 +21,46 @@ import java.util.List;
 @Dao
 public interface VisitedPlaceDAO {
 
+    /**
+     * Insert a Visited Place
+     * @param place Visited Place Object
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(VisitedPlace place);
 
-//    void delete(VisitedPlace place);
-
+    /**
+     * Delete ALL Visited Places
+     */
     @Query("DELETE From places_table")
     void deleteAll();
 
+    /**
+     * Get all the Places to present
+     * @return Live Data list of Visited Places
+     */
     @Query("SELECT * FROM places_table ORDER BY placeDate DESC")
     LiveData<List<VisitedPlace>> getAllPlaces();
 
-    @Query("SELECT * FROM places_table LIMIT 1")
-    VisitedPlace[] getAnyPlaces();
-
+    /**
+     * Delete a Specific Visited Place
+     * @param place Visited Place Object
+     */
     @Delete
     void deletePlace(VisitedPlace place);
 
+    /**
+     * Updated Place
+      * @param place
+     */
     @Update
     void updatePlace(VisitedPlace... place);
 
-    @Transaction
-    @Query("SELECT * FROM holiday_table WHERE hID IN (SELECT DISTINCT(holidayID) FROM places_table)")
-    LiveData<List<HolidayPlaces>> getVisitedPlaces();
+    /**
+     * Get visisted places based on Specific Holiday
+     *  NOT IN USE
+     * @return List of Visited Places based on Holiday
+     */
+//    @Transaction
+//    @Query("SELECT * FROM holiday_table WHERE hID IN (SELECT DISTINCT(holidayID) FROM places_table)")
+//    LiveData<List<HolidayPlaces>> getVisitedPlaces();
 }

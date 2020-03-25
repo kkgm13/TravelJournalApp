@@ -1,12 +1,15 @@
 package com.kkgmdevelopments.traveljournalapp.images;
 
-//import android.os.Parcel;
 import java.io.Serializable;
 
+/**
+ * Photo Class
+ *  This represents the Photo/Image used for the Gallery.
+ */
 public class Photo implements Serializable {
 
-    private String mURL;
-    private String mTitle;
+    private String mURL;        // Path of the Image
+    private String mTitle;      // Title of the Image
 
     /**
      * Public Constructor
@@ -18,7 +21,37 @@ public class Photo implements Serializable {
         this.mURL = mURL;
     }
 
-//// If implementing Parcelable
+    // Encapsulation Methods //
+    public String getURL() {
+        return mURL;
+    }
+    public void setURL(String mURL) {
+        this.mURL = mURL;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    /**
+     * Get all Sample Images to pass for the Photo Gallery
+     * @return Array of Sample Photos
+     */
+    public static Photo[] getSpacePhotos() {
+        return new Photo[]{
+                new Photo("https://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
+                new Photo("https://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
+                new Photo("https://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
+                new Photo("https://i.imgur.com/qpr5LR2.jpg", "Earth"),
+                new Photo("https://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
+                new Photo("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
+        };
+    }
+
+    //// If implementing Parcelable
 //    /**
 //     * Protected Constructor
 //     * @param in
@@ -51,31 +84,4 @@ public class Photo implements Serializable {
 //        parcel.writeString(mURL);
 //        parcel.writeString(mTitle);
 //    }
-
-    public String getURL() {
-        return mURL;
-    }
-
-    public void setURL(String mURL) {
-        this.mURL = mURL;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
-    public static Photo[] getSpacePhotos() {
-        return new Photo[]{
-                new Photo("https://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
-                new Photo("https://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
-                new Photo("https://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
-                new Photo("https://i.imgur.com/qpr5LR2.jpg", "Earth"),
-                new Photo("https://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
-                new Photo("https://i.imgur.com/3wQcZeY.jpg", "Satellite"),
-        };
-    }
 }

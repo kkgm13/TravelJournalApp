@@ -32,6 +32,7 @@ import java.util.List;
 
 /**
  * Main Activity Class
+ *  This is the main Activity to run the entire App
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -127,10 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, NEW_HOLIDAY_ACTIVITY_REQUEST_CODE);
             }
         });
-
-//        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//        Toast.makeText(this, "Preferences Updated", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -197,19 +194,14 @@ public class MainActivity extends AppCompatActivity {
             // Get ID passed from data
             int id = data.getIntExtra(NewHolidayActivity.EXTRA_REPLY_ID, -1);
             String eHolName = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NAME);
-            String eHolNotes = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NOTES);
+            String eHolCol = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_NOTES);
+            String eHolNotes = data.getStringExtra(NewHolidayActivity.EXTRA_REPLY_COMPANIONS);
             Date eHolStart = (Date) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY_START_DATE);
             Date eHolEnd = (Date) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY_END_DATE);
             Date eHolCreated = (Date) data.getSerializableExtra(NewHolidayActivity.EXTRA_REPLY_CREATED);
             // If ID has been passed to save
             if(id != -1){
-                mHolidayViewModel.updateHoliday(new Holiday(id,
-                        eHolName,
-                        eHolStart,
-                        eHolEnd,
-                        eHolNotes,
-                        eHolCreated,
-                        new Date()));
+                mHolidayViewModel.updateHoliday(new Holiday(id, eHolName, eHolStart, eHolEnd, eHolCol, eHolNotes, eHolCreated, new Date()));
                 Toast.makeText(this, " Holiday updated", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Unable to update holiday", Toast.LENGTH_LONG).show();

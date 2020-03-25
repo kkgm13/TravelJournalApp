@@ -47,16 +47,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Detailed Activity for a Visited Place
+ */
 public class VisitedPlaceDetailedActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private VisitedPlace vp;
-    private GoogleMap googleMap;
-    private LatLng placeLtLg;
-    private List<PlaceImage> mPlacePicture = new ArrayList<PlaceImage>();
-    private PlaceImageViewModel placeImgModel;
-    private VisitedPlaceViewModel vPlaceModel;
-    private String curImgPath;
-    private HorizontalAdapter horAdapter;
+    private VisitedPlace vp;        // Visited Place Object
+    private GoogleMap googleMap;    // Google Maps Object
+    private LatLng placeLtLg;       // Latitude-Longitude Object
+    private List<PlaceImage> mPlacePicture = new ArrayList<>();   // List of Place Images
+    private PlaceImageViewModel placeImgModel;      // Place Image View Model
+    private String curImgPath;      // Photo Image Path
+    private HorizontalAdapter horAdapter;       // Horizonatal Image Adapter
 
+    /**
+     * Create the Activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +73,18 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
         TextView placeNotes = findViewById(R.id.placeNotes);
         TextView placeDate = findViewById(R.id.placesDate);
         final TextView placeLoc = findViewById(R.id.placesLocation);
-
-        vPlaceModel = ViewModelProviders.of(this).get(VisitedPlaceViewModel.class);
         placeImgModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
-
 //        ImageView placeImg = findViewById(R.id.placeImg);
 //        Glide.with(this).load(getIntent().getIntExtra("image", 0)).into(placeImg);
+
+        // Create VP information
+        vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
         // Initialise Places
         if(!Places.isInitialized()){
             Places.initialize(getApplicationContext(), getString(R.string.places_api));
         }
         PlacesClient placesClient = Places.createClient(this);
-
-        // Create VP information
-        vp = (VisitedPlace) getIntent().getSerializableExtra("selectedPlace");
 
         // Place & Map Data
         List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
@@ -113,7 +116,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.placeMap);
         mapFragment.getMapAsync(this);
 
-        // UI Elements
+        // UI Data Initialization
         placeName.setText(vp.getPlaceName());
         placeDate.setText("Visited At: "+ DateFormat.getDateInstance().format(vp.getPlaceDate()));
         if(vp.getPlaceNotes() != ""){
@@ -122,7 +125,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
             placeNotes.setText("No Additional Notes");
         }
 
-
+        // Create Related Image Gallery
         horAdapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
         final LinearLayoutManager hozLayMan = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recView = (RecyclerView) findViewById(R.id.imgGallery);
@@ -134,7 +137,7 @@ public class VisitedPlaceDetailedActivity extends AppCompatActivity implements O
                 for(PlaceImage p : placeImages){
                     mPlacePicture.add(p);
                     curImgPath = p.getImage().getURL();
-                    Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(curImgPath), 300, 300);
+                    Bitmap b = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(curImgPath), 200, 200);
                     horAdapter.addBitmap(b);
                 }
                 horAdapter.notifyDataSetChanged();

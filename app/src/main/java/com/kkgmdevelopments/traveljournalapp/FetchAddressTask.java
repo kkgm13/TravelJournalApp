@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Fetch the Address
+ *  NO LONGER IN USE BUT MAY HAVE FUTURE PLANS GOING FORWARD
+ */
 public class FetchAddressTask extends AsyncTask<Location, Void, String> {
     private final String TAG = FetchAddressTask.class.getSimpleName();
     private Context context;
@@ -87,7 +91,7 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
     /**
      * On Post Execute
-     *  Once this has posted information
+     *  Pass data to be executed
      *
      * @param address Location Address
      */
@@ -99,7 +103,7 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
     /**
      * OnTaskCompleted Interface
-     *  Utilize to talk with Activites
+     *  Utilize to talk with Activity
      */
     public interface OnTaskCompleted{
         void onTaskCompleted(String result);

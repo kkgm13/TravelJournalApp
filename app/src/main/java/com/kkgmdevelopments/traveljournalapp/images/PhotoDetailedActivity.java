@@ -23,19 +23,23 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.libraries.places.api.model.Place;
 import com.kkgmdevelopments.traveljournalapp.R;
 import com.kkgmdevelopments.traveljournalapp.TabGalleryFragment;
+import com.kkgmdevelopments.traveljournalapp.placeimage.ImageGalleryAdapter;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImage;
 import com.kkgmdevelopments.traveljournalapp.placeimage.PlaceImageViewModel;
 
 /**
- * This just presents the image as an activity
+ * Photo Detailed Activity
+ *  This just presents the image in full width as an activity
  */
 public class PhotoDetailedActivity extends AppCompatActivity {
+    private ImageView mImageView;           // ImageView Object
+    private Button mDelBtn;                 // Delete Button
+    private PlaceImageViewModel placeImageViewModel;    // PlaceImageViewModel Object
 
-    public static final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
-    private ImageView mImageView;
-    private Button mDelBtn;
-    private PlaceImageViewModel placeImageViewModel;
-
+    /**
+     * Create the Activity View
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +52,8 @@ public class PhotoDetailedActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.image);
         mDelBtn = findViewById(R.id.btnDelete);
 
-        final PlaceImage photo = (PlaceImage) getIntent().getSerializableExtra(TabGalleryFragment.EXTRA_PHOTO);
+        // PlaceImage
+        final PlaceImage photo = (PlaceImage) getIntent().getSerializableExtra(ImageGalleryAdapter.EXTRA_PHOTO);
         Glide.with(this)
                 .load(photo.getImage().getURL())
                 .asBitmap()
@@ -66,16 +71,21 @@ public class PhotoDetailedActivity extends AppCompatActivity {
                         return false;
                     }
 
+                    /**
+                     * Set the background Palette
+                     * @param palette
+                     */
                     public void onPalette(Palette palette){
                         if(null != palette) {
                             ViewGroup parent = (ViewGroup) mImageView.getParent().getParent();
                             parent.setBackgroundColor(Color.GRAY);
                         }
                     }
-
                 })
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(mImageView);
+
+        // Set the Button
         mDelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

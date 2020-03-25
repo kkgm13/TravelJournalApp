@@ -1,18 +1,21 @@
 package com.kkgmdevelopments.traveljournalapp;
 
 import android.content.Context;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 
+/**
+ * Fragment Pager Adapter
+ *  This is the core Adapter to utilize a Tabbed Fragment within
+ *  the VisitedPlaces Section
+ */
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-    Context context;
-    int numOfTabs; // Number of Pager Tabs
-    Holiday holiday;
+    Context context;    // Context
+    int numOfTabs;      // Number of Pager Tabs
+    Holiday holiday;    // Holiday Object
 
     /**
      * Constructor
@@ -30,12 +33,12 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
      * Get Fragment Item selected position
      *
      * @param position
-     * @return
+     * @return All tabs and Fragment issues
      */
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            // Todo: Create Gallery
+            // Todo: Fix Gallery with the full Image view selection
             case 0: return new TabGalleryFragment();
             case 1: return TabPlacesFragment.newInstance(holiday);
             case 2: return new TabExploreFragment();

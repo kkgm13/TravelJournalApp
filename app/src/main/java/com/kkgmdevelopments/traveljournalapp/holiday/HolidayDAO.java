@@ -52,7 +52,12 @@ public interface HolidayDAO {
     @Update
     void updateHoliday(Holiday... holiday);
 
-    @Transaction
-    @Query("SELECT * FROM holiday_table")
-    List<HolidayPlaces> getHolidaywithPlaces();
+    /**
+     * Room Relationship Between Holiday and VisitedPlace
+     * @TODO Have the Information set between Main Holiday Screen and Places Scene
+     * @return List of Holiday Places
+     */
+//    @Transaction
+//    @Query("SELECT * FROM holiday_table")
+//    List<HolidayPlaces> getHolidaywithPlaces();
 }

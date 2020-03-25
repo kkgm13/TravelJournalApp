@@ -47,9 +47,6 @@ public class VisitedPlace implements Serializable {
     @ColumnInfo(name = "modified_at")
     private Date mPlaceModifiedAt;
 
-//    private final int mPlacePhotos;
-//    https://medium.com/androiddevelopers/database-relations-with-room-544ab95e4542
-
     @Ignore
     public VisitedPlace(int id, String mPlaceName, String mPlaceLocation,
 //                        int associatedHolidayID,
@@ -63,8 +60,16 @@ public class VisitedPlace implements Serializable {
         this.mPlaceCreatedAt = mPlaceCreatedAt;
         this.mPlaceModifiedAt = mPlaceModifiedAt;
     }
-    
-    // Constructor
+
+    /**
+     * Constructor
+     * @param mPlaceName        Visited Place Custom Name
+     * @param mPlaceLocation    Visited Place Location
+     * @param mPlaceDate        Visited Place Date of Visit
+     * @param mPlaceNotes       Visited Place Notes
+     * @param mPlaceCreatedAt
+     * @param mPlaceModifiedAt
+     */
     public VisitedPlace(String mPlaceName, String mPlaceLocation,
 //                        int associatedHolidayID,
                         Date mPlaceDate, String mPlaceNotes, Date mPlaceCreatedAt, Date mPlaceModifiedAt){
@@ -78,7 +83,6 @@ public class VisitedPlace implements Serializable {
     }
 
     // Encapsulation Methods //
-
     public int getPlaceID() {
         return mPlaceID;
     }
@@ -96,7 +100,6 @@ public class VisitedPlace implements Serializable {
     public int getAssociatedHolidayID() {
         return associatedHolidayID;
     }
-
     public void setAssociatedHolidayID(int associatedHolidayID) {
         this.associatedHolidayID = associatedHolidayID;
     }
@@ -132,7 +135,6 @@ public class VisitedPlace implements Serializable {
     public Date getPlaceDate() {
         return mPlaceDate;
     }
-
     public void setPlaceDate(Date mPlaceDate) {
         this.mPlaceDate = mPlaceDate;
     }

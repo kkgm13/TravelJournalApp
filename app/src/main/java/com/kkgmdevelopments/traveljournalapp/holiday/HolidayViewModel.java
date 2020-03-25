@@ -11,9 +11,13 @@ import java.util.List;
  */
 public class HolidayViewModel extends AndroidViewModel {
 
-    private HolidayRepository mRepository;
-    private LiveData<List<Holiday>> mAllHolidays;
+    private HolidayRepository mRepository;          // Holiday Repo Instance
+    private LiveData<List<Holiday>> mAllHolidays;   // Live Data of Holiday List
 
+    /**
+     * Constructor
+     * @param application Application Object
+     */
     public HolidayViewModel(Application application) {
         super(application);
         mRepository = new HolidayRepository(application);

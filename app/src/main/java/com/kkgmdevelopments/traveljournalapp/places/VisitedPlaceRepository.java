@@ -15,8 +15,8 @@ import java.util.List;
  * Controls all the Visited Places and DB connection instance
  */
 public class VisitedPlaceRepository {
-    public VisitedPlaceDAO mPlaceDAO;
-    public LiveData<List<VisitedPlace>> mAllPlaces;
+    public VisitedPlaceDAO mPlaceDAO;               // Visited Place Data Access Object
+    public LiveData<List<VisitedPlace>> mAllPlaces; // Live Data List of VisitedPlaces
 
     /**
      * Constructor
@@ -44,13 +44,25 @@ public class VisitedPlaceRepository {
         new insertAsyncTask(mPlaceDAO).execute(place);
     }
 
+    /**
+     * Delete all Visited Places
+     */
     public void deleteAll(){ new deleteALLPlacesAsyncTask(mPlaceDAO).execute();}
 
+    /**
+     * Delete a specific VisitedPlace
+     *
+     * @param place Visited Place pnkect
+     */
     public void deletePlace(VisitedPlace place) { new deletePlaceAsyncTask(mPlaceDAO).execute(place);}
 
+    /**
+     * Update a Specific VisitedPlace
+     * @param place VisitedPlace Object
+     */
     public void updatePlace(VisitedPlace place) { new updatePlaceAsyncTask(mPlaceDAO).execute(place);}
 
-    public void getVisitedPlaces() { mPlaceDAO.getVisitedPlaces(); }
+//    public void getVisitedPlaces() { mPlaceDAO.getVisitedPlaces(); }
 
     /**
      * Allow to insert an Asynchronous Task

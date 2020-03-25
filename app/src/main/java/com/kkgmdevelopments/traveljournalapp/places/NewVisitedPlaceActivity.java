@@ -109,8 +109,12 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
     // Object Elements
     private VisitedPlace vpEdit;                // VisitedPlace Object
     private Place placeLocation;                // Place Object
-    private PlaceImageViewModel placeImageViewModel;
+    private PlaceImageViewModel placeImageViewModel;    //View Model Instance
 
+    /**
+     * Activity Creation Method
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,11 +125,13 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         mPlacesNotesField = findViewById(R.id.place_notes);
         mPlaceDateText = findViewById(R.id.place_date);
         camButton = findViewById(R.id.camerabutton);
-        ConstraintLayout editPlaceGalLayout = findViewById(R.id.editPlaceGalLayout);
-        int id = -1;
+        final ConstraintLayout editPlaceGalLayout = findViewById(R.id.editPlaceGalLayout);
+        int id = -1;    // ID Initializer
 
         // Reset Issue with Button overlapping screen
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        getLocation();
 
         // Initialize Places API
         if(!Places.isInitialized()){
@@ -146,6 +152,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 Log.i("TJA-pAPI", "Error Occured: " + status);
             }
         });
+
+        horizontal_recycler = findViewById(R.id.hor_img_recycler);
 
         // Bundle Information
         final Bundle extras = getIntent().getExtras();
@@ -182,7 +190,8 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         } else {
             getSupportActionBar().setTitle("Create New Place"); // Override Action Bar title
             camButton.setVisibility(View.GONE); // Disappear
-            editPlaceGalLayout.setEnabled(false);    // Disable Camera Button
+            horizontal_recycler.setVisibility(View.GONE);
+            editPlaceGalLayout.setVisibility(View.GONE);    // Disable Camera Button
         }
 
         // Open Calendar Dialog for Date
@@ -195,7 +204,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 dateDialog = new DatePickerDialog(NewVisitedPlaceActivity.this, R.style.DialogTheme, mPlaceDateListener,year, month, day);
-//                dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 dateDialog.show();
             }
         });
@@ -222,7 +230,6 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         }
 
         // Gallery Information
-        horizontal_recycler = findViewById(R.id.hor_img_recycler); // Error with ID despite being in XML file
         adapter = new HorizontalAdapter(new ArrayList<Bitmap>(), getApplicationContext());
         placeImageViewModel = ViewModelProviders.of(this).get(PlaceImageViewModel.class);
         LinearLayoutManager horizonLayManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -233,7 +240,7 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
             public void onChanged(List<PlaceImage> placeImages) {
                 for(PlaceImage img : placeImages){
                     currentPhotoPath = img.getImage().getURL();
-                    Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
+                    Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 250, 250);
                     adapter.addBitmap(image);
                 }
                 adapter.notifyDataSetChanged();
@@ -282,6 +289,17 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         });
     }
 
+    private void getLocation(){
+        // Allow the Permissions
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getParent(), new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+    }
+
     /**
      *  Activity Result Handler
      *
@@ -306,19 +324,20 @@ public class NewVisitedPlaceActivity extends AppCompatActivity {
         }
         // Camera Activity Result Handler
         else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 200, 200);
+            Bitmap image = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(currentPhotoPath), 100, 100);
             // Save to Database
             Photo placeImg = new Photo(currentPhotoPath, vpEdit.getPlaceName()+" "+adapter.getItemCount());
             PlaceImage placePic = new PlaceImage(vpEdit.getPlaceID(), placeImg); // Create new Picture with information
             placeImageViewModel.insertImage(placePic);
-            // Keep in order for adapter to see
+            // Add to Adapter
             adapter.addBitmap(image);
             adapter.notifyDataSetChanged();
         }
     }
 
     /**
-     * Camera Intent Handler
+     * Camera Dispatch Intent
+     *  Intent to take a photo
      */
     private void dispatchTakePictureIntent() {
         // Check Permissions

@@ -1,17 +1,11 @@
 package com.kkgmdevelopments.traveljournalapp.places;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.google.android.material.tabs.TabLayout;
 import com.kkgmdevelopments.traveljournalapp.FragmentPagerAdapter;
 import com.kkgmdevelopments.traveljournalapp.R;
@@ -19,9 +13,17 @@ import com.kkgmdevelopments.traveljournalapp.SettingsActivity;
 import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 import com.kkgmdevelopments.traveljournalapp.holiday.HolidayListAdapter;
 
+/**
+ * Visited Place Core Activity
+ *  This allows the main activity to use the Tabs and Fragments
+ */
 public class VisitedPlaceActivity extends AppCompatActivity {
     private Holiday holiday;    // Holiday Data
 
+    /**
+     * Activity Creation
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
         // Pager Adapters Initialize
         final ViewPager viewPager = findViewById(R.id.places_pager);
+            // Core Line to utilize the Tab System
         final FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), getApplicationContext(), tabLayout.getTabCount(), holiday);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(1); // Set the Default Tab Item to view
@@ -57,17 +60,27 @@ public class VisitedPlaceActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                viewPager.setCurrentItem(tab.getPosition());
             }
         });
     }
 
+    /**
+     * Create the Option Menus on the side
+     * @param menu
+     * @return Option Menu List
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_place, menu);
         return true;
     }
 
+    /**
+     * Menu Item Options Selection
+     * @param item Position in the Menu
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

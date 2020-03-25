@@ -7,6 +7,10 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * PlaceImage Data Access Object
+ *  This is the Data Access Object between the repository and the Database
+ */
 @Dao
 public interface PlaceImageDAO {
     @Insert

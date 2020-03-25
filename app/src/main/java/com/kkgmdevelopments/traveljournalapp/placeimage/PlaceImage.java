@@ -12,6 +12,10 @@ import androidx.room.PrimaryKey;
 
 import com.kkgmdevelopments.traveljournalapp.images.Photo;
 
+/**
+ * Place Image Model
+ *  This is the model for the relationship between VisitedPlace and Photo
+ */
 @Entity(tableName = "places_images_table")
 public class PlaceImage {
     @PrimaryKey(autoGenerate = true)
@@ -35,15 +39,20 @@ public class PlaceImage {
         this.image = image;
     }
 
+    /**
+     * Constructor
+     * @param placeID
+     * @param image
+     */
     public PlaceImage(int placeID, Photo image){
         this.placeID = placeID;
         this.image = image;
     }
 
+    // Encapsulation Methods //
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -51,7 +60,6 @@ public class PlaceImage {
     public int getPlaceID() {
         return placeID;
     }
-
     public void setPlaceID(int placeID) {
         this.placeID = placeID;
     }
@@ -59,7 +67,6 @@ public class PlaceImage {
     public Photo getImage() {
         return image;
     }
-
     public void setImage(Photo image) {
         this.image = image;
     }

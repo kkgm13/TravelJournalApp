@@ -180,12 +180,14 @@ public class TabPlacesFragment extends Fragment {
             // Notify user of Place Added
             Toast.makeText(getActivity(), place.getPlaceName()+" has been created", Toast.LENGTH_LONG).show();
         } else if(requestCode == UPDATE_VISITED_PLACES_ACTIVITY_REQUEST_CODE && resultCode == -1) {
+            // Get Single Data
             int id = data.getIntExtra(NewVisitedPlaceActivity.EXTRA_REPLY_ID, -1);
             String ePName = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_NAME);
             String ePNotes = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_NOTES);
             Date ePDate = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_DATE);
             Date ePCreated = (Date) data.getSerializableExtra(NewVisitedPlaceActivity.EXTRA_REPLY_CREATED);
             String eLoc = data.getStringExtra(NewVisitedPlaceActivity.EXTRA_REPLY_LOCATION);
+            // If ID has a record, update the VisitedPlace Object
             if (id != -1){
                 mPlacesViewModel.updatePlace(new VisitedPlace(id,
                         ePName,

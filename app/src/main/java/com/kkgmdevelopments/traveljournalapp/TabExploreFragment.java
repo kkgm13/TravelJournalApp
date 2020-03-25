@@ -2,7 +2,6 @@ package com.kkgmdevelopments.traveljournalapp;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,61 +10,88 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.kkgmdevelopments.traveljournalapp.holiday.Holiday;
 
 import java.util.concurrent.Executor;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Explore Tab Fragment
+ *  One of the 3 Tabs in the Visited Place Section.
+ *  This provides a full map to see interesting places nearby.
+ *  TODO: Provide Map Cluster for Points of Interest based on Attractions
  */
 public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-    public static View view;
-    public TextView text;
-    private SupportMapFragment mapFrag;
-//    private FusedLocationProviderClient fusedLocationClient;
-    private GoogleMap googleMap;
+    public static View view;                // Static View object
+    private SupportMapFragment mapFrag;     // Google Map Fragment Support Object
+    private FusedLocationProviderClient fusedLocationClient;
+    private GoogleMap googleMap;            // Google Map Object
 
+    /**
+     * Constructor
+     */
     public TabExploreFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Create a new instance of the fragment with provided parameters
+     * @param holiday Holiday object
+     * @return
+     */
+    public static TabExploreFragment newInstance(Holiday holiday) {
+        TabExploreFragment fragment = new TabExploreFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("ARG_PARAM1", holiday);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
+     * Create The Fragment
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
 
+        }
+        getLocation(); // Check the Android Runtime permissions (Can lead to crash due to compile)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
+    /**
+     * Create the View of the fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         try {
-            getLocation(); // Check the Android Runtime permissions
             view =  inflater.inflate(R.layout.fragment_tab_explore, container, false);
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
             fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
@@ -103,6 +129,13 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Permission Request Results
+     *  This takes consideration with Actions against the System Permissions
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -120,7 +153,7 @@ public class TabExploreFragment extends Fragment implements OnMapReadyCallback {
     /**
      * Set the Map Preferences once ready
      *
-     * @param googleMap
+     * @param googleMap Google Map Reference
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {

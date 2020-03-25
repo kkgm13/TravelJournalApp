@@ -27,15 +27,17 @@ import java.util.Date;
  */
 public class NewHolidayActivity extends AppCompatActivity {
 
+    // Intent String Information
     public static final String EXTRA_REPLY =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY";
-
     public static final String EXTRA_REPLY_NAME =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_NAME";
     public static final String EXTRA_REPLY_START_DATE =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_STARTDATE";
     public static final String EXTRA_REPLY_END_DATE =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_ENDDATE";
+    public static final String EXTRA_REPLY_COMPANIONS =
+            "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_COMPANIONS";
     public static final String EXTRA_REPLY_NOTES =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_NOTES";
     public static final String EXTRA_REPLY_ID =
@@ -43,20 +45,18 @@ public class NewHolidayActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY_CREATED =
             "com.kkgmdevelopments.traveljournalapp.roomholiday.REPLY_CREATED";
 
-    private EditText mHolidayName;        // Text Input Holiday Name
-
-    private TextView mHolidayStartDateField;   // Text Holiday Start Date
+    // UI Information
+    private EditText mHolidayName;              // Text Input Holiday Name
+    private TextView mHolidayStartDateField;                         // Text Holiday Start Date
     private DatePickerDialog.OnDateSetListener mStartDateListener;   // Date Picker Dialog Listener Start Date
     private DatePickerDialog startDialog;       // Date Picker Dialog Starting
     private Date mHolidayStartDate;             // Holiday Start Date
-
     private TextView mHolidayEndDateField;     // Text Holiday End Date
     private DatePickerDialog.OnDateSetListener mEndDateListener;     // Date Picker Dialog Listener End Date
     private DatePickerDialog endDialog;         // Date Picker Dialog Ending
     private Date mHolidayEndDate;             // Holiday Start Date
-
     private EditText mHolidayNotes;       // Text Input Holiday Notes
-
+    private EditText mHolidayCompanions;        // Text Input for Holiday Companions
     private Holiday eHoliday;
 
     /**
@@ -74,10 +74,10 @@ public class NewHolidayActivity extends AppCompatActivity {
         mHolidayStartDateField = findViewById(R.id.holiday_start_date);
         mHolidayEndDateField = findViewById(R.id.holiday_end_date);
         mHolidayNotes = findViewById(R.id.holiday_notes);
+        mHolidayCompanions = findViewById(R.id.holidayCompanions);
 
         // Edit Section
         final Bundle extras = getIntent().getExtras();
-
         // IF bundle has something, it is a holiday edit, else its a new one
         if(extras != null){
             eHoliday = (Holiday) extras.getSerializable(MainActivity.EXTRA_DATA_UPDATE_HOLIDAY);
@@ -85,6 +85,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                 mHolidayName.setText(eHoliday.getMHolidayName());
                 mHolidayStartDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMStartDate()));
                 mHolidayEndDateField.setText(DateFormat.getDateInstance().format(eHoliday.getMEndDate()));
+                mHolidayCompanions.setText(eHoliday.getMCompanions());
                 mHolidayNotes.setText(eHoliday.getMHolidayNotes());
                 mHolidayStartDate = eHoliday.getMStartDate();
                 mHolidayEndDate = eHoliday.getMEndDate();
@@ -106,11 +107,9 @@ public class NewHolidayActivity extends AppCompatActivity {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 startDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mStartDateListener,year, month, day);
-//                startDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 startDialog.show();
             }
         });
-
         // Convert Selected Date for Start Date
         mStartDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -133,12 +132,10 @@ public class NewHolidayActivity extends AppCompatActivity {
                 cal.set(year,month,day);
 
                 endDialog = new DatePickerDialog(NewHolidayActivity.this, R.style.DialogTheme, mEndDateListener,year, month, day);
-//                endDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                 endDialog.getDatePicker().setMinDate(mHolidayStartDate.getTime());
                 endDialog.show();
             }
         });
-
         // Convert Selected Date for Start Date
         mEndDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -160,15 +157,21 @@ public class NewHolidayActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(mHolidayName.getText()) || mHolidayStartDate == null || mHolidayEndDate == null){
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String notes = "";
+                    String notes = "", companions = "";
                     if(! mHolidayNotes.getText().toString().isEmpty()){
                         notes = mHolidayNotes.getText().toString();
+                    }
+                    if(!mHolidayCompanions.getText().toString().isEmpty()){
+                        companions = mHolidayCompanions.getText().toString();
+                    } else{
+                        companions = "Just me";
                     }
 
                     Holiday holiday = new Holiday(
                             mHolidayName.getText().toString(),
                             mHolidayStartDate, // Get Selected Start Date
                             mHolidayEndDate, // Get Selected End Date
+                            companions,
                             notes,
                             new Date(),
                             new Date()

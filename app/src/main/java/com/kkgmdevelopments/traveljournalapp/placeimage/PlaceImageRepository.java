@@ -8,17 +8,29 @@ import androidx.lifecycle.MutableLiveData;
 import com.kkgmdevelopments.traveljournalapp.JournalAppDatabase;
 import java.util.List;
 
+/**
+ * PlaceImage Repository
+ *  Repository for the PlaceImage Relationship object
+ */
 public class PlaceImageRepository {
-    private PlaceImageDAO mDao;
-    private MutableLiveData<List<PlaceImage>> placePictureList;
+    private PlaceImageDAO mDao;         // Data Access Object for PlaceImage
+    private MutableLiveData<List<PlaceImage>> placePictureList; //LiveData for PlaceImage
 
+    /**
+     * Constructor
+     * @param application
+     */
     public PlaceImageRepository(Application application){
         JournalAppDatabase db = JournalAppDatabase.getDatabase(application);
         mDao = db.placeImageDAO();
         placePictureList = new MutableLiveData<>();
     }
 
-    public void insertImage(PlaceImage image){
+    /**
+     * Insert an PlaceImage
+     * @param image PlaceImage
+     */
+    public void insertPlaceImage(PlaceImage image){
         new insertPlaceImageAsyncTask(mDao).execute(image);
     }
 
@@ -26,14 +38,14 @@ public class PlaceImageRepository {
      * Delete a image place based on the PlaceImage
      * @param image PlaceImage
      */
-    public void deleteImage(PlaceImage image){
+    public void deletePlaceImage(PlaceImage image){
         new deleteImageAsyncTask(mDao).execute(image);
     }
 
     /**
      * Delet all the Images
      */
-    public void deleteAllImages(){
+    public void deleteAllPlaceImages(){
         new deleteAllImagesAsyncTask(mDao).execute();
     }
 
@@ -42,7 +54,7 @@ public class PlaceImageRepository {
      * @param placeID VisitedPlace ID
      */
     public void getPlaceImages(int placeID){
-        Log.i("TAG", "Getting pictures for "+placeID);
+        Log.i("TJA-TAG", "Getting pictures for "+placeID);
         new getPlaceImagesAsyncTask(mDao).execute(placeID);
     }
 

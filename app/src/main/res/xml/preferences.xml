@@ -16,13 +16,19 @@
             app:defaultValue="true"
             app:key="locPerm"
             app:title="Location Permission"
-            app:summary="Enable/Disable to allow the app location permissions" />
+            app:summary="Enable/Disable to allow permissions for the app to use GPS" />
         <CheckBoxPreference
             android:id="@+id/camPerm"
             android:defaultValue="true"
             app:key="camPerm"
-            app:summary="Enable/Disable to allow app camera permissions"
+            app:summary="Enable/Disable to allow permissions for the app to use the camera "
             app:title="Camera Permissions" />
+        <CheckBoxPreference
+            android:id="@+id/storagePerm"
+            android:defaultValue="true"
+            app:key="camPerm"
+            app:summary="Enable/Disable to allow permissions for the app to use the storage"
+            app:title="Storage Permissions" />
     </PreferenceCategory>
 
     <Preference

@@ -20,7 +20,7 @@ import com.kkgmdevelopments.traveljournalapp.places.VisitedPlaceDAO;
 /**
  * Room Database
  *
- * This creates the Overall database for Android Room to recognise.
+ * This creates the overall database for Android Room to recognise.
  * This also talks to ANY Data Access Object (DAOs) to interact with data.
  */
 @Database(entities = {Holiday.class, VisitedPlace.class, PlaceImage.class}, version = 1, exportSchema = false)
@@ -50,12 +50,12 @@ public abstract class JournalAppDatabase extends RoomDatabase {
                     // Create the database
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),    // Context from the Application
-                            JournalAppDatabase.class,          // The Room Database
-                            "traveljournalapp.db"  // The Database Name (App)
+                            JournalAppDatabase.class,           // The Room Database
+                            "traveljournalapp.db"       // The Database Name (App)
                     )
-                            .fallbackToDestructiveMigration()   // Wipes & rebuilds if no migration object
-                            .addCallback(sRoomDataCallback)     // Provide a Callback to the Room Database
-                            .build();                           // Build the Database
+                        .fallbackToDestructiveMigration()   // Wipes & rebuilds if no migration object
+                        .addCallback(sRoomDataCallback)     // Provide a Callback to the Room Database
+                        .build();                           // Build the Database
                 }
             }
         }
@@ -74,7 +74,7 @@ public abstract class JournalAppDatabase extends RoomDatabase {
         @Override
         public void onOpen (@NonNull SupportSQLiteDatabase db){
             super.onOpen(db);
-            new PopulateDbAsync(INSTANCE).execute();
+//            new PopulateDbAsync(INSTANCE).execute(); // DATA WILL BE OVERWRITTEN IF OVERWRITTEN
         }
     };
 
@@ -85,8 +85,6 @@ public abstract class JournalAppDatabase extends RoomDatabase {
         private final HolidayDAO hDao;
         private final VisitedPlaceDAO pDAO;
         private final PlaceImageDAO piDAO;
-//        String [] holidays = { "London", "Birmingham", "Brighton"};
-//        private LiveData<List<Holiday>> holidays;
 
         PopulateDbAsync(JournalAppDatabase db) {
             hDao = db.holidayDAO();
@@ -98,20 +96,10 @@ public abstract class JournalAppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-            // First Time use and cleaning
-//            hDao.deleteALL();
+//            hDao.deleteALL(); // DO NOT UNCOMMENT
             hDao.getAllHolidays();
             pDAO.getAllPlaces();
             piDAO.getAllImages();
-
-//            if(hDao.getAnyHoliday().length < 1){
-//
-//            }
-
-//            for(int i = 0; i < holidays.length; i++){
-//                Holiday holiday = new Holiday(holidays[i]);
-//                hDao.insert(holiday);
-//            }
             return null;
         }
     }

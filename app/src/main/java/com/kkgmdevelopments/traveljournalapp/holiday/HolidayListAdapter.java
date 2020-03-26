@@ -151,8 +151,9 @@ public class HolidayListAdapter extends RecyclerView.Adapter<HolidayListAdapter.
             } else {
                 holidayItemNoteView.setText(holiday.getMHolidayNotes());
             }
-            holidayItemLastUpdated.setText("Last Updated: "+
-                    DateFormat.getDateInstance().format(holiday.getMHolidayModifiedAt())
+            holidayItemLastUpdated.setText(
+//                    "Last Updated: "+ DateFormat.getDateInstance().format(holiday.getMHolidayModifiedAt()
+                    DateFormat.getDateInstance().format(holiday.getMStartDate()) +" - "+ DateFormat.getDateInstance().format(holiday.getMEndDate())
             );
         }
     }

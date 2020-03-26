@@ -177,6 +177,7 @@ public class NewHolidayActivity extends AppCompatActivity {
                             new Date()
                     );
                     replyIntent.putExtra(EXTRA_REPLY, holiday);
+                    replyIntent.putExtra(EXTRA_REPLY_COMPANIONS, companions);
                     replyIntent.putExtra(EXTRA_REPLY_NAME, mHolidayName.getText().toString());
                     replyIntent.putExtra(EXTRA_REPLY_NOTES, notes);
                     replyIntent.putExtra(EXTRA_REPLY_START_DATE, mHolidayStartDate);

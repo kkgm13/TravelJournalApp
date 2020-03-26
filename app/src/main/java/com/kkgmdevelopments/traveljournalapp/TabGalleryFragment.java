@@ -112,6 +112,7 @@ public class TabGalleryFragment extends Fragment {
             }
         });
         placeImageViewModel.getPlaceAllImages();
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
         return v;

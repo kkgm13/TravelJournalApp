@@ -113,7 +113,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
          */
         @Override
         public void onClick(View view) {
-//            int position = getAdapterPosition();
+            int position = getAdapterPosition();
 //            if (position != RecyclerView.NO_POSITION) {
 //                PlaceImage placeImage = photoList.get(position);
 //                Intent intent = new Intent(mContext, PhotoDetailedActivity.class);

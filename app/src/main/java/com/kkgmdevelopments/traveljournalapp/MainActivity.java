@@ -207,10 +207,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Unable to update holiday", Toast.LENGTH_LONG).show();
             }
         } else {
-            adapter.notifyDataSetChanged();
             // State holiday NOT Made
             Toast.makeText(getApplicationContext(), R.string.empty_holiday_not_saved, Toast.LENGTH_LONG).show();
         }
+        adapter.notifyDataSetChanged();
+
     }
 
     /**

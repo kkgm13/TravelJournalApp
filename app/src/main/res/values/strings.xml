@@ -2,7 +2,7 @@
     <string name="app_name">Travel Journal App</string>
     <string name="action_settings">Settings</string>
     <string name="sub_title">Your Holidays</string>
-    <string name="places_api">AIzaSyDWFP7fOJRT92AHsMLxcBh344Hy-EKCM4Y</string>
+    <string name="places_api">NOPE</string>
 
     <string name="no_holidays">No Holidays available. Let\'s add one!</string>
     <string name="no_places">No places available. Let\'s add one!</string>
